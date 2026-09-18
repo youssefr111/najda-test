@@ -1,0 +1,203 @@
+\chapter{System Design}
+\label{chap:system_design}
+
+\section{Introduction}
+
+System design transforms the requirements identified in the previous chapters into a detailed technical architecture that can be implemented efficiently while remaining scalable, maintainable, and extensible. This chapter presents the architectural design of NAJDA, including its overall system architecture, software components, database structure, communication mechanisms, security model, and artificial intelligence integration.
+
+The proposed design follows an event-driven microservice architecture in which independent services communicate asynchronously through an event broker while providing real-time updates to connected clients. The architecture emphasizes modularity, fault isolation, scalability, and clear separation of responsibilities \cite{newman2021microservices,richardson2018microservices,bass2022software}.
+
+%------------------------------------------------
+
+\section{Design Goals}
+
+The NAJDA architecture was designed to achieve the following goals:
+
+\begin{itemize}
+    \item Scalability
+    \item Maintainability
+    \item Loose coupling
+    \item High cohesion
+    \item Fault isolation
+    \item Real-time communication
+    \item Security
+    \item Extensibility
+\end{itemize}
+
+%------------------------------------------------
+
+\section{Overall System Architecture}
+
+This section presents the high-level architecture of NAJDA and illustrates how the major software components interact to support emergency dispatch operations.
+
+\subsection{Overall Architecture Diagram}
+
+\textit{Placeholder: High-Level System Architecture Diagram}
+
+%------------------------------------------------
+
+\section{Architectural Views}
+
+\subsection{System Context View}
+
+\textit{Placeholder: Context Diagram}
+
+\subsection{Container View}
+
+\textit{Placeholder: C4 Container Diagram}
+
+\subsection{Component View}
+
+\textit{Placeholder: Component Diagram}
+
+%------------------------------------------------
+
+\section{Microservice Architecture}
+
+NAJDA follows an event-driven microservice architecture in which each service is responsible for a single business capability. Services communicate asynchronously through an event broker, reducing direct dependencies and improving scalability. This architectural style promotes independent deployment, loose coupling, and improved maintainability when compared with traditional monolithic systems \cite{newman2021microservices,richardson2018microservices,bass2022software}.
+
+\subsection{Service Responsibilities}
+
+\textit{Placeholder: Table describing each microservice and its responsibilities.}
+
+\subsection{Inter-Service Communication}
+
+\textit{Placeholder: RabbitMQ Communication Diagram}
+
+%------------------------------------------------
+
+\section{Database Design}
+
+Persistent system data is stored within a relational database designed to maintain data consistency while supporting efficient querying and future extensibility. PostgreSQL serves as the system of record due to its transactional reliability and support for complex relational data, while Redis is utilized for temporary caching of rapidly changing location information to improve application responsiveness \cite{postgresql,redis}.
+
+\subsection{Entity Relationship Diagram}
+
+\textit{Placeholder: ER Diagram}
+
+\subsection{Database Schema}
+
+\textit{Placeholder: Database Schema Description}
+
+%------------------------------------------------
+
+\section{Class Design}
+
+The object-oriented design of the system is represented using UML class diagrams illustrating the relationships between the principal domain entities.
+
+\subsection{Class Diagram}
+
+\textit{Placeholder: UML Class Diagram}
+
+%------------------------------------------------
+
+\section{System Behaviour}
+
+This section describes how different system components interact throughout the execution of important business processes.
+
+\subsection{Incident Reporting Sequence}
+
+\textit{Placeholder: Sequence Diagram}
+
+\subsection{Mission Assignment Sequence}
+
+\textit{Placeholder: Sequence Diagram}
+
+\subsection{Hospital Assignment Sequence}
+
+\textit{Placeholder: Sequence Diagram}
+
+%------------------------------------------------
+
+\section{Incident State Model}
+
+Emergency incidents transition through multiple operational states during their lifecycle.
+
+\subsection{State Diagram}
+
+\textit{Placeholder: Incident State Diagram}
+
+%------------------------------------------------
+
+\section{Artificial Intelligence Design}
+
+Artificial intelligence within NAJDA assists dispatchers by generating recommendations while preserving human decision-making authority. The design follows a human-in-the-loop approach in which AI provides decision support while final operational decisions remain under human control \cite{xgboost,mobilenetv2}.
+
+The AI subsystem provides:
+
+\begin{itemize}
+    \item Incident priority prediction.
+    \item Duplicate incident detection.
+    \item Hospital recommendation.
+    \item Hazard image classification.
+\end{itemize}
+
+\subsection{AI Architecture}
+
+\textit{Placeholder: AI Architecture Diagram}
+
+%------------------------------------------------
+
+\section{Authentication and Authorization}
+
+NAJDA employs role-based access control (RBAC) to ensure that users only access functionality appropriate to their assigned responsibilities. Authentication is implemented using Firebase Authentication, while authorization is enforced within backend services according to the authenticated user's assigned role \cite{firebase}.
+
+\subsection{Authentication Flow}
+
+\textit{Placeholder: Authentication Flow Diagram}
+
+\subsection{Authorization Model}
+
+\textit{Placeholder: RBAC Diagram}
+
+%------------------------------------------------
+
+\section{Real-Time Communication}
+
+NAJDA supports real-time communication between users and backend services to ensure that emergency information is synchronized across all participating actors. RabbitMQ is used for asynchronous communication between backend services, while WebSockets deliver live updates to connected clients with minimal latency \cite{rabbitmq,websocket}.
+
+\subsection{Real-Time Event Flow}
+
+\textit{Placeholder: Event Flow Diagram}
+
+%------------------------------------------------
+
+\section{Deployment Architecture}
+
+The deployment architecture describes how client applications, backend services, databases, cloud services, and supporting infrastructure are organized within the production environment. The distributed deployment model follows cloud-native design principles, enabling independent deployment of services while utilizing managed cloud services for authentication, storage, notifications, and persistent data management \cite{firebase,postgresql}.
+
+\subsection{Deployment Diagram}
+
+\textit{Placeholder: UML Deployment Diagram}
+
+%------------------------------------------------
+
+\section{Security Considerations}
+
+The security design of NAJDA focuses on protecting user identities, restricting access to authorized functionality, and ensuring secure communication between distributed components. The system combines secure authentication, role-based authorization, encrypted communication channels, and server-side access validation to protect sensitive operational data \cite{pressman2020se,firebase}.
+
+\subsection{Security Architecture}
+
+\textit{Placeholder: Security Architecture Diagram}
+
+%------------------------------------------------
+
+\section{Design Decisions}
+
+The following major architectural decisions influenced the development of NAJDA:
+
+\begin{itemize}
+    \item Adoption of an event-driven microservice architecture.
+    \item Separation of AI functionality into an independent service.
+    \item Role-based access control.
+    \item Event-driven communication between services.
+    \item Dedicated relational database for persistent data.
+    \item In-memory caching for frequently changing live data.
+    \item Cloud-based authentication and notification services.
+    \item Human-in-the-loop AI decision support.
+\end{itemize}
+
+%------------------------------------------------
+
+\section{Chapter Summary}
+
+This chapter presented the complete architectural design of NAJDA, including its software architecture, component organization, database design, communication mechanisms, artificial intelligence subsystem, security model, and deployment strategy. These design decisions provide the foundation for the implementation discussed in the following chapter.

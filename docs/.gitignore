@@ -1,0 +1,17 @@
+#uml_scripts/
+
+# Ignore regular Word documents
+#*.docx
+#*.doc
+
+# Ignore temporary/lock Word files (created when a document is open)
+#~$*.docx
+#~$*.doc
+
+# -------------------------
+# Archives
+# -------------------------
+*.zip
+*.tar
+*.gz
+*.rar

@@ -1,0 +1,48 @@
+@startuml er-deployed
+left to right direction
+skinparam backgroundColor white
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam ArrowColor #8A97A8
+skinparam EntityBorderColor #2E5C8A
+skinparam EntityBackgroundColor white
+skinparam EntityHeaderBackgroundColor #1E3A5F
+skinparam EntityFontColor #1F2937
+
+entity "roles" as roles {
+  * role_id : Integer <<PK>>
+  --
+  * role_name : String <<unique>>
+}
+
+entity "users" as users {
+  * id : Long <<PK>>
+  --
+  * firebase_uid : String <<unique>>
+  * first_name : String
+  * last_name : String
+  email : String <<unique, nullable>>
+  phone : String <<unique, nullable>>
+  * phone_verified : boolean
+  address : String
+  * role_id : Integer <<FK>>
+  gender : Enum
+  * profile_completed : boolean
+  * enabled : boolean
+  * created_at / updated_at : DateTime
+  deleted_at : DateTime <<nullable>>
+}
+
+entity "audit_logs" as audit_logs {
+  * id : Long <<PK>>
+  * actor_user_id : Long <<FK>>
+  * action : String
+  target_user_id : Long <<FK, nullable>>
+  details : String
+  * created_at : DateTime
+}
+
+roles ||--o{ users
+users ||--o{ audit_logs : "as actor"
+
+@enduml

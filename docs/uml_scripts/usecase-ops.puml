@@ -1,0 +1,89 @@
+@startuml usecase-ops
+left to right direction
+skinparam backgroundColor white
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam ArrowColor #8A97A8
+skinparam ActorBorderColor #1E3A5F
+skinparam ActorBackgroundColor white
+skinparam UseCaseBorderColor #2E5C8A
+skinparam UseCaseBackgroundColor white
+skinparam UseCaseFontColor #1F2937
+skinparam PackageBorderColor #1E3A5F
+skinparam PackageFontColor #1E3A5F
+skinparam PackageBackgroundColor white
+skinparam ArrowFontColor #5B6B82
+
+actor "Citizen" as Citizen
+actor "Dispatcher" as Dispatcher
+actor "Field Unit\n(Ambulance / Fire /\nPolice / First Responder)" as FieldUnit
+actor "Ambulance Crew" as Ambulance
+actor "Hospital Staff" as Hospital
+actor "AI Service" as AI
+
+rectangle "Emergency Response Operations" {
+  usecase "Report Emergency\n(type, media, location)" as UC1
+  usecase "Cancel Report" as UC2
+  usecase "Track Report Status" as UC3
+
+  usecase "Review Incident Queue" as UC4
+  usecase "Assign Unit to Incident" as UC5
+
+  usecase "Set Availability Status" as UC6
+  usecase "Receive Mission Notification" as UC7
+  usecase "Accept / Reject Mission" as UC8
+  usecase "Mark Arrival on Scene" as UC9
+  usecase "Complete Mission" as UC10
+
+  usecase "Select Destination Hospital" as UC11
+  usecase "Transmit Patient Vitals" as UC12
+  usecase "Receive Incoming\nPatient Data" as UC13
+  usecase "Manage Hospital Capacity" as UC14
+
+  usecase "Detect Duplicate Incidents" as UCai1
+  usecase "Score Priority & Confidence" as UCai2
+  usecase "Recommend Hospital" as UCai3
+}
+
+Citizen --> UC1
+Citizen --> UC2
+Citizen --> UC3
+
+Dispatcher --> UC4
+Dispatcher --> UC5
+
+FieldUnit --> UC6
+FieldUnit --> UC7
+FieldUnit --> UC8
+FieldUnit --> UC9
+FieldUnit --> UC10
+
+Ambulance --> UC11
+Ambulance --> UC12
+
+Hospital --> UC13
+Hospital --> UC14
+
+UC1 ..> UCai1 : <<include>>
+UC1 ..> UCai2 : <<include>>
+UC4 ..> UCai1 : <<include>>
+UC4 ..> UCai2 : <<include>>
+UC11 ..> UCai3 : <<include>>
+AI --> UCai1
+AI --> UCai2
+AI --> UCai3
+
+UC9 ..> UC10 : <<extend>>\n(Police / Fire /\nFirst Responder)
+UC11 ..> UC10 : <<extend>>\n(Ambulance Crew)
+UC12 ..> UC13 : <<include>>\n(if hospital registered)
+UC8 ..> UC5 : <<extend>>\n(on rejection,\ndispatcher reassigns)
+
+note bottom of UCai1
+  All AI outputs (duplicate flags,
+  priority scores, hospital
+  recommendations) are advisory.
+  A human actor makes every
+  operational decision.
+end note
+
+@enduml

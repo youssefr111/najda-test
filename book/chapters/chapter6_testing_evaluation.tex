@@ -1,0 +1,166 @@
+\chapter{Testing and Evaluation}
+\label{chap:testing}
+
+\section{Introduction}
+
+Testing and evaluation are essential phases of software engineering that verify whether a system satisfies its specified requirements while maintaining reliability, correctness, and acceptable performance. Software testing aims to detect defects, validate system behavior, and provide confidence that the implemented software satisfies its intended objectives before deployment \cite{pressman2020se,sommerville2016software}.
+
+This chapter presents the testing strategy adopted for NAJDA, describes the different levels of testing performed, evaluates the system against its functional and non-functional requirements, and discusses the obtained results.
+
+%------------------------------------------------
+
+\section{Testing Strategy}
+
+NAJDA was evaluated using multiple levels of software testing to ensure that individual components function correctly and that the complete system operates as expected when integrated. The adopted testing strategy follows widely accepted software engineering practices by combining component-level verification with end-to-end validation of system functionality \cite{pressman2020se,istqb}.
+
+The testing strategy consisted of:
+
+\begin{itemize}
+    \item Unit Testing
+    \item Integration Testing
+    \item System Testing
+    \item User Acceptance Testing
+    \item Performance Evaluation
+\end{itemize}
+
+%------------------------------------------------
+
+\section{Testing Environment}
+
+\subsection{Hardware Environment}
+
+\textit{Placeholder: Hardware specifications used during testing.}
+
+\subsection{Software Environment}
+
+\textit{Placeholder: Software versions, operating systems, databases, browsers, and development tools.}
+
+%------------------------------------------------
+
+\section{Unit Testing}
+
+Unit testing was performed to verify the correctness of individual software components in isolation. Each software module was tested independently before integration to ensure that its functionality satisfied the intended design \cite{junit5}.
+
+\subsection{Backend Unit Tests}
+
+\textit{Placeholder: Service-layer and controller test results.}
+
+\subsection{Frontend Unit Tests}
+
+\textit{Placeholder: UI component tests.}
+
+\subsection{AI Module Tests}
+
+\textit{Placeholder: AI model verification tests.}
+
+%------------------------------------------------
+
+\section{Integration Testing}
+
+Integration testing verified communication between the different system modules. This phase focused on validating interactions between backend services, databases, cloud services, and asynchronous messaging components after successful unit testing \cite{pressman2020se}.
+
+\subsection{Backend Integration}
+
+\textit{Placeholder: Microservice communication tests.}
+
+\subsection{Event Processing}
+
+\textit{Placeholder: RabbitMQ event verification.}
+
+\subsection{Cloud Service Integration}
+
+\textit{Placeholder: Firebase integration tests.}
+
+%------------------------------------------------
+
+\section{System Testing}
+
+System testing evaluated the complete NAJDA platform under realistic operational scenarios. End-to-end workflows were executed to verify that all software components operated correctly as an integrated system \cite{sommerville2016software}.
+
+\subsection{Emergency Reporting}
+
+\textit{Placeholder: Test scenario and results.}
+
+\subsection{Mission Assignment}
+
+\textit{Placeholder: Test scenario and results.}
+
+\subsection{Hospital Recommendation}
+
+\textit{Placeholder: Test scenario and results.}
+
+\subsection{Incident Completion}
+
+\textit{Placeholder: Test scenario and results.}
+
+%------------------------------------------------
+
+\section{User Acceptance Testing}
+
+User Acceptance Testing (UAT) evaluates whether a software system satisfies user expectations and operational requirements before deployment. During this phase, representative users execute predefined scenarios and provide feedback regarding usability, functionality, and overall system behavior \cite{istqb}.
+
+\textit{Placeholder: User Acceptance Testing methodology and participant feedback.}
+
+%------------------------------------------------
+
+\section{Performance Evaluation}
+
+Performance testing evaluated the responsiveness and scalability of the implemented system. The objective was to measure the system's ability to process requests efficiently while maintaining acceptable response times under varying workloads \cite{pressman2020se}.
+
+\subsection{Response Time}
+
+\textit{Placeholder: Response time measurements.}
+
+\subsection{Concurrent Users}
+
+\textit{Placeholder: Concurrent user testing results.}
+
+\subsection{Resource Utilization}
+
+\textit{Placeholder: CPU, memory, and database performance measurements.}
+
+%------------------------------------------------
+
+\section{Requirement Verification}
+
+\textit{Placeholder: Table mapping functional requirements to completed test cases and outcomes.}
+
+%------------------------------------------------
+
+\section{Results and Discussion}
+
+This section analyzes the testing outcomes and evaluates whether the implemented system satisfies the objectives established in the requirements analysis.
+
+\textit{Placeholder: Discussion of testing results and observed system behavior.}
+
+%------------------------------------------------
+
+\section{Limitations}
+
+Although NAJDA successfully demonstrates a realistic emergency dispatch simulation platform, several limitations remain.
+
+\begin{itemize}
+    \item The platform operates as an academic simulation and is not connected to governmental emergency services.
+    \item AI recommendations are intended for demonstration purposes and should not replace professional decision-making.
+    \item Performance evaluation is limited to the available testing infrastructure.
+    \item Real-world emergency datasets were not available for large-scale validation.
+\end{itemize}
+
+%------------------------------------------------
+
+\section{Future Evaluation Opportunities}
+
+Future work may include:
+
+\begin{itemize}
+    \item Large-scale load testing.
+    \item Formal usability studies.
+    \item AI model retraining using larger datasets.
+    \item Realistic simulation with multiple simultaneous incidents.
+\end{itemize}
+
+%------------------------------------------------
+
+\section{Chapter Summary}
+
+This chapter presented the testing methodology adopted for NAJDA and evaluated the implemented system through unit, integration, system, and performance testing. The obtained results demonstrate the correctness of the implemented functionality while identifying limitations and opportunities for future improvements.
