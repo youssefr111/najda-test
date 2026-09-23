@@ -1,0 +1,98 @@
+\documentclass[12pt,a4paper,oneside]{book}
+
+% ---------- Packages ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1in,bottom=1in,left=1.25in,right=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{caption}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{ragged2e}
+\usepackage[backend=biber,style=ieee]{biblatex}
+\addbibresource{references.bib}
+\newcommand{\fillme}[1]{\textcolor{red}{#1}}
+
+% ---------- Colors ----------
+\definecolor{navy}{RGB}{31,56,100}
+\definecolor{midgray}{RGB}{89,89,89}
+\definecolor{lightgray}{RGB}{128,128,128}
+
+% ---------- Hyperref setup ----------
+\hypersetup{
+    colorlinks=true,
+    linkcolor=navy,
+    citecolor=navy,
+    urlcolor=navy,
+    pdftitle={NAJDA: Network for AI-powered Joint Dispatch and Assistance},
+    pdfauthor={NAJDA Team},
+    pdfsubject={Bachelor of Engineering Graduation Project},
+    pdfkeywords={Emergency Dispatch, AI, Microservices, Spring Boot, RabbitMQ, Flutter, Next.js, Computer Engineering}
+}
+
+% ---------- Heading styles ----------
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{navy}}
+  {\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{navy}}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\itshape\color{midgray}}{\thesubsection}{1em}{}
+
+% ---------- Header/Footer ----------
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{14pt}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[R]{\small\color{lightgray}NAJDA}
+\fancyfoot[C]{\thepage}
+
+\setstretch{1.25}
+
+\begin{document}
+
+% ---------- FRONT MATTER ----------
+\frontmatter
+
+\input{frontmatter/cover}
+\input{frontmatter/approval}
+\input{frontmatter/declaration}
+\input{frontmatter/acknowledgments}
+\input{frontmatter/abstract}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\input{frontmatter/abbreviations}
+
+% ---------- MAIN MATTER ----------
+\mainmatter
+
+\input{chapters/chapter1_introduction}
+\input{chapters/chapter2_requirements_analysis}
+\input{chapters/chapter3_literature_review}
+\input{chapters/chapter4_system_design}
+\input{chapters/chapter5_implementation}
+\input{chapters/chapter6_testing_evaluation}
+\input{chapters/chapter7_conclusion_future_work}
+
+% ---------- REFERENCES ----------
+\printbibliography
+
+% ---------- APPENDICES ----------
+\appendix
+
+\input{appendices/appendixA_database_reference}
+\input{appendices/appendixB_api_reference}
+\input{appendices/appendixC_additional_ui}
+\input{appendices/appendixD_design_decisions}
+
+\end{document}

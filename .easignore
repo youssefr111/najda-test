@@ -1,0 +1,44 @@
+# Everything outside the Expo mobile app
+/backend/
+/book/
+/docs/
+/secrets/
+/web/
+
+# Git / IDE
+/.git/
+/.github/
+/.vscode/
+
+# Mobile dependencies / generated files
+/mobile/node_modules/
+/mobile/.expo/
+/mobile/dist/
+/mobile/web-build/
+
+# Environment files
+/mobile/.env
+/mobile/.env.local
+/mobile/.env.*.local
+
+# Logs
+*.log
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# Native credentials
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Mobile-specific files not needed by EAS
+/mobile/deep-linking/
+/mobile/DEPLOYMENT.md

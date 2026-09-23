@@ -1,0 +1,122 @@
+name: Build & release Android APK
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        working-directory: mobile
+        run: npm ci
+
+      - name: Build on EAS
+        working-directory: mobile
+        run: |
+          set -euo pipefail
+          eas build \
+            --platform android \
+            --profile preview \
+            --non-interactive \
+            --wait \
+            --json > build.json
+
+          echo "----- build.json -----"
+          cat build.json
+          echo "-----------------------"
+
+      - name: Extract build info
+        id: build_info
+        working-directory: mobile
+        run: |
+          set -euo pipefail
+
+          # `eas build --json` always returns an ARRAY of build objects,
+          # even for a single-platform build — index into [0].
+          BUILD_ID=$(jq -r '.[0].id // empty' build.json)
+          BUILD_STATUS=$(jq -r '.[0].status // empty' build.json)
+          DOWNLOAD_URL=$(jq -r '.[0].artifacts.buildUrl // empty' build.json)
+
+          if [ -z "$BUILD_ID" ]; then
+            echo "::error::Could not extract a build id from build.json — see the logged contents above."
+            exit 1
+          fi
+
+          # EAS returns status in UPPERCASE (e.g. "FINISHED"), so compare case-insensitively.
+          if [ "${BUILD_STATUS^^}" != "FINISHED" ]; then
+            echo "::error::Build finished with unexpected status: '$BUILD_STATUS' (expected 'FINISHED')."
+            exit 1
+          fi
+
+          if [ -z "$DOWNLOAD_URL" ]; then
+            echo "::error::Build $BUILD_ID has no artifacts.buildUrl — it may have failed on EAS's side."
+            exit 1
+          fi
+
+          echo "Resolved build id: $BUILD_ID"
+          echo "Download URL: $DOWNLOAD_URL"
+
+          echo "build_id=$BUILD_ID" >> "$GITHUB_OUTPUT"
+          echo "download_url=$DOWNLOAD_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Download APK
+        working-directory: mobile
+        run: |
+          set -euo pipefail
+
+          # Filename is derived from the git tag that triggered this release
+          # (e.g. "v1.0.1" -> "najda-v1.0.1.apk"), so it's always in sync with
+          # what actually triggered the build — no separate version to keep
+          # updated by hand.
+          VERSIONED_NAME="najda-${GITHUB_REF_NAME}.apk"
+
+          rm -f ./*.apk
+
+          curl -fL \
+            --retry 3 \
+            --retry-delay 5 \
+            -o "$VERSIONED_NAME" \
+            "${{ steps.build_info.outputs.download_url }}"
+
+          if [ ! -s "$VERSIONED_NAME" ]; then
+            echo "::error::Downloaded $VERSIONED_NAME is missing or empty."
+            exit 1
+          fi
+
+          # Stable, unversioned copy so external links (e.g. the web app's
+          # download button) never need to change between releases.
+          cp "$VERSIONED_NAME" najda-latest.apk
+
+          mv "$VERSIONED_NAME" ../
+          mv najda-latest.apk ../
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            najda-*.apk
+          make_latest: true
+          fail_on_unmatched_files: true

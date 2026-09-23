@@ -1,0 +1,379 @@
+{
+  "common": {
+    "loading": "Loading…",
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "retry": "Try again",
+    "back": "Back",
+    "submit": "Submit",
+    "ok": "OK",
+    "error": "Something went wrong",
+    "requiredField": "This field is required",
+    "sending": "Sending…",
+    "applyingLanguage": "Applying language…"
+  },
+  "nav": {
+    "report": "Report",
+    "myReports": "My Reports",
+    "missions": "Missions",
+    "shift": "Shift",
+    "account": "Account",
+    "home": "Home"
+  },
+  "auth": {
+    "login": {
+      "title": "NAJDA",
+      "subtitle": "Sign in to continue",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "signIn": "Sign in",
+      "signingIn": "Signing in…",
+      "continueWithGoogle": "Continue with Google",
+      "or": "or",
+      "noAccount": "New to NAJDA?",
+      "createAccount": "Create an account",
+      "forgotPassword": "Forgot password?",
+      "resetSubtitle": "Enter your email and we'll send you a reset link.",
+      "sendResetLink": "Send reset link",
+      "sending": "Sending…",
+      "resetSentBefore": "We sent a reset link to",
+      "resetSentAfter": "Check your inbox to continue.",
+      "backToSignIn": "Back to sign in"
+    },
+    "register": {
+      "title": "Create your account",
+      "subtitle": "Report emergencies and track their response in real time.",
+      "emailLabel": "Email",
+      "agreeToTerms": "I agree to the Terms and Privacy Policy",
+      "agreeRequired": "Please agree to the terms to continue",
+      "continueWithEmail": "Continue with email",
+      "sendingLink": "Sending link…",
+      "continueWithGoogle": "Continue with Google",
+      "or": "or",
+      "alreadyHaveAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "emailChecking": "Checking…",
+      "emailTaken": "An account already exists with this email.",
+      "emailAvailable": "Available"
+    },
+    "checkEmail": {
+      "title": "Check your email",
+      "body": "We sent a sign-in link to {{email}}. Open it on this phone to continue — if the app is set up to handle it, it'll open right here; otherwise it'll open in your browser and you can log in here afterward.",
+      "openWebApp": "Open link in browser",
+      "backToLogin": "Back to sign in"
+    },
+    "phone": {
+      "label": "Phone number",
+      "invalid": "Enter a valid Egyptian mobile number."
+    },
+    "completeProfile": {
+      "title": "Complete your profile",
+      "subtitle": "A few more details before you can use NAJDA.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone number",
+      "phoneVerified": "already verified",
+      "address": "Address",
+      "gender": "Gender",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "passwordHint": "At least 8 characters, with an uppercase letter, a lowercase letter, and a number.",
+      "passwordMismatch": "Passwords don't match",
+      "passwordInvalid": "Password doesn't meet the requirements above",
+      "invalidPhone": "Enter a valid Egyptian mobile number",
+      "save": "Save and continue"
+    },
+    "errors": {
+      "invalidEmail": "That email address doesn't look right.",
+      "userDisabled": "This account has been disabled.",
+      "invalidCredential": "Incorrect email or password.",
+      "emailAlreadyInUse": "An account already exists with this email.",
+      "weakPassword": "Choose a stronger password.",
+      "tooManyRequests": "Too many attempts. Please wait a moment and try again.",
+      "network": "Couldn't reach the server. Check your connection.",
+      "cancelled": "Sign-in was cancelled.",
+      "generic": "Something went wrong. Please try again.",
+      "notSignedIn": "You're not signed in.",
+      "sessionFailed": "Couldn't establish a session."
+    },
+    "completeSignup": {
+      "confirming": "Confirming your sign-in…",
+      "invalidLink": "This link is invalid or has expired. Go back and request a new one.",
+      "confirmEmailPrompt": "Confirm the email you registered with to continue.",
+      "emailPlaceholder": "Email address",
+      "continue": "Continue"
+    }
+  },
+  "citizen": {
+    "report": {
+      "title": "Emergency",
+      "subtitle": "Tap the button below the moment something happens. You'll confirm the details next.",
+      "sosButton": "SOS",
+      "pressToCall": "Press to report an emergency",
+      "category": "What's happening?",
+      "categoryMedical": "Medical",
+      "categoryFire": "Fire",
+      "categoryPolice": "Police",
+      "injuredCount": "People injured",
+      "description": "Description (optional)",
+      "descriptionPlaceholder": "Anything responders should know before they arrive…",
+      "location": "Location",
+      "useMyLocation": "Use my current location",
+      "locatingYou": "Locating you…",
+      "locationCaptured": "Location captured",
+      "locationDenied": "Location permission denied — enable it in Settings to continue.",
+      "locationRequired": "Capture your location before sending the alert.",
+      "submit": "Send alert",
+      "submitAlert": "Send alert",
+      "submitting": "Sending…",
+      "successTitle": "Alert sent",
+      "alertSent": "Alert sent",
+      "successBody": "Dispatch has been notified. Track its status under My Reports.",
+      "submittedToDispatch": "Report #{{id}} has been submitted to dispatch.",
+      "done": "Done",
+      "viewReport": "View report",
+      "back": "Back"
+    },
+    "incidents": {
+      "title": "My Reports",
+      "empty": "You haven't reported anything yet.",
+      "cancel": "Cancel report",
+      "cancelling": "Cancelling…",
+      "cancelConfirmTitle": "Cancel this report?",
+      "cancelConfirmBody": "This can't be undone."
+    },
+    "incidentDetail": {
+      "title": "Report details",
+      "category": "Category",
+      "status": "Status",
+      "priority": "AI priority",
+      "injured": "People injured",
+      "reportedAt": "Reported",
+      "address": "Location",
+      "noAddress": "No address on file — GPS pin only"
+    }
+  },
+  "responder": {
+    "shift": {
+      "title": "Shift",
+      "notOnShift": "You're off shift",
+      "notOnShiftBody": "Start a shift on one of your facility's units to start receiving missions.",
+      "onShiftAs": "On shift as {{role}}",
+      "unit": "Unit",
+      "startedAt": "Started",
+      "selectUnit": "Select a unit",
+      "startShift": "Start shift (as lead)",
+      "joinShift": "Join shift (as crew)",
+      "leaveShift": "Leave shift",
+      "endShift": "End shift for everyone",
+      "leaveConfirm": "Leave this shift?",
+      "endConfirm": "End the shift for the whole crew?",
+      "locationWatching": "Sharing live location with dispatch",
+      "locationDenied": "Location permission denied — dispatch can't see this unit move.",
+      "locationError": "Couldn't send location update",
+      "yourCrew": "Your crew"
+    },
+    "missions": {
+      "title": "Missions",
+      "empty": "No missions right now.",
+      "offered": "Offered",
+      "accept": "Accept",
+      "reject": "Reject",
+      "rejecting": "Rejecting…",
+      "rejectReasonPlaceholder": "Reason for rejecting",
+      "markEnRoute": "Mark en route",
+      "markArrived": "Mark arrived",
+      "incident": "Incident #{{id}}",
+      "unit": "Unit",
+      "participants": "Crew",
+      "pastTitle": "Past missions"
+    },
+    "missionMap": {
+      "driving": "Driving",
+      "straight": "Straight",
+      "noUnitLocation": "No unit location yet",
+      "fromStation": "From station"
+    }
+  },
+  "account": {
+    "title": "Account",
+    "editProfile": "Edit",
+    "role": "Role",
+    "facility": "Facility",
+    "email": "Email",
+    "verified": "Verified",
+    "unverified": "Unverified",
+    "sendVerificationEmail": "Resend verification email",
+    "sendingVerification": "Sending…",
+    "verificationSent": "Verification email sent.",
+    "language": "Language",
+    "saveChanges": "Save changes",
+    "changePassword": "Change password",
+    "hidePasswordSettings": "Hide password settings",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new password",
+    "passwordsDontMatch": "Passwords don't match",
+    "passwordUpdated": "Password updated.",
+    "updating": "Updating…",
+    "googleOnlyNotice": "You signed up with Google, so there's no password to manage here.",
+    "legal": "About & Legal",
+    "aboutLink": "About NAJDA",
+    "privacyLink": "Privacy Policy",
+    "termsLink": "Terms & Conditions",
+    "supportLink": "Support",
+    "logout": "Log out",
+    "logoutConfirm": "Log out of NAJDA?",
+    "contact": "Contact information",
+    "emailChange": {
+      "change": "Change",
+      "cancel": "Cancel",
+      "newEmailPlaceholder": "New email address",
+      "sendLink": "Send confirmation link",
+      "confirmationSentBefore": "We sent a confirmation link to",
+      "confirmationSentAfter": "Click it to finish changing your email -- this updates automatically once you do.",
+      "emailAlreadyInUse": "An account already exists with this email."
+    },
+    "phoneChange": {
+      "label": "Phone",
+      "change": "Change",
+      "cancel": "Cancel",
+      "phonePlaceholder": "e.g. +201012345678",
+      "save": "Save",
+      "verifyNumber": "Verify this number",
+      "sendCode": "Send code",
+      "sendingCode": "Sending…",
+      "codePlaceholder": "6-digit code",
+      "resendCode": "Resend code",
+      "codeError": "That code didn't work -- check it and try again.",
+      "samePhoneError": "New phone number must be different from your current verified phone number.",
+      "confirmChangeMessage": "You're about to update your phone number to {{phone}}. You'll need to verify it again before it's active.",
+      "confirmChange": "Confirm change",
+      "goBack": "Go back"
+    },
+    "myReports": "My Reports",
+    "theme": {
+      "label": "Theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
+  },
+  "about": {
+    "label": "About",
+    "title": "Why NAJDA exists",
+    "description": "NAJDA simulates an emergency dispatch network end to end — not a real emergency service, and not connected to one.",
+    "sectionTitle": "The problem we set out to model",
+    "sectionDescription": "Real dispatch systems coordinate many independent actors — citizens, dispatchers, ambulance crews, police, firefighters, and hospitals — all working off the same incident, but each needing a different slice of it. We wanted to build that coordination for real, not fake it with a single flat dashboard.",
+    "sectionTitle2": "What's actually simulated",
+    "sectionDescription2": "Every workflow in NAJDA runs against a real backend: shift management ties a vehicle's availability to whether a crew is actually on duty for it, AI-assisted priority scoring is advisory only, and every status change is written to a persistent incident record. What isn't real is the emergency itself — nothing here dispatches an actual ambulance."
+  },
+  "support": {
+    "title": "Support",
+    "description": "Have a question or found a problem? Send us a message.",
+    "fullname": "Full name",
+    "email": "Email address",
+    "message": "Message",
+    "send": "Send message",
+    "sending": "Sending…",
+    "success": "Thanks — your message has been sent.",
+    "error": "Couldn't send your message — please try again."
+  },
+  "legal": {
+    "terms": {
+      "eyebrow": "Legal",
+      "title": "Terms & Conditions",
+      "simulationTitle": "This is a simulation",
+      "simulationBody": "NAJDA is a simulation platform and is not a real emergency service. It is not affiliated with, monitored by, or connected in any way to any government emergency response system, hospital network, or law enforcement agency. Submitting a report through this platform does not dispatch a real ambulance, fire truck, or police unit. If you are experiencing a real emergency, contact your local emergency number directly.",
+      "acceptableUseTitle": "Acceptable use",
+      "acceptableUseBody": "By creating an account, you agree to use this platform only for its intended purpose — testing and demonstrating the simulated dispatch workflow. Submitting false reports intended to disrupt testing, impersonating another person, or attempting to access accounts or data you're not authorized to view is not permitted.",
+      "accountsTitle": "Accounts",
+      "accountsBody": "Employee and responder accounts (Dispatcher, Ambulance Crew, Police, Firefighter, First Responder, Hospital Staff, Admin) are created and managed by system administrators. Citizen accounts are self-registered. You're responsible for keeping your credentials secure.",
+      "applicationsTitle": "First Responder applications",
+      "applicationsBody": "Submitting an application to become a First Responder does not guarantee approval. Applications are reviewed manually by an administrator, and any documents submitted are used solely to evaluate the application.",
+      "warrantyTitle": "No warranty",
+      "warrantyBody": "This platform is provided as-is, without warranty of availability, accuracy, or fitness for any particular purpose.",
+      "contactTitle": "Contact",
+      "contactBody": "Questions can be sent through the Support page."
+    },
+    "privacy": {
+      "eyebrow": "Legal",
+      "title": "Privacy Policy",
+      "subtitle": "This page explains what data we collect and how it's used.",
+      "collectTitle": "What we collect",
+      "accountInfo": "Account information — name, email, phone number, address, and gender, provided at registration.",
+      "locationData": "Location data — GPS coordinates or a manually placed pin, submitted when reporting an incident, and live unit positions for staff/responder accounts.",
+      "mediaData": "Media — photos, video, or audio voluntarily attached to an incident report, and documents attached to a First Responder application.",
+      "usageData": "Usage data — chat messages, mission history, and shift records tied to an incident or account.",
+      "usedTitle": "How it's used",
+      "usedBody1": "Data is used exclusively to operate the simulated dispatch workflow: routing incident reports, coordinating responder assignments, and displaying account/incident history.",
+      "usedBody2": "Incident text and category may be sent to a third-party AI service to generate a priority suggestion — this is advisory only and never made without human review.",
+      "storedTitle": "Where it's stored",
+      "storedBody": "Account credentials are managed by Firebase Authentication. Application data is stored in a Postgres database. Uploaded media lives in a private storage bucket, accessible only via short-lived, authorization-checked links generated by our backend — never a public URL.",
+      "thirdPartiesTitle": "Third parties",
+      "thirdPartiesBody": "Map tiles and driving directions are computed by third-party mapping services. Neither receives account information — only the coordinates needed to render a map or a route.",
+      "dontTitle": "What we don't do",
+      "dontBody": "We do not sell, rent, or share your data with advertisers. This project carries no advertising and no analytics beyond what's needed to operate the platform itself.",
+      "contactTitle": "Contact",
+      "contactBody": "Questions about this policy or data-deletion requests can be sent through the Support page."
+    }
+  },
+  "enums": {
+    "gender": {
+      "MALE": "Male",
+      "FEMALE": "Female"
+    },
+    "role": {
+      "CITIZEN": "Citizen",
+      "DISPATCHER": "Dispatcher",
+      "AMBULANCE_CREW": "Ambulance Crew",
+      "POLICE": "Police",
+      "FIREFIGHTER": "Firefighter",
+      "FIRST_RESPONDER": "First Responder",
+      "HOSPITAL_STAFF": "Hospital Staff",
+      "ADMIN": "Admin",
+      "SUPER_ADMIN": "Super Admin"
+    },
+    "roleInShift": {
+      "LEAD": "Lead",
+      "CREW": "Crew"
+    },
+    "category": {
+      "MEDICAL": "Medical",
+      "FIRE": "Fire",
+      "POLICE": "Police"
+    },
+    "unitType": {
+      "AMBULANCE": "Ambulance",
+      "FIRE_TRUCK": "Fire Truck",
+      "POLICE_CAR": "Police Car",
+      "FIRST_RESPONDER": "First Responder"
+    },
+    "incidentStatus": {
+      "NEW": "New",
+      "AI_PROCESSED": "AI Processed",
+      "DISPATCHER_REVIEW": "Dispatcher Review",
+      "ASSIGNED": "Assigned",
+      "IN_PROGRESS": "In Progress",
+      "RESOLVED": "Resolved",
+      "CANCELLED": "Cancelled"
+    },
+    "aiPriority": {
+      "CRITICAL": "Critical",
+      "HIGH": "High",
+      "MEDIUM": "Medium",
+      "LOW": "Low"
+    },
+    "missionStatus": {
+      "OFFERED": "Offered",
+      "ACCEPTED": "Accepted",
+      "REJECTED": "Rejected",
+      "EN_ROUTE": "En Route",
+      "ARRIVED": "Arrived",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+    }
+  }
+}

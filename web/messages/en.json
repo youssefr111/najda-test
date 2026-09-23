@@ -1,0 +1,725 @@
+{
+  "common": {
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "search": "Search…",
+    "unknown": "Unknown",
+    "refresh": "Refresh",
+    "all": "All"
+  },
+  "nav": {
+    "home": "Home",
+    "emergency": "Emergency",
+    "dispatch": "Dispatch",
+    "responder": "Responder",
+    "hospital": "Hospital",
+    "admin": "Admin",
+    "account": "Account",
+    "logout": "Log out",
+    "login": "Login",
+    "register": "Register"
+  },
+  "theme": {
+    "label": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "language": {
+    "label": "Language",
+    "english": "English",
+    "arabic": "العربية"
+  },
+  "enums": {
+    "gender": { "label": "Gender", "MALE": "Male", "FEMALE": "Female" },
+    "role": { "label": "Role", "CITIZEN": "Citizen", "DISPATCHER": "Dispatcher", "AMBULANCE_CREW": "Ambulance Crew", "POLICE": "Police", "FIREFIGHTER": "Firefighter", "FIRST_RESPONDER": "First Responder", "HOSPITAL_STAFF": "Hospital Staff", "ADMIN": "Admin", "SUPER_ADMIN": "Super Admin" },
+    "shiftRole": { "LEAD": "Lead", "CREW": "Crew" },
+    "category": { "MEDICAL": "Medical", "FIRE": "Fire", "POLICE": "Police" },
+    "unitType": { "AMBULANCE": "Ambulance", "FIRE_TRUCK": "Fire Truck", "POLICE_CAR": "Police Car", "FIRST_RESPONDER": "First Responder" },
+    "unitStatus": { "AVAILABLE": "Available", "BUSY": "Busy", "OFFLINE": "Offline", "MAINTENANCE": "Maintenance" },
+    "facilityType": { "HOSPITAL": "Hospital", "FIRE_STATION": "Fire Station", "POLICE_STATION": "Police Station", "AMBULANCE_STATION": "Ambulance Station" },
+    "incidentStatus": { "NEW": "New", "AI_PROCESSED": "AI Processed", "DISPATCHER_REVIEW": "Dispatcher Review", "ASSIGNED": "Assigned", "IN_PROGRESS": "In Progress", "RESOLVED": "Resolved", "CANCELLED": "Cancelled" },
+    "missionStatus": { "OFFERED": "Offered", "ACCEPTED": "Accepted", "EN_ROUTE": "En Route", "ARRIVED": "Arrived", "COMPLETED": "Completed", "REJECTED": "Rejected", "CANCELLED": "Cancelled" },
+    "transferStatus": { "SELECTED": "Selected", "EN_ROUTE": "En Route", "ARRIVED": "Arrived" },
+    "consciousnessLevel": { "ALERT": "Alert", "VERBAL": "Responds to Voice", "PAIN": "Responds to Pain", "UNRESPONSIVE": "Unresponsive" }
+  },
+  "footer": {
+    "about": "About Us",
+    "privacy": "Privacy Policy",
+    "terms": "Terms & Conditions",
+    "support": "Contact Support"
+  },
+  "auth": {
+    "login": {
+      "signInSubtitle": "Sign in to your account",
+      "resetSubtitle": "Reset your password",
+      "continueWithGoogle": "Continue with Google",
+      "or": "or",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "forgotPassword": "Forgot password?",
+      "signingIn": "Signing in…",
+      "signIn": "Sign In",
+      "mfaPrompt": "Enter the 6-digit code sent to your phone.",
+      "verificationCode": "Verification code",
+      "verifying": "Verifying…",
+      "verify": "Verify",
+      "mfaCodeInvalid": "That verification code didn't work. Please try again.",
+      "resetSentBefore": "If an account exists for",
+      "resetSentAfter": "a reset link is on its way.",
+      "sendResetLink": "Send reset link",
+      "sending": "Sending…",
+      "backToSignIn": "← Back to sign in",
+      "newCitizen": "New citizen?",
+      "createAccount": "Create an account"
+    },
+    "register": {
+      "subtitle": "Create a citizen account",
+      "continueWithGoogle": "Continue with Google",
+      "or": "or",
+      "emailLabel": "Email",
+      "agreeToTerms": "I agree to the <terms>Terms & Conditions</terms> and <privacy>Privacy Policy</privacy>.",
+      "agreeRequired": "Please agree to the Terms & Conditions and Privacy Policy to continue.",
+      "sendingLink": "Sending link…",
+      "continueWithEmail": "Continue with email",
+      "alreadyHaveAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "checkEmailTitle": "Check your email",
+      "checkEmailBody": "We sent a sign-in link to <strong>{email}</strong>. Open it on this device to continue creating your account.",
+      "checkingEmail": "Checking availability…",
+      "emailAvailable": "Email is available",
+      "emailAlreadyRegistered": "This email is already registered. Try logging in instead."
+    },
+    "completeSignup": {
+      "confirming": "Confirming your email…",
+      "confirmEmailPrompt": "Confirm the email address you used to request this link.",
+      "emailPlaceholder": "you@example.com",
+      "continue": "Continue",
+      "invalidLink": "This link is invalid or has expired. Please request a new one from the registration page."
+    },
+    "completeProfile": {
+      "title": "Complete your profile",
+      "subtitle": "A few required details before you can use NAJDA.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "address": "Address",
+      "male": "Male",
+      "female": "Female",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "passwordInvalid": "Password doesn't meet the requirements below.",
+      "passwordMismatch": "Passwords don't match.",
+      "saving": "Saving…",
+      "finishSetup": "Finish setup"
+    },
+    "phone": {
+      "label": "Phone number",
+      "invalid": "Enter a valid Egyptian mobile number (e.g. 1012345678)."
+    },
+    "passwordRules": {
+      "length": "At least 8 characters",
+      "uppercase": "One uppercase letter",
+      "lowercase": "One lowercase letter",
+      "number": "One number"
+    },
+    "roleProtected": {
+      "unavailableTitle": "Couldn't verify your account right now.",
+      "unavailableBody": "The backend might be offline — this will resolve once it's back up."
+    },
+    "errors": {
+      "invalidCredential": "Incorrect email or password.",
+      "tooManyRequests": "Too many attempts. Try again in a few minutes.",
+      "userDisabled": "This account has been disabled. Contact an administrator.",
+      "emailAlreadyInUse": "An account already exists with this email.",
+      "weakPassword": "Password should be at least 6 characters.",
+      "invalidPhoneNumber": "That phone number doesn't look valid. Include the country code, e.g. +20...",
+      "missingPhoneNumber": "Enter a phone number first.",
+      "invalidVerificationCode": "That code is incorrect.",
+      "missingVerificationCode": "Enter the code you were sent.",
+      "codeExpired": "That code expired — send a new one.",
+      "credentialAlreadyInUse": "This phone number is already linked to a different account.",
+      "providerAlreadyLinked": "This account already has a verified phone number.",
+      "captchaCheckFailed": "reCAPTCHA check failed. Refresh the page and try again.",
+      "invalidAppCredential": "reCAPTCHA verification failed for this app/domain.",
+      "quotaExceeded": "SMS quota exceeded for this project right now.",
+      "networkRequestFailed": "Network error — check your connection and try again.",
+      "generic": "Something went wrong. Please try again.",
+      "sessionFailed": "Account created, but sign-in failed. Try logging in.",
+      "notSignedIn": "Not signed in."
+    }
+  },
+  "firebaseSync": {
+    "title": "Firebase / Database Sync",
+    "description": "Find accounts that exist in Firebase but not the database, or vice versa.",
+    "check": "Check for mismatches",
+    "checking": "Checking…",
+    "firebaseOnlyLabel": "In Firebase only ({count})",
+    "postgresOnlyLabel": "In database only ({count})",
+    "noneFound": "None found.",
+    "sync": "Create profile",
+    "delete": "Delete",
+    "error": "Something went wrong."
+  },
+  "account": {
+    "title": "Account Information",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "address": "Address",
+    "email": "Email",
+    "phone": "Phone",
+    "verified": "Verified",
+    "unverified": "Unverified",
+    "sendVerificationEmail": "Send verification email",
+    "sendingVerification": "Sending…",
+    "verificationSent": "Verification email sent — check your inbox.",
+    "changeEmail": "Change email",
+    "sendLink": "Send link",
+    "confirmationSentBefore": "Confirmation link sent to",
+    "confirmationSentAfter": "Your email won't change until you click it.",
+    "waitingForConfirmation": "Waiting for you to click the confirmation link — this updates automatically once you do.",
+    "emailPhoneNote": "Email and phone are changed separately — see the buttons on the view above.",
+    "saveChanges": "Save Changes",
+    "saving": "Saving…",
+    "changePassword": "Change Password",
+    "hidePasswordSettings": "Hide Password Settings",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new password",
+    "passwordsDontMatch": "New passwords don't match.",
+    "passwordUpdated": "Password updated.",
+    "updating": "Updating…",
+    "googleOnlyNotice": "You signed in with Google — there's no password to change here.",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "phoneChange": {
+      "label": "Phone",
+      "change": "Change phone",
+      "save": "Save",
+      "verifyNumber": "Verify this number",
+      "sendCode": "Send code",
+      "sendingCode": "Sending…",
+      "codePlaceholder": "6-digit code",
+      "resendCode": "Resend code",
+      "codeError": "That code didn't work. Please try again.",
+      "phonePlaceholder": "+20 1XX XXX XXXX",
+      "samePhoneError": "New phone number must be different from your current verified phone number.",
+      "confirmChangeMessage": "You're about to update your phone number to [{phone}]. You'll need to verify it again before it's active.",
+      "confirmChange": "Confirm change",
+      "goBack": "Go back"
+    }
+  },
+  "createEmployee": {
+    "title": "Create Employee Account",
+    "accountCreated": "Account created for {name}.",
+    "notEmailed": "This doesn't get emailed automatically — share it with them so they can set their own password.",
+    "done": "Done",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "facilityLabel": "Facility ({type})",
+    "optional": " — optional",
+    "selectFacility": "Select a facility…",
+    "unassigned": "Unassigned",
+    "unregistered": " -- unregistered",
+    "createError": "Couldn't create account.",
+    "creating": "Creating…",
+    "createAccount": "Create account"
+  },
+  "incidentDetail": {
+    "incidentLabel": "Incident #{id}",
+    "addressLabel": "Address",
+    "messageLabel": "Citizen's message",
+    "noMessage": "No message.",
+    "evidenceLabel": "Evidence ({count})",
+    "assignUnitLabel": "Assign unit",
+    "missionsLabel": "Missions",
+    "chatLabel": "Chat",
+    "retryAi": "Retry AI",
+    "retryingAi": "Retrying…",
+    "possibleDuplicate": "Possibly a duplicate of #{id} ({confidence}% confidence)",
+    "notDuplicate": "Not a duplicate",
+    "markAsDuplicate": "Mark as duplicate…",
+    "markComplete": "Mark Incident Complete",
+    "completeWarning": "Force-completes every unit still working this incident. Confirm?",
+    "completeError": "Couldn't complete.",
+    "deleteIncident": "Delete incident",
+    "deleteWarning": "Permanently deletes this incident and every mission, chat message, and hospital transfer tied to it. Cannot be undone.",
+    "confirmDelete": "Confirm delete",
+    "deleting": "Deleting…",
+    "deleteError": "Couldn't delete.",
+    "selectPrompt": "Select an incident to view details.",
+    "noLongerInView": "This incident is no longer in view"
+  },
+  "allIncidents": {
+    "searchPlaceholder": "Search incidents...",
+    "allStatuses": "All statuses",
+    "noMatch": "No incidents match.",
+    "selectPrompt": "Select an incident."
+  },
+  "legal": {
+    "terms": {
+      "eyebrow": "Legal",
+      "title": "Terms & Conditions",
+      "simulationTitle": "This is a simulation",
+      "simulationBody": "NAJDA is a simulation platform and is not a real emergency service. It is not affiliated with, monitored by, or connected in any way to any government emergency response system, hospital network, or law enforcement agency. Submitting a report through this platform does not dispatch a real ambulance, fire truck, or police unit. If you are experiencing a real emergency, contact your local emergency number directly.",
+      "acceptableUseTitle": "Acceptable use",
+      "acceptableUseBody": "By creating an account, you agree to use this platform only for its intended purpose — testing and demonstrating the simulated dispatch workflow. Submitting false reports intended to disrupt testing, impersonating another person, or attempting to access accounts or data you're not authorized to view is not permitted.",
+      "accountsTitle": "Accounts",
+      "accountsBody": "Employee and responder accounts (Dispatcher, Ambulance Crew, Police, Firefighter, First Responder, Hospital Staff, Admin) are created and managed by system administrators. Citizen accounts are self-registered. You're responsible for keeping your credentials secure.",
+      "applicationsTitle": "First Responder applications",
+      "applicationsBody": "Submitting an application to become a First Responder does not guarantee approval. Applications are reviewed manually by an administrator, and any documents submitted are used solely to evaluate the application.",
+      "warrantyTitle": "No warranty",
+      "warrantyBody": "This platform is provided as-is, without warranty of availability, accuracy, or fitness for any particular purpose.",
+      "contactTitle": "Contact",
+      "contactBody": "Questions can be sent through the <support>Support</support> page."
+    },
+    "privacy": {
+      "eyebrow": "Legal",
+      "title": "Privacy Policy",
+      "subtitle": "This page explains what data we collect and how it's used.",
+      "collectTitle": "What we collect",
+      "accountInfo": "Account information — name, email, phone number, address, and gender, provided at registration.",
+      "locationData": "Location data — GPS coordinates or a manually placed pin, submitted when reporting an incident, and live unit positions for staff/responder accounts.",
+      "mediaData": "Media — photos, video, or audio voluntarily attached to an incident report, and documents attached to a First Responder application.",
+      "usageData": "Usage data — chat messages, mission history, and shift records tied to an incident or account.",
+      "usedTitle": "How it's used",
+      "usedBody1": "Data is used exclusively to operate the simulated dispatch workflow: routing incident reports, coordinating responder assignments, and displaying account/incident history.",
+      "usedBody2": "Incident text and category may be sent to a third-party AI service to generate a priority suggestion — this is advisory only and never made without human review.",
+      "storedTitle": "Where it's stored",
+      "storedBody": "Account credentials are managed by Firebase Authentication. Application data is stored in a Postgres database. Uploaded media lives in a private storage bucket, accessible only via short-lived, authorization-checked links generated by our backend — never a public URL.",
+      "thirdPartiesTitle": "Third parties",
+      "thirdPartiesBody": "Map tiles and driving directions are computed by third-party mapping services. Neither receives account information — only the coordinates needed to render a map or a route.",
+      "dontTitle": "What we don't do",
+      "dontBody": "We do not sell, rent, or share your data with advertisers. This project carries no advertising and no analytics beyond what's needed to operate the platform itself.",
+      "contactTitle": "Contact",
+      "contactBody": "Questions about this policy or data-deletion requests can be sent through the <support>Support</support> page."
+    }
+  },
+  "becomeResponderPage": {
+    "citizenOnly": "This is only available to citizen accounts.",
+    "verifyFirstTitle": "Verify your account first",
+    "verifyFirstBody": "You need a verified email and phone number before applying. You can do this from your <account>Account page</account>.",
+    "pendingTitle": "Application pending",
+    "pendingBody": "Submitted {date} — an admin will review it soon.",
+    "title": "Apply to become a First Responder",
+    "subtitle": "Tell us why, and attach any relevant certifications (images, PDF, or Word documents).",
+    "rejectedNotice": "Your previous application was not accepted{reason}. You can apply again below.",
+    "motivationPlaceholder": "Why do you want to become a First Responder?",
+    "documentsLabel": "Supporting documents",
+    "documentRequired": "At least one supporting document is required to apply.",
+    "removeFile": "Remove",
+    "confirmRemove": "Remove",
+    "cancelRemove": "Cancel",
+    "submitError": "Couldn't submit.",
+    "submitting": "Submitting…",
+    "submit": "Submit application"
+  },
+  "incidentHistoryPage": {
+    "noAccess": "You don't have access to this incident, or it doesn't exist.",
+    "incidentLabel": "Incident #{id}",
+    "messageLabel": "Message",
+    "noMessage": "No message.",
+    "chatHistoryLabel": "Chat history"
+  },
+  "hospitalPage": {
+    "title": "Hospital - NAJDA",
+    "notLinked": "Your account isn't linked to a facility yet. Contact an administrator."
+  },
+  "adminTabs": {
+    "users": "Users",
+    "facilities": "Facilities",
+    "units": "Units",
+    "incidents": "Incidents",
+    "applications": "Applications"
+  },
+  "session": {
+    "missingIdToken": "Missing idToken",
+    "invalidCredential": "Invalid or expired credential",
+    "noAccountGoogle": "No account found for this Google account. Citizens can register below; staff accounts are created by an administrator.",
+    "noRoleAssigned": "This account has no role assigned yet. Contact an administrator."
+  },
+  "about": {
+    "label": "About",
+    "title": "Why NAJDA exists",
+    "description": "NAJDA simulates an emergency dispatch network end to end — not a real emergency service, and not connected to one.",
+    "sectionTitle": "The problem we set out to model",
+    "sectionDescription": "Real dispatch systems coordinate many independent actors — citizens, dispatchers, ambulance crews, police, firefighters, and hospitals — all working off the same incident, but each needing a different slice of it. We wanted to build that coordination for real, not fake it with a single flat dashboard.",
+    "sectionTitle2": "What's actually simulated",
+    "sectionDescription2": "Every workflow in NAJDA runs against a real backend: shift management ties a vehicle's availability to whether a crew is actually on duty for it, AI-assisted priority scoring is advisory only, and every status change is written to a persistent incident record. What isn't real is the emergency itself — nothing here dispatches an actual ambulance."
+  },
+  "support": {
+    "title": "Support",
+    "description": "Have a question or found a problem? Send us a message.",
+    "fullname": "Full name",
+    "Email address": "Email address",
+    "message": "Message",
+    "send": "Send message",
+    "sending": "Sending…",
+    "sent": "Sent",
+    "success": "Thanks -- your message has been sent.",
+    "error": "Couldn't send your message -- please try again."
+  },
+  "roleDashboard": {
+    "SUPER_ADMIN": "Admin Dashboard", "ADMIN": "Admin Dashboard",
+    "DISPATCHER": "Dispatch Console", "HOSPITAL_STAFF": "Hospital Dashboard",
+    "FIRST_RESPONDER": "Responder Dashboard", "AMBULANCE_CREW": "Responder Dashboard",
+    "POLICE": "Responder Dashboard", "FIREFIGHTER": "Responder Dashboard"
+  },
+  "landing": {
+    "hero": {
+      "badge": "AI-Powered Emergency Response Simulation",
+      "titleLine1": "A dispatch network,",
+      "titleLine2": "simulated end to end.",
+      "description1": "NAJDA models how a citizen's report becomes a coordinated emergency response—from dispatcher to ambulance, police, fire department, and hospital—all sharing one incident timeline.",
+      "description2": "Built as an academic simulation, the platform demonstrates workflows, communication, AI-assisted triage, and real-time synchronization found in modern emergency response systems while keeping human dispatchers in complete control of operational decisions.",
+      "callEmergency": "Call an emergency",
+      "login": "Login",
+      "exploreWorkflow": "Explore Workflow",
+      "getApp": "Get the mobile app"
+    },
+    "workflow": {
+      "eyebrow": "End-to-End Workflow",
+      "titleLine1": "One incident.",
+      "titleLine2": "Four coordinated stages.",
+      "description": "Every emergency follows the same traceable lifecycle, ensuring every participant sees the correct information at the correct moment.",
+      "step1Title": "Report", 
+      "step1Body": "A citizen submits an incident from the mobile app — location, description, and photo or video evidence.",
+      "step2Title": "Triage", 
+      "step2Body": "The AI service scores priority and flags likely duplicates. Nothing here is final until a dispatcher confirms it.",
+      "step3Title": "Dispatch", 
+      "step3Body": "A vehicle is assigned only once a crew is actively on shift for it. Responders get the mission the moment it's confirmed.",
+      "step4Title": "Resolve", 
+      "step4Body": "Hospitals get advance notice when transport is inbound. Every state change is written to the incident's event history."
+    },
+    "features": {
+      "eyebrow": "Platform Highlights",
+      "title": "Built for real-time coordination.",
+      "description": "Every component exists to demonstrate how modern emergency systems exchange information reliably, while keeping human operators in complete control.",
+      "feature1Title": "Event-driven, not request-driven", 
+      "feature1Body": "Backend services coordinate over a live event layer, so a slow hospital lookup never blocks a dispatcher assigning a unit.",
+      "feature2Title": "Live by default", 
+      "feature2Body": "WebSocket push keeps every open dashboard and app in sync with vehicle position — no dashboard is ever polling for what already happened.",
+      "feature3Title": "AI recommends, humans decide", 
+      "feature3Body": "Priority scoring, duplicate detection, and hospital ranking are all advisory. No incident is ever auto-dispatched.",
+      "feature4Title": "One incident, seven scoped views", 
+      "feature4Body": "Every actor works off the same incident record, but only ever sees the slice of it their role is permitted to."
+    },
+    "becomeResponder": {
+      "eyebrow": "Get Involved",
+      "title": "Want to help respond?",
+      "description": "Citizens can apply to become a First Responder and take part in coordinating emergency response within the simulation.",
+      "applyNow": "Apply now"
+    },
+    "roles": {
+      "eyebrow": "Access Control",
+      "titleLine1": "Nine roles.",
+      "titleLine2": "One shared incident.",
+      "description": "Every participant works from the same incident timeline while only seeing the information their responsibilities require. Role-based permissions ensure each participant interacts only with the information relevant to their operational responsibilities."
+    },
+    "appDownload": {
+      "eyebrow": "Get The App",
+      "title": "NAJDA in your pocket",
+      "description": "Report an incident, track your response, and stay connected — right from your phone.",
+      "downloadOn": "Download on the",
+      "getItOn": "GET IT ON",
+      "viewReleases": "View all releases on GitHub",
+      "note": "Available for iOS and Android. Free to download."
+    }
+  },
+  "admin":{
+    "users": {
+      "title": "User Management",
+      "subtitle": "Every account in the system, across all roles.",
+      "addEmployee": "Add Employee",
+      "totalUsers": "Total Users",
+      "staff": "Staff",
+      "citizens": "Citizens",
+      "admins": "Admins",
+      "disableAccount": "Disable account",
+      "enableAccount": "Enable account",
+      "changeRoleError": "Couldn't change role.",
+      "generatePasswordResetLink": "Generate password reset link",
+      "generatingLink": "Generating…",
+      "generateLinkError": "Couldn't generate link."
+    },
+    "facilities": {
+      "title": "Facilities",
+      "subtitle": "Hospitals, fire stations, police stations, and ambulance stations.",
+      "addFacility": "Add Facility",
+      "seed": {
+        "hospitals": "Hospitals",
+        "fire": "Fire",
+        "police": "Police",
+        "defaultMessage": "Populates facilities from OpenStreetMap.",
+        "error": "Couldn't start."
+      },
+      "backFillAddress": "Fill missing addresses",
+      "backFillDescription": "Retries reverse geocoding for any facility with no address on file (usually from a Nominatim overload during seeding).",
+      "tableView": "Table",
+      "mapView": "Map"
+    },
+    "units": {
+      "title": "Units",
+      "subtitle": "response units.",
+      "addUnit": "Add Unit",
+      "allTypes": "All types",
+      "allStatuses": "All statuses"
+    }
+  },
+  "generatedLink": {
+    "notice": "Firebase generated this link but doesn't email it — share it with the user yourself.",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "markDuplicate": {
+    "title": "Mark #{id} as duplicate",
+    "description": "Select the original incident this is a duplicate of. This incident will be cancelled.",
+    "searchPlaceholder": "Search queue…",
+    "noOpenIncidents": "No other open incidents.",
+    "error": "Couldn't mark duplicate."
+  },
+  "searchableSelect": {
+    "select": "Select…",
+    "typeToSearch": "Type to search…",
+    "none": "— None —",
+    "noMatches": "No matches."
+  },
+  "chat": {
+    "loading": "Loading chat…",
+    "noMessages": "No messages yet -- ask them what's happening.",
+    "readOnly": "This incident is closed -- chat is read-only.",
+    "placeholder": "Message the citizen…",
+    "caller": "Caller"
+  },
+  "missionList": {
+    "loading": "Loading missions…",
+    "noUnits": "No units assigned yet.",
+    "cancelPrompt": "Cancel this assignment?",
+    "cancelAssignment": "Cancel assignment",
+    "cancelError": "Couldn't cancel."
+  },
+  "unitAssignment": {
+    "all": "All",
+    "loadingUnits": "Loading units…",
+    "noUnits": "No matching units currently available.",
+    "noStation": "no station",
+    "leadLabel": "Lead: {name}",
+    "etaLabel": "~{minutes} min ({distance} km{fromStation})",
+    "fromStation": ", from station",
+    "assigning": "Assigning…",
+    "assign": "Assign",
+    "selectedNote": "Selected: {plate} -- click Assign to confirm, or select a different unit.",
+    "assignError": "Couldn't assign unit."
+  },
+  "incidentQueue": {
+    "queue": "Queue",
+    "active": "Active",
+    "searchPlaceholder": "Search incidents...",
+    "noQueue": "No incidents waiting.",
+    "noActive": "Nothing active right now."
+  },
+  "sosPanel": {
+    "title": "Emergency Hub",
+    "description": "Immediate assistance is available. Select a category or trigger the SOS below.",
+    "sosButton": "SOS",
+    "pressToCall": "Press to call emergency"
+  },
+  "myActiveIncidentPanel": {
+    "yourMessage": "Your message",
+    "injured": "Injured",
+    "updateError": "Couldn't update.",
+    "addMedia": "+ Add photo/video/audio",
+    "mediaError": "Couldn't add that file."
+  },
+  "emergencyFeed": {
+    "pastEmergencies": "Past emergencies"
+  },
+  "incidentDescription": {
+    "label": "What's happening?",
+    "placeholder": "e.g. Person collapsed near the fountain, breathing but unresponsive..."
+  },
+  "incidentTypeSelector": {
+    "title": "Incident Type",
+    "medical": "Medical",
+    "fire": "Fire",
+    "police": "Police",
+    "other": "Other"
+  },
+  "injuredCounter": {
+    "title": "Number of Injured",
+    "decrease": "Decrease",
+    "increase": "Increase"
+  },
+  "mediaAttachment": {
+    "title": "Attach Evidence (Optional)",
+    "photo": "Photo",
+    "video": "Video",
+    "audio": "Audio",
+    "micDenied": "Microphone access denied",
+    "micError": "Couldn't access microphone",
+    "removeAttachment": "Remove attachment",
+    "attachedPhoto": "Attached photo"
+  },
+  "emergencyMap": {
+    "geolocationUnsupported": "Geolocation not supported",
+    "currentCoordinates": "CURRENT COORDINATES",
+    "tapToSetLocation": "Tap anywhere on the map to set your location",
+    "useLiveLocation": "Use My Live GPS Location",
+    "resetToHeadquarters": "Reset to Headquarters",
+    "zoomIn": "Zoom In",
+    "zoomOut": "Zoom Out",
+    "acquiringGps": "ACQUIRING GPS...",
+    "gpsActive": "GPS ACTIVE",
+    "accuracyHigh": "Accuracy: High (Real-time)",
+    "connected": "Connected"
+  },
+  "emergencyConfirmation": {
+    "otherNotSupported": "\"Other\" isn't supported by the backend yet -- please choose Medical, Fire, or Police.",
+    "locationRequired": "Please set a location on the map before submitting.",
+    "locationOutsideEgypt": "The selected location appears to be outside Egypt. Please adjust the pin.",
+    "submitError": "Couldn't send the alert. Please try again.",
+    "mediaWarning": "Your alert was sent, but {failedCount} of {totalCount} attachment(s) couldn't be uploaded.",
+    "alertSent": "Alert sent",
+    "submittedToDispatch": "Incident #{id} has been submitted to dispatch.",
+    "done": "Done",
+    "submitting": "Submitting...",
+    "submitAlert": "Submit Alert"
+  },
+  "hospitalFeed": {
+    "defaultTitle": "Hospital",
+    "subtitle": "Incoming patient transfers",
+    "noIncoming": "No incoming transfers right now.",
+    "arrivedToday": "Arrived today",
+    "selectPrompt": "Select a transfer to view vitals."
+  },
+  "incomingTransferCard": {
+    "transferLabel": "Transfer #{id}",
+    "missionLabel": "Mission #{id}"
+  },
+  "incomingTransferMap": {
+    "ownCrewBadge": "This unit is based at your hospital",
+    "pickupLocation": "Pickup location",
+    "incomingUnit": "Incoming unit"
+  },
+  "vitalsPanel": {
+    "loading": "Loading vitals…",
+    "noVitals": "No vitals sent for this transfer yet.",
+    "latestVitals": "Latest vitals · {time}",
+    "heartRate": "Heart Rate",
+    "bloodPressure": "Blood Pressure",
+    "spo2": "SpO2",
+    "respiratoryRate": "Respiratory Rate",
+    "temperature": "Temperature",
+    "consciousness": "Consciousness",
+    "history": "History",
+    "historyRow": "{time} — HR {hr}, SpO2 {spo2}%"
+  },
+  "shiftStatusCard": {
+    "loading": "Loading shift status…",
+    "onDuty": "On duty -- {plate}",
+    "since": "Since {time}",
+    "live": "Live -- updated {time}",
+    "waitingGps": "Waiting for GPS…",
+    "locationDenied": "Location permission denied",
+    "locationUnsupported": "Location not supported on this device",
+    "locationError": "Couldn't update location",
+    "locationPaused": "Location sharing paused",
+    "pause": "Pause",
+    "resume": "Resume",
+    "endShift": "End Shift",
+    "leaveShift": "Leave Shift",
+    "offDuty": "Off duty",
+    "noUnitAssigned": "No unit assigned to your account yet -- contact an admin.",
+    "starting": "Starting…",
+    "startShift": "Start Shift",
+    "startShiftAs": "Start a shift as {role}",
+    "startAs": "Start as {role}",
+    "joinACrew": "Join a crew",
+    "ledBy": "led by {name}",
+    "joinAs": "Join as {role}",
+    "noUnitsAtFacility": "No units at your facility yet -- ask an admin.",
+    "startShiftError": "Couldn't start shift."
+  },
+  "myMissionsPanel": {
+    "loading": "Loading missions…",
+    "pendingRespond": "Pending -- respond now",
+    "reasonPlaceholder": "Reason",
+    "accept": "Accept",
+    "reject": "Reject",
+    "active": "Active",
+    "markEnRoute": "En Route",
+    "markArrived": "Arrived",
+    "complete": "Complete",
+    "withdrawConfirm": "Withdraw?",
+    "withdraw": "Withdraw",
+    "noMissions": "No missions right now.",
+    "withdrawError": "Couldn't withdraw."
+  },
+  "hospitalLabels": {
+    "recommended": "Recommended",
+    "yourBase": "Your base",
+    "selected": "Selected",
+    "incidentLocation": "Incident location"
+  },
+  "hospitalTransferPanel": {
+    "loading": "Loading transfer status…",
+    "selectDestination": "Select destination hospital",
+    "confirmSelection": "Confirm selection",
+    "searchPlaceholder": "Search hospitals…",
+    "noHospitalsMatch": "No hospitals match.",
+    "hospitalNamePlaceholder": "Hospital name",
+    "stillNotThere": "Still not there — enter a different destination",
+    "selectError": "Couldn't select hospital.",
+    "markEnRoute": "Mark En Route",
+    "markArrived": "Mark Arrived",
+    "heartRate": "Heart rate",
+    "bpSystolic": "BP systolic",
+    "bpDiastolic": "BP diastolic",
+    "spo2": "SpO2",
+    "respRate": "Resp. rate",
+    "temp": "Temp (°C)",
+    "consciousness": "Consciousness",
+    "notesPlaceholder": "Notes (optional)",
+    "sendVitals": "Send vitals",
+    "sendingVitals": "Sending…",
+    "vitalsError": "Couldn't send vitals -- this hospital may not be registered for live vitals.",
+    "transferComplete": "Transfer complete -- mission resolved."
+  },
+  "missionRouteMap": {
+    "driving": "Driving",
+    "straight": "Straight",
+    "yourStation": "Your station",
+    "yourUnit": "Your unit",
+    "noUnitLocation": "Your unit's location isn't available -- showing destination only",
+    "fromStation": "From station -- no live GPS"
+  },
+  "responderFeed": {
+    "missions": "Missions"
+  },
+  "crewList": {
+    "loading": "Loading crew…",
+    "yourCrew": "Your crew"
+  },
+  "pastMissionsList": {
+    "title": "Past missions"
+  },
+  "myMissionDetail": {
+    "loading": "Loading incident details…",
+    "reportedMessage": "Reported message",
+    "reportedInjured": "Reported injured: {count}"
+  },
+  "documentGrid": {
+    "remove": "Remove",
+    "delete": "Delete",
+    "confirmDelete": "Delete this document?",
+    "confirm": "Delete",
+    "cancel": "Cancel"
+  }
+}
