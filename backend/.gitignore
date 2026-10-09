@@ -1,0 +1,82 @@
+# -------------------------
+# Maven / Java
+# -------------------------
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+*.log
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+*.ipr
+*.iws
+.idea/
+*.swp
+*.swo
+*.DS_Store
+
+# -------------------------
+# Spring Boot
+# -------------------------
+/spring-boot-devtools.properties
+/spring-boot.log
+/*.pid
+
+# -------------------------
+# Eclipse / IntelliJ / VS Code
+# -------------------------
+.metadata/
+*.launch
+.settings/
+.vscode/
+
+# -------------------------
+# Lombok
+# -------------------------
+/lombok.config
+
+# -------------------------
+# OS / Misc
+# -------------------------
+Thumbs.db
+ehthumbs.db
+.DS_Store
+desktop.ini
+*.bak
+*.tmp
+*.swp
+*.swo
+
+# -------------------------
+# Secrets / Env
+# -------------------------
+*.env
+secrets/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/

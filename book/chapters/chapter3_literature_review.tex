@@ -1,0 +1,80 @@
+\chapter{Literature Review}
+\label{chap:literature_review}
+
+\section{Introduction}
+
+\section{Introduction}
+
+Emergency response systems have evolved significantly with the advancement of communication technologies, cloud computing, and artificial intelligence. Modern emergency management platforms aim to improve response time, enhance coordination between multiple agencies, and support decision-making through real-time information sharing \cite{pressman2020se,bass2022software}.
+
+This chapter reviews the concepts, technologies, and research relevant to the development of NAJDA. It also identifies limitations in existing approaches and highlights the research gap addressed by the proposed system.
+
+\section{Emergency Dispatch Systems}
+
+Emergency dispatch systems are responsible for receiving incident reports, assessing their severity, allocating emergency resources, and coordinating response teams throughout the incident lifecycle. Their primary objective is to minimize response time while ensuring that available resources are utilized efficiently.
+
+Traditional Computer-Aided Dispatch (CAD) systems are widely used by emergency organizations such as ambulance services, police departments, and fire brigades. These systems assist dispatchers in recording incidents, monitoring responder locations, assigning vehicles, and maintaining communication with field personnel. Modern dispatch systems further incorporate geographic information systems (GIS), digital mapping, and real-time tracking technologies to improve operational awareness \cite{pressman2020se,sommerville2016software}.
+
+Despite their capabilities, most production dispatch systems are designed for governmental agencies and are tightly integrated with national emergency communication infrastructures, making them unsuitable for educational implementation or academic experimentation.
+
+\section{Artificial Intelligence in Emergency Response}
+
+Artificial intelligence has become an increasingly valuable tool in emergency management by assisting operators in making informed decisions under time constraints. AI techniques have been applied to incident classification, emergency prioritization, traffic prediction, image analysis, hospital recommendation, and resource allocation \cite{xgboost,mobilenetv2}.
+
+Machine learning models can analyze historical incident data to estimate incident severity or predict emergency demand in different geographical regions. Computer vision models can assist in identifying hazards from uploaded images, while optimization algorithms can recommend hospitals based on travel distance, capacity, and operational availability.
+
+However, ethical considerations require that AI systems remain decision-support tools rather than autonomous decision-makers. Consequently, many modern emergency management systems adopt a human-in-the-loop approach, where artificial intelligence generates recommendations while trained operators retain full authority over final decisions. NAJDA follows this principle throughout its architecture.
+
+\section{Microservice Architecture}
+
+Microservice architecture has become a popular software design approach for large-scale distributed applications. Unlike monolithic systems, microservices divide application functionality into independent services that communicate through lightweight protocols or asynchronous messaging \cite{newman2021microservices,richardson2018microservices}.
+
+Each microservice is responsible for a specific business capability and can be developed, deployed, and maintained independently. This separation improves scalability, maintainability, fault isolation, and technology flexibility while enabling development teams to work concurrently on different services \cite{bass2022software,newman2021microservices}.
+
+For applications requiring real-time communication between multiple independent components, event-driven microservices provide additional advantages by reducing service coupling and supporting asynchronous processing \cite{richardson2018microservices}.
+
+The NAJDA platform adopts an event-driven microservice architecture to support modular development and efficient coordination between emergency management services.
+
+\section{Event-Driven Systems}
+
+Event-driven architecture is a software design paradigm in which system components communicate by publishing and consuming events rather than invoking each other directly. This approach improves scalability and reduces dependencies between services \cite{richardson2018microservices}.
+
+Message brokers such as RabbitMQ enable asynchronous communication between distributed services while ensuring reliable message delivery and supporting fault tolerance \cite{rabbitmq}. In emergency response systems, event-driven communication allows different system components to react independently to incident updates, mission assignments, responder status changes, and hospital availability updates without introducing unnecessary coupling.
+
+NAJDA utilizes RabbitMQ as the primary event broker for inter-service communication while employing WebSocket technology to provide real-time updates to connected users.
+
+\section{Real-Time Communication Technologies}
+
+Emergency management applications require continuous synchronization between dispatch centers and field responders. Technologies such as WebSockets provide persistent bidirectional communication channels that enable instant transmission of incident updates, responder locations, and operational status changes \cite{websocket}.
+
+Compared with traditional polling techniques, WebSockets significantly reduce communication latency and network overhead, making them suitable for applications that require live monitoring and immediate notification of critical events.
+
+Push notification services further enhance communication by delivering mission assignments and important alerts directly to mobile devices, ensuring that responders receive updates even when applications are operating in the background. NAJDA employs Firebase Cloud Messaging to implement this functionality \cite{firebase}.
+
+\section{Cloud Services and Backend Technologies}
+
+Cloud platforms provide scalable infrastructure for authentication, data storage, notification delivery, and database management. Backend services commonly rely on relational database management systems for transactional consistency while utilizing in-memory databases for caching frequently accessed information \cite{postgresql,redis}.
+
+Modern software platforms also integrate cloud authentication services to simplify identity management while improving security through features such as phone verification and multi-factor authentication \cite{firebase}.
+
+NAJDA combines PostgreSQL as its primary database, Redis for temporary live-location caching, and Firebase services for authentication, cloud messaging, and media storage to achieve a balance between scalability, performance, and implementation simplicity.
+
+\section{Related Work}
+
+Numerous research projects and commercial applications have explored emergency response management from different perspectives. Some systems emphasize geographic information systems and route optimization, while others focus on intelligent incident classification, hospital recommendation, or predictive resource allocation.
+
+Although these systems provide valuable functionality, many are designed for operational deployment within governmental organizations or address only a limited portion of the emergency response workflow. Academic projects frequently simplify emergency management to basic incident reporting applications without modeling realistic dispatch operations or coordination among multiple emergency services \cite{pressman2020se,sommerville2016software}.
+
+NAJDA differs by simulating the complete operational workflow of a dispatch center while integrating modern software engineering practices, event-driven microservices, real-time communication, and AI-assisted decision support within a single educational platform.
+
+\section{Research Gap}
+
+Existing emergency dispatch solutions generally target operational environments and therefore require specialized infrastructure, governmental integration, and restricted communication networks. Such dependencies make them unsuitable for educational use or independent academic development.
+
+On the other hand, many academic implementations oversimplify emergency management workflows and do not adequately represent dispatcher decision-making, responder coordination, shift management, or event-driven communication \cite{newman2021microservices,richardson2018microservices}.
+
+NAJDA addresses this gap by providing a realistic emergency dispatch simulation platform that demonstrates modern software architecture, artificial intelligence integration, and multi-role coordination while remaining independent of real-world emergency communication systems.
+
+\section{Chapter Summary}
+
+This chapter reviewed the technologies and research areas that form the foundation of NAJDA, including emergency dispatch systems, artificial intelligence, microservice architecture, event-driven communication, real-time technologies, and cloud services. The identified research gap demonstrates the need for an educational platform capable of realistically simulating emergency dispatch operations while showcasing modern software engineering practices. The following chapter presents the system requirements and analysis derived from these observations.

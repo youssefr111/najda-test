@@ -1,0 +1,95 @@
+@startuml usecase-iam
+left to right direction
+skinparam backgroundColor white
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam ArrowColor #8A97A8
+skinparam ActorBorderColor #1E3A5F
+skinparam ActorBackgroundColor white
+skinparam UseCaseBorderColor #2E5C8A
+skinparam UseCaseBackgroundColor white
+skinparam UseCaseFontColor #1F2937
+skinparam PackageBorderColor #1E3A5F
+skinparam PackageFontColor #1E3A5F
+skinparam PackageBackgroundColor white
+skinparam ArrowFontColor #5B6B82
+
+actor "Citizen" as Citizen
+actor "Registered User\n(any role)" as RegisteredUser
+actor "Administrator /\nSuper Admin" as Admin
+actor "Super Admin" as SuperAdmin
+
+rectangle "Identity & Access Management" {
+  usecase "Register with Google\n(profile incomplete\nuntil finished)" as UC1
+  usecase "Register with Email\n& Password" as UC2
+  usecase "Complete Profile\n(name, gender, address, phone)" as UC3
+  usecase "Verify Phone Number" as UC4
+  usecase "Verify / Change Email" as UC5
+  usecase "Log In" as UC6
+  usecase "Forgot Password\n(self-service)" as UC7
+  usecase "Change Password\n(with old password)" as UC8
+  usecase "View / Update\nOwn Profile" as UC9
+  usecase "View Own Role" as UC10
+  usecase "Apply for First\nResponder Certification" as UC11
+
+  usecase "Provision Employee\nAccount" as UC12
+  usecase "Review First Responder\nApplication" as UC13
+  usecase "Search / Filter / List Users" as UC14
+  usecase "Enable / Disable\nUser Account" as UC15
+  usecase "Override Email\nor Phone" as UC16
+  usecase "Generate Password\nReset Link" as UC17
+  usecase "Manage Roles" as UC18
+  usecase "Create Another\nSuper Admin" as UC19
+
+  usecase "Verify Firebase\nID Token" as UCsys1
+  usecase "Sync Firebase\nRole Claim" as UCsys2
+  usecase "Record Audit\nLog Entry" as UCsys3
+}
+
+Citizen --> UC1
+Citizen --> UC2
+Citizen --> UC11
+RegisteredUser --> UC3
+RegisteredUser --> UC4
+RegisteredUser --> UC5
+RegisteredUser --> UC6
+RegisteredUser --> UC7
+RegisteredUser --> UC8
+RegisteredUser --> UC9
+RegisteredUser --> UC10
+
+Admin --> UC12
+Admin --> UC13
+Admin --> UC14
+Admin --> UC15
+Admin --> UC16
+Admin --> UC17
+Admin --> UC18
+SuperAdmin --> UC19
+
+UC1 ..> UC3 : <<extend>>\n(profile incomplete)
+UC6 ..> UCsys1 : <<include>>
+UC1 ..> UCsys1 : <<include>>
+UC2 ..> UCsys1 : <<include>>
+UC12 ..> UCsys2 : <<include>>
+UC13 ..> UCsys2 : <<include>>
+UC15 ..> UCsys3 : <<include>>
+UC16 ..> UCsys3 : <<include>>
+UC12 ..> UC19 : <<extend>>\n(role = SUPER_ADMIN)
+UC8 .[#B45309].> UC1 : <<exclude>>\n(Google accounts have\nno password)
+
+note bottom of UC7
+  Sends the reset email directly.
+  Distinct from UC17, where the
+  Admin receives the link but it
+  is not sent automatically.
+end note
+
+note bottom of UC16
+  Email override: ADMIN or SUPER_ADMIN.
+  Phone override: SUPER_ADMIN only,
+  bypasses OTP re-verification, and is
+  always written to the audit log.
+end note
+
+@enduml

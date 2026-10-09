@@ -1,0 +1,5 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- This flavor may talk to a plain-http backend on your LAN. The production
+         flavor deliberately does not get this: it must use https. -->
+    <application android:usesCleartextTraffic="true" />
+</manifest>

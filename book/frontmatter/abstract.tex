@@ -1,0 +1,14 @@
+\addcontentsline{toc}{chapter}{Abstract}
+Emergency response coordination requires rapid decision-making across multiple agencies --- ambulance, fire, and police services --- under significant time pressure. Existing student and research projects in this space often either oversimplify the problem into a basic request-tracking application, or attempt to replicate real national emergency systems, introducing legal and operational constraints that make them undemonstrable in an academic setting.
+
+This project presents NAJDA (Network for AI-powered Joint Dispatch and Assistance), a simulation and decision-support platform that models intelligent emergency dispatch workflows for educational and research purposes. The system is built as an event-driven, microservice-based architecture comprising a citizen-facing mobile application, role-based responder mobile applications, a real-time dispatcher web dashboard, a hospital coordination interface, and an administrative panel. The platform combines custom-built domain services with managed cloud infrastructure --- a hosted PostgreSQL database as the relational system of record, and Firebase for authentication, file storage, and push notifications --- allowing engineering effort to be concentrated on the system's differentiating logic rather than commodity infrastructure.
+
+An artificial intelligence service assists --- but does not replace --- human decision-makers by predicting incident priority, flagging duplicate reports, and recommending optimal responder units and hospitals based on proximity, availability, and capacity. The platform demonstrates real-time communication through WebSocket-based live tracking, asynchronous service coordination through a message broker, and machine learning techniques including gradient-boosted classification and image-based hazard detection.
+
+\fillme{Once evaluation is complete, summarize the key measured outcome here -- e.g., classifier accuracy on the test set, or simulated average dispatch decision time.}
+
+This work demonstrates the feasibility of applying modern distributed systems and applied artificial intelligence techniques to a socially relevant problem domain within the scope of a Computer Engineering graduation project.
+
+\vspace{0.5cm}
+\noindent\textbf{Keywords:} Emergency Dispatch, Event-Driven Architecture, Real-Time Systems, Microservices, Machine Learning, Decision Support Systems, Cloud Infrastructure
+\clearpage

@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
+server:
+  forward-headers-strategy: native
+
+najda:
+  auth:
+    otp:
+      secret: ${OTP_HMAC_SECRET}

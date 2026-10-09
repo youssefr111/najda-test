@@ -1,0 +1,186 @@
+\chapter{Implementation}
+\label{chap:implementation}
+
+\section{Introduction}
+
+This chapter describes the implementation of the NAJDA platform based on the architectural design presented in the previous chapter. It discusses the technologies, frameworks, development environment, and implementation approach adopted for each major subsystem. The chapter also highlights how the different software components interact to provide a complete emergency dispatch simulation platform.
+
+The implementation follows the event-driven microservice architecture introduced in the previous chapter, combining modern backend frameworks, cloud services, real-time communication technologies, and artificial intelligence components to build a scalable and maintainable emergency dispatch simulation platform \cite{springboot,nextjs,flutter,fastapi}.
+
+%------------------------------------------------
+
+\section{Development Environment}
+
+The NAJDA platform was developed using modern software engineering tools and frameworks that support modular development, scalability, maintainability, and rapid application development. Open-source frameworks and managed cloud services were selected to simplify implementation while ensuring compatibility with modern software engineering practices \cite{springboot,nextjs,flutter,fastapi}.
+
+\subsection{Software Tools}
+
+\textit{Placeholder: Table listing the software development tools and versions used during implementation.}
+
+\subsection{Technology Stack}
+
+\textit{Placeholder: Technology Stack Table}
+
+%------------------------------------------------
+
+\section{Backend Implementation}
+
+The backend consists of multiple independent services responsible for handling business logic, data management, authentication, incident processing, dispatch operations, and communication between system components. Each service is implemented using Spring Boot and communicates asynchronously through RabbitMQ following an event-driven architecture \cite{springboot,rabbitmq}.
+
+\subsection{Microservice Implementation}
+
+\textit{Placeholder: Description of each implemented service.}
+
+\subsection{REST API Implementation}
+
+\textit{Placeholder: API endpoint examples and controller implementation.}
+
+\subsection{Event Processing}
+
+\textit{Placeholder: RabbitMQ publishers, consumers, and event handlers.}
+
+%------------------------------------------------
+
+\section{Database Implementation}
+
+The relational database stores all persistent operational data while maintaining consistency between the different software modules. PostgreSQL serves as the primary system of record, while Redis is used to cache frequently changing live vehicle location data to improve system responsiveness \cite{postgresql,redis}.
+
+\subsection{Database Tables}
+
+\textit{Placeholder: Important database tables.}
+
+\subsection{Relationships}
+
+\textit{Placeholder: Example database relationships.}
+
+\subsection{Migration Strategy}
+
+\textit{Placeholder: Database migration approach.}
+
+%------------------------------------------------
+
+\section{Mobile Application Implementation}
+
+The mobile application provides dedicated interfaces for citizens and emergency responders. It is developed using Flutter to support cross-platform deployment from a single codebase while maintaining consistent user experience across Android and iOS devices \cite{flutter}.
+
+\subsection{Application Structure}
+
+\textit{Placeholder: Mobile project structure.}
+
+\subsection{Citizen Features}
+
+\textit{Placeholder: Screenshots and implementation details.}
+
+\subsection{Responder Features}
+
+\textit{Placeholder: Screenshots and implementation details.}
+
+%------------------------------------------------
+
+\section{Web Application Implementation}
+
+The web application provides interfaces for dispatchers, hospital staff, and administrators. It is implemented using Next.js, enabling server-side rendering, efficient routing, and modern React-based development practices \cite{nextjs}.
+
+\subsection{Dispatcher Dashboard}
+
+\textit{Placeholder: Dashboard screenshots and explanation.}
+
+\subsection{Hospital Dashboard}
+
+\textit{Placeholder: Screenshots and explanation.}
+
+\subsection{Administration Dashboard}
+
+\textit{Placeholder: Screenshots and explanation.}
+
+%------------------------------------------------
+
+\section{Artificial Intelligence Implementation}
+
+The AI subsystem provides intelligent recommendations that assist dispatchers while maintaining human control over operational decisions. Separate machine learning models are used for priority prediction and hazard classification, while deterministic algorithms are employed where explainability and predictable behaviour are preferred \cite{xgboost,mobilenetv2}.
+
+\subsection{Priority Prediction}
+
+\textit{Placeholder: XGBoost implementation.}
+
+\subsection{Duplicate Detection}
+
+\textit{Placeholder: Rule-based duplicate detection implementation.}
+
+\subsection{Hospital Recommendation}
+
+\textit{Placeholder: Weighted scoring algorithm.}
+
+\subsection{Hazard Classification}
+
+\textit{Placeholder: MobileNetV2 implementation.}
+
+%------------------------------------------------
+
+\section{Cloud Services Integration}
+
+NAJDA integrates several Firebase cloud services to simplify authentication, notification delivery, and media storage. Firebase provides managed cloud infrastructure that reduces implementation complexity while supporting secure authentication and reliable mobile communication \cite{firebase}.
+
+\subsection{Authentication}
+
+\textit{Placeholder: Firebase Authentication implementation.}
+
+\subsection{Push Notifications}
+
+\textit{Placeholder: Firebase Cloud Messaging implementation.}
+
+\subsection{File Storage}
+
+\textit{Placeholder: Firebase Storage implementation.}
+
+%------------------------------------------------
+
+\section{Caching Implementation}
+
+Redis is employed as an in-memory cache for storing live GPS locations of emergency vehicles. Using Redis reduces database load and enables fast retrieval of frequently changing location information required for dispatcher dashboards and responder tracking \cite{redis}.
+
+\textit{Placeholder: Redis implementation for live GPS data.}
+
+%------------------------------------------------
+
+\section{Security Implementation}
+
+NAJDA employs multiple security mechanisms to protect user identities, restrict access to authorized functionality, and secure communication between client applications and backend services. Authentication is handled using Firebase Authentication, while authorization is enforced through role-based access control implemented within the backend services \cite{firebase}.
+
+\subsection{Authentication}
+
+\textit{Placeholder: Firebase Authentication implementation using Phone OTP, Firebase ID Tokens, and backend token verification through the Firebase Admin SDK.}
+
+\subsection{Authorization}
+
+\textit{Placeholder: Role-Based Access Control (RBAC) implementation using authenticated Firebase users and application-specific roles stored in PostgreSQL.}
+
+\subsection{Secure Communication}
+
+\textit{Placeholder: HTTPS communication, authenticated API requests, and secure WebSocket connections.}
+
+%------------------------------------------------
+
+\section{Deployment}
+
+The NAJDA platform is designed for deployment using managed cloud services and independently deployable backend components. This deployment approach supports scalability, simplified maintenance, and independent service updates while leveraging managed infrastructure for authentication, notifications, and data storage \cite{firebase,postgresql}.
+
+\subsection{Production Environment}
+
+\textit{Placeholder: Hosting architecture.}
+
+\subsection{Deployment Pipeline}
+
+\textit{Placeholder: Deployment process.}
+
+%------------------------------------------------
+
+\section{Challenges Encountered}
+
+\textit{Placeholder: Technical challenges faced during implementation and how they were resolved.}
+
+%------------------------------------------------
+
+\section{Chapter Summary}
+
+This chapter presented the implementation of the NAJDA platform, including the backend services, mobile and web applications, database, artificial intelligence subsystem, cloud services, security mechanisms, and deployment strategy. The following chapter evaluates the implemented system through testing and performance analysis.

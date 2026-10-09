@@ -1,0 +1,53 @@
+@startuml sequence-citizen-google
+skinparam backgroundColor white
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam ArrowColor #1E3A5F
+skinparam SequenceLifeLineBorderColor #8A97A8
+skinparam SequenceLifeLineBackgroundColor white
+skinparam ParticipantBorderColor #2E5C8A
+skinparam ParticipantBackgroundColor #EAF2FB
+skinparam ParticipantFontColor #1F2937
+skinparam SequenceArrowFontColor #1F2937
+skinparam NoteBackgroundColor #F4F6F8
+skinparam NoteBorderColor #8A97A8
+
+actor "Citizen" as C
+participant "Mobile App" as App
+participant "Firebase Auth" as FB
+participant "NAJDA Backend" as BE
+database "PostgreSQL" as DB
+
+C -> App : Tap "Sign in with Google"
+App -> FB : Google sign-in
+FB --> App : Firebase ID token\n(name, email from Google)
+App -> BE : POST /api/auth/register/citizen?provider=google\n(Bearer token)
+BE -> FB : verifyIdToken(token)
+FB --> BE : decoded token (uid, email)
+BE -> DB : findByFirebaseUid(uid) -> not found
+BE -> DB : save new User\n(role=CITIZEN, phone/address/gender empty)
+note right of DB
+  profileCompleted = false
+  (address, gender, phone all
+  required and still missing)
+end note
+BE -> FB : set custom claim role=CITIZEN
+BE --> App : 201 Created (profileCompleted: false)
+App -> C : Show "Complete Your Profile" form
+
+== Later, still in the same session ==
+C -> App : Submit first/last name,\ngender, address, phone
+App -> BE : PATCH /api/users/{id}/profile\n(name, gender, address)
+BE -> DB : update User
+App -> BE : PATCH /api/users/me/phone\n(phone)
+BE -> DB : update User\n(phone set, phoneVerified=false)
+note right of DB
+  profileCompleted re-evaluated;\n
+  now true once all fields present.
+  Phone remains unverified until
+  the citizen verifies it later
+  (see sequence-phone-verification).
+end note
+BE --> App : 200 OK (profileCompleted: true)
+
+@enduml

@@ -1,0 +1,99 @@
+@startuml class-diagram
+skinparam backgroundColor white
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam ArrowColor #8A97A8
+skinparam ClassBorderColor #2E5C8A
+skinparam ClassBackgroundColor white
+skinparam ClassHeaderBackgroundColor #1E3A5F
+skinparam ClassFontColor #1F2937
+skinparam ClassAttributeFontColor #1F2937
+skinparam ClassStereotypeFontColor #5B6B82
+skinparam NoteBackgroundColor #F4F6F8
+skinparam NoteBorderColor #8A97A8
+
+class User implements UserDetails {
+  - id : Long
+  - firebaseUid : String
+  - firstName, lastName : String
+  - email : String
+  - phone : String
+  - phoneVerified : boolean
+  - address : String
+  - role : Role
+  - gender : Gender
+  - profileCompleted : boolean
+  - enabled : boolean
+  - createdAt, updatedAt, deletedAt : DateTime
+  --
+  + getAuthorities()
+  + isEnabled()
+  + getPassword() : null
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+class Role {
+  - roleId : Integer
+  - roleName : String
+  - users : Set<User>
+}
+
+class AuditLog {
+  - id : Long
+  - actorUserId : Long
+  - action : String
+  - targetUserId : Long
+  - details : String
+  - createdAt : DateTime
+}
+
+class AuthServiceImpl <<service>> {
+  + registerCitizen(uid, provider, request)
+  + registerEmployee(request)
+}
+
+class UserServiceImpl <<service>> {
+  + getAllUsers(role, enabled, search, pageable)
+  + updateProfile(userId, request)
+  + syncVerifiedEmail(userId, email)
+  + setUnverifiedPhone(userId, phone)
+  + syncVerifiedPhone(userId, phone)
+  + adminOverrideEmail(userId, email)
+  + adminOverridePhone(userId, phone)
+  + resendPasswordReset(userId)
+  + disableUser(userId) / enableUser(userId)
+}
+
+class RoleServiceImpl <<service>> {
+  + getAllRoles() / getRoleById()
+  + getUserRole() / updateUserRole()
+  + addRole()
+}
+
+class FirebaseClaimsService <<service>> {
+  + syncRoleClaim(uid, roleName)
+}
+
+User "*" --> "1" Role
+User ..> Gender : uses
+AuditLog ..> User : actor / target (by id)
+AuthServiceImpl ..> User : creates
+AuthServiceImpl ..> FirebaseClaimsService : uses
+UserServiceImpl ..> User : manages
+UserServiceImpl ..> FirebaseClaimsService : uses
+UserServiceImpl ..> AuditLog : writes\n(phone override only)
+RoleServiceImpl ..> Role : manages
+
+note bottom of User
+  password is never stored here --
+  Firebase Auth is the sole credential
+  store (password, Google, or phone-OTP).
+  emailVerified is not duplicated in
+  Postgres; only phoneVerified is.
+end note
+
+@enduml

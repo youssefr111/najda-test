@@ -1,0 +1,60 @@
+# -------------------------
+# OS
+# -------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# -------------------------
+# Editors
+# -------------------------
+.vscode/
+.idea/
+
+# Vim
+*.swp
+*.swo
+
+# -------------------------
+# Environment / Secrets
+# -------------------------
+.env
+.env.*
+!.env.example
+secrets/
+
+# -------------------------
+# Logs
+# -------------------------
+*.log
+
+# -------------------------
+# Temporary files
+# -------------------------
+*.tmp
+*.bak
+
+# -------------------------
+# Archives
+# -------------------------
+*.zip
+*.tar
+*.gz
+*.rar
+
+# -------------------------
+# Flutter mobile
+# -------------------------
+/mobile/.dart_tool/
+/mobile/build/
+/mobile/.flutter-plugins*
+/mobile/lib/l10n/generated/
+/mobile/android/key.properties
+/mobile/android/local.properties
+/mobile/android/.gradle/
+/mobile/android/app/*.jks
+/mobile/env/.env.local
+/mobile/env/.env.test
+/mobile/env/.env.production
+*.jks
+*.keystore

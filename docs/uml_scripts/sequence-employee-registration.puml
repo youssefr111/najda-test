@@ -1,0 +1,48 @@
+@startuml sequence-employee-registration
+skinparam backgroundColor white
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam ArrowColor #1E3A5F
+skinparam SequenceLifeLineBorderColor #8A97A8
+skinparam SequenceLifeLineBackgroundColor white
+skinparam ParticipantBorderColor #2E5C8A
+skinparam ParticipantBackgroundColor #EAF2FB
+skinparam ParticipantFontColor #1F2937
+skinparam SequenceArrowFontColor #1F2937
+skinparam NoteBackgroundColor #F4F6F8
+skinparam NoteBorderColor #8A97A8
+
+actor "Administrator" as A
+participant "Web Dashboard" as Web
+participant "NAJDA Backend" as BE
+participant "Firebase Admin SDK" as FB
+database "PostgreSQL" as DB
+
+A -> Web : Submit new employee\n(name, email, phone, address,\ngender, role)
+Web -> BE : POST /api/auth/register/employee
+BE -> BE : @PreAuthorize:\ncaller has ADMIN or SUPER_ADMIN
+BE -> DB : findByRoleNameIgnoreCase(roleName)
+alt roleName == SUPER_ADMIN and caller is not SUPER_ADMIN
+  BE --> Web : 403 Access Denied\n(no account created)
+else allowed
+  BE -> FB : createUser(email, randomTempPassword)
+  FB --> BE : Firebase UserRecord (uid)
+  BE -> DB : save new User (requested role)
+  alt Postgres save fails
+    BE -> FB : deleteUser(uid)\n(roll back orphaned credential)
+    BE --> Web : error
+  else save succeeds
+    BE -> FB : set custom claim role=<roleName>
+    BE -> FB : generatePasswordResetLink(email)
+    FB --> BE : reset link (not sent by Firebase)
+    BE --> Web : 201 Created\n(profile + reset link)
+    note right of Web
+      The link is returned to the
+      Admin, not emailed automatically --
+      the Admin relays it to the
+      new employee.
+    end note
+  end
+end
+
+@enduml

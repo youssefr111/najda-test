@@ -1,0 +1,59 @@
+@startuml sequence-e2e-operations
+skinparam backgroundColor white
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam ArrowColor #1E3A5F
+skinparam SequenceLifeLineBorderColor #8A97A8
+skinparam SequenceLifeLineBackgroundColor white
+skinparam ParticipantBorderColor #2E5C8A
+skinparam ParticipantBackgroundColor #EAF2FB
+skinparam ParticipantFontColor #1F2937
+skinparam SequenceArrowFontColor #1F2937
+skinparam NoteBackgroundColor #F4F6F8
+skinparam NoteBorderColor #8A97A8
+
+actor "Citizen" as C
+participant "Citizen App" as CApp
+participant "NAJDA Backend" as BE
+participant "AI Service" as AI
+participant "Dispatcher\nDashboard" as Disp
+actor "Dispatcher" as D
+participant "Field Unit App" as FApp
+actor "Field Unit" as F
+participant "Hospital\nDashboard" as Hosp
+
+C -> CApp : Report emergency\n(type, media, location)
+CApp -> BE : Submit incident
+BE -> AI : Request priority score\n+ duplicate check
+AI --> BE : priority, confidence,\nduplicate flag (if any)
+BE -> Disp : New incident appears in queue
+
+D -> Disp : Review queue, select\nnearest available unit
+Disp -> BE : Assign unit to incident
+BE -> FApp : Mission notification
+
+F -> FApp : Accept mission
+FApp -> BE : Accept
+BE -> CApp : Status: unit en route
+
+F -> FApp : Mark arrival on scene
+FApp -> BE : Arrived
+
+alt Police / Fire / First Responder
+  BE -> BE : Mark mission complete
+  BE -> CApp : Status: completed
+else Ambulance Crew
+  BE -> AI : Request hospital\nrecommendation
+  AI --> BE : recommended hospital
+  F -> FApp : Select destination hospital
+  FApp -> BE : Destination selected
+  opt hospital registered in system
+    F -> FApp : Send patient vitals\n(heart rate, blood pressure)
+    FApp -> Hosp : Vitals delivered en route
+  end
+  F -> FApp : Arrive at hospital
+  FApp -> BE : Mark mission complete
+  BE -> CApp : Status: completed
+end
+
+@enduml

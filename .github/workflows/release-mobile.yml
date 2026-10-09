@@ -1,0 +1,135 @@
+name: Build & release Android APK
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-mobile-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: mobile
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Generate the Android project (only if it is not committed)
+        run: |
+          if [ ! -d android ]; then ./scripts/setup_android.sh; fi
+
+      - name: Install dependencies
+        run: |
+          flutter pub get
+          flutter gen-l10n
+
+      - name: Write production env file
+        env:
+          MOBILE_ENV_PRODUCTION: ${{ secrets.MOBILE_ENV_PRODUCTION }}
+        run: |
+          set -euo pipefail
+          if [ -z "$MOBILE_ENV_PRODUCTION" ]; then
+            echo "::error::Secret MOBILE_ENV_PRODUCTION is empty -- paste the full contents of env/.env.production into it."
+            exit 1
+          fi
+          printf '%s\n' "$MOBILE_ENV_PRODUCTION" > env/.env.production
+
+      - name: Restore release keystore
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          if [ -z "$ANDROID_KEYSTORE_BASE64" ]; then
+            echo "::error::ANDROID_KEYSTORE_BASE64 is not set. A release APK must be signed with your permanent key, otherwise it can't update an installed app."
+            exit 1
+          fi
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/upload-keystore.jks
+          {
+            echo "storePassword=$ANDROID_KEYSTORE_PASSWORD"
+            echo "keyPassword=$ANDROID_KEY_PASSWORD"
+            echo "keyAlias=$ANDROID_KEY_ALIAS"
+            echo "storeFile=upload-keystore.jks"
+          } > android/key.properties
+
+      - name: Verify keystore, alias and password
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        run: |
+          keytool -list \
+            -keystore android/upload-keystore.jks \
+            -storepass "$ANDROID_KEYSTORE_PASSWORD" \
+            -alias "$ANDROID_KEY_ALIAS" > /dev/null \
+            || { echo "::error::Keystore password or alias (ANDROID_KEY_ALIAS) does not match the keystore."; exit 1; }
+
+      - name: Create placeholder env files for the other flavors
+        run: |
+          # Only .env.production is real in CI. The local/test files are gitignored,
+          # but pubspec.yaml lists them as assets, so the analyzer needs them to exist.
+          # They are flavor-scoped, so they are NOT bundled into the production APK.
+          touch env/.env.local env/.env.test
+
+      - name: Analyze
+        run: flutter analyze --no-fatal-infos
+
+      - name: Build APK
+        run: |
+          set -euo pipefail
+          # Tag "v1.2.3" -> versionName 1.2.3. versionCode must always increase so
+          # Android accepts the update; run_number does, plus an offset that keeps
+          # it above any versionCode already published (raise it if needed).
+          VERSION_NAME="${GITHUB_REF_NAME#v}"
+          VERSION_CODE=$(( GITHUB_RUN_NUMBER + 100 ))
+
+          flutter build apk --release --flavor production \
+            --build-name "$VERSION_NAME" \
+            --build-number "$VERSION_CODE"
+
+      - name: Prepare release files
+        run: |
+          set -euo pipefail
+          SOURCE="build/app/outputs/flutter-apk/app-production-release.apk"
+          if [ ! -s "$SOURCE" ]; then
+            echo "::error::Expected APK not found at $SOURCE"
+            exit 1
+          fi
+
+          # Filename follows the git tag (v1.0.1 -> najda-v1.0.1.apk) so it is
+          # always in sync with what triggered the build.
+          cp "$SOURCE" "najda-${GITHUB_REF_NAME}.apk"
+          # Stable, unversioned copy so external links (the web app's download
+          # button) never need to change between releases.
+          cp "$SOURCE" najda-latest.apk
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            mobile/najda-*.apk
+          make_latest: true
+          fail_on_unmatched_files: true

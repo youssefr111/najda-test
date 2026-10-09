@@ -1,0 +1,12 @@
+export function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const r = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLon / 2) ** 2;
+  return r * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+const AVG_SPEED_KMH = 40; // rough urban-driving estimate, not calibrated against anything real
+export function estimateEtaMinutes(distanceKm: number): number {
+  return Math.round((distanceKm / AVG_SPEED_KMH) * 60);
+}
