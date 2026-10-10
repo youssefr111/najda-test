@@ -43,8 +43,6 @@ export default function AppDownloadSection() {
               
               <a
                 href={ANDROID_DOWNLOAD_URL}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="flex w-64 sm:w-auto items-center gap-3 rounded-xl bg-black/90 px-6 py-3 shadow-lg backdrop-blur transition hover:-translate-y-0.5 hover:bg-black"
               >
                 <FaGooglePlay className="h-7 w-7 text-white shrink-0" />
