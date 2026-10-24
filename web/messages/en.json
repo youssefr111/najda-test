@@ -550,7 +550,8 @@
     "SUPER_ADMIN": "Admin Dashboard", "ADMIN": "Admin Dashboard",
     "DISPATCHER": "Dispatch Console", "HOSPITAL_STAFF": "Hospital Dashboard",
     "FIRST_RESPONDER": "Responder Dashboard", "AMBULANCE_CREW": "Responder Dashboard",
-    "POLICE": "Responder Dashboard", "FIREFIGHTER": "Responder Dashboard"
+    "POLICE": "Responder Dashboard", "FIREFIGHTER": "Responder Dashboard",
+    "FACILITY_MANAGER": "Facility Dashboard"
   },
   "address": {
     "governorate": "Governorate",
