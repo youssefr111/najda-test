@@ -1,0 +1,102 @@
+\chapter{Introduction}
+\label{chap:introduction}
+
+\section{Background}
+
+Emergency response systems play a critical role in protecting lives and property by coordinating the actions of emergency service providers such as ambulance services, fire departments, and law enforcement agencies. The effectiveness of these systems depends on their ability to receive incident reports, assess their urgency, allocate appropriate resources, and maintain continuous communication between responders throughout the incident lifecycle. As urban populations continue to grow and emergency situations become increasingly complex, traditional dispatch approaches face significant challenges in maintaining rapid response times and efficient resource utilization \cite{pressman2020se,sommerville2016software}.
+
+Recent advances in software engineering, cloud computing, real-time communication technologies, and artificial intelligence have enabled the development of intelligent decision-support systems capable of assisting emergency operators during critical situations. These technologies can improve situational awareness, recommend resource allocation, estimate response times, and assist with operational decision-making while maintaining human oversight \cite{bass2022software,newman2021microservices}.
+
+Despite these technological advances, many educational projects and prototype systems focus only on basic incident reporting, overlooking the complexity of real emergency dispatch operations. Consequently, there is an opportunity to develop a comprehensive simulation platform that demonstrates the complete emergency dispatch workflow while remaining suitable for academic study.
+
+\section{Problem Statement}
+
+Efficient emergency response requires accurate incident reporting, rapid prioritization, coordinated communication among multiple emergency agencies, and continuous monitoring of response units. Developing and evaluating such systems presents significant challenges because real emergency dispatch infrastructures are tightly integrated with governmental organizations, public safety agencies, and communication networks that are inaccessible for academic projects \cite{pressman2020se}.
+
+Many existing academic implementations simplify emergency management into a basic reporting application, where a citizen submits an emergency request and an administrator manually approves it. Such simplified workflows fail to represent the complexity of real dispatch operations, including incident prioritization, responder coordination, hospital selection, vehicle tracking, and real-time communication.
+
+As a result, there is a need for an educational platform capable of realistically simulating emergency dispatch operations without requiring integration with national emergency services.
+
+\section{Proposed Solution}
+
+NAJDA is proposed as an intelligent emergency dispatch simulation platform designed specifically for educational and research purposes. Rather than replacing existing emergency infrastructures, NAJDA simulates the operational workflow of a modern emergency response center, allowing multiple user roles to collaborate within a realistic dispatch environment.
+
+The platform supports seven primary actors:
+
+\begin{itemize}
+    \item Citizen
+    \item Dispatcher
+    \item Ambulance Crew
+    \item Firefighter
+    \item Police Officer
+    \item Hospital Staff
+    \item Administrator
+\end{itemize}
+
+NAJDA employs an event-driven microservice architecture to coordinate communication between system components while integrating artificial intelligence modules that provide decision-support recommendations for incident prioritization, hospital selection, and hazard classification. Throughout the system, AI serves only as a recommendation engine, ensuring that all operational decisions remain under human control.
+
+\section{Project Objectives}
+
+The primary objective of NAJDA is to design and implement a realistic emergency dispatch simulation platform that demonstrates modern software engineering principles while supporting the coordination of multiple emergency response agencies.
+
+The specific objectives of the project are as follows:
+
+\begin{itemize}
+    \item Design a scalable event-driven microservice architecture.
+    \item Simulate the complete emergency incident lifecycle.
+    \item Provide dedicated interfaces for all supported user roles.
+    \item Implement real-time incident monitoring and vehicle tracking.
+    \item Integrate artificial intelligence modules for decision support.
+    \item Demonstrate secure authentication and role-based authorization.
+    \item Develop a platform suitable for academic demonstration and evaluation.
+\end{itemize}
+
+\section{Project Scope}
+
+NAJDA is designed exclusively as a simulation platform for academic purposes. The project models the workflow of emergency dispatch centers while avoiding direct integration with governmental emergency communication infrastructures.
+
+The project includes:
+
+\begin{itemize}
+    \item Emergency incident reporting.
+    \item Incident prioritization.
+    \item Dispatcher-assisted unit assignment.
+    \item Vehicle tracking.
+    \item Hospital recommendation.
+    \item Mission monitoring.
+    \item Administrative management.
+    \item Analytics and reporting.
+\end{itemize}
+
+The project explicitly excludes:
+
+\begin{itemize}
+    \item Integration with national emergency telephone services.
+    \item Real ambulance, police, or fire department communication systems.
+    \item Medical diagnosis or treatment recommendations.
+    \item Autonomous dispatch decisions without human approval.
+\end{itemize}
+
+\section{Research Methodology Overview}
+
+The development of NAJDA follows an iterative software engineering approach based on Agile principles. The project is implemented incrementally, beginning with a functional minimum viable product, followed by the integration of artificial intelligence capabilities and finally system refinement and optimization \cite{pressman2020se}.
+
+The software architecture emphasizes modularity, scalability, maintainability, and loose coupling through the adoption of event-driven microservices. Each service is developed independently while communicating asynchronously through a message broker to improve system flexibility and fault isolation \cite{newman2021microservices,richardson2018microservices}.
+
+A detailed discussion of the adopted software development lifecycle and project management methodology is presented in a later chapter.
+
+\section{Report Organization}
+
+This thesis is organized into seven chapters.
+
+Chapter~2 presents the system requirements, stakeholders, functional requirements, non-functional requirements, and overall workflow analysis.
+
+Chapter~3 reviews related literature and existing technologies relevant to emergency dispatch systems, artificial intelligence, and distributed software architectures.
+
+Chapter~4 describes the complete system design, including the architectural model, database design, communication mechanisms, security considerations, and deployment architecture.
+
+Chapter~5 explains the implementation of the proposed solution and discusses the technologies, frameworks, and development environment used throughout the project.
+
+Chapter~6 presents the testing methodology, system evaluation, experimental observations, and identified limitations.
+
+Finally, Chapter~7 summarizes the work presented in this thesis and discusses possible directions for future enhancement.

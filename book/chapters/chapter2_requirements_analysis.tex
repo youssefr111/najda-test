@@ -1,0 +1,193 @@
+\chapter{Requirements Analysis}
+\label{chap:requirements}
+
+\section{Introduction}
+
+Requirements analysis is a fundamental phase in software engineering that establishes the functional and non-functional expectations of a system before design and implementation begin. A clear understanding of stakeholder needs ensures that the proposed solution satisfies its intended objectives while providing a foundation for architectural decisions \cite{pressman2020se,sommerville2016software}.
+
+This chapter identifies the stakeholders of the NAJDA platform, defines the system requirements, describes the primary use cases, and presents the overall operational workflow that the system is expected to support.
+
+%------------------------------------------------
+
+\section{Stakeholders}
+
+NAJDA is designed to support multiple categories of users, each with distinct responsibilities throughout the emergency response process.
+
+\begin{itemize}
+    \item \textbf{Citizens} report emergencies, provide incident details, upload supporting media, monitor incident status, and receive updates.
+    \item \textbf{Dispatchers} evaluate reported incidents, assign emergency units, monitor ongoing missions, and coordinate emergency operations.
+    \item \textbf{Ambulance Crews} receive assigned medical missions, update mission status, navigate to incident locations, and transport patients to hospitals when necessary.
+    \item \textbf{Firefighters} respond to fire-related incidents, provide operational updates, and report mission completion.
+    \item \textbf{Police Officers} respond to security and law enforcement incidents while maintaining communication with dispatchers.
+    \item \textbf{Hospital Staff} manage hospital availability, monitor incoming patients, and update hospital capacity information.
+    \item \textbf{Administrators} manage users, emergency vehicles, hospitals, system configuration, and operational statistics.
+\end{itemize}
+
+\subsection{Stakeholder Responsibility Matrix}
+
+\textit{Placeholder: Table describing each stakeholder, responsibilities, permissions, and primary interactions with the system.}
+
+%------------------------------------------------
+
+\section{System Actors}
+
+NAJDA supports seven primary actors:
+
+\begin{enumerate}
+    \item Citizen
+    \item Dispatcher
+    \item Ambulance Crew
+    \item Firefighter
+    \item Police Officer
+    \item Hospital Staff
+    \item Administrator
+\end{enumerate}
+
+Each actor interacts with the system according to permissions assigned to their role, ensuring operational security and responsibility separation.
+
+%------------------------------------------------
+
+\section{Functional Requirements}
+
+The NAJDA platform shall provide the following functional capabilities.
+
+% Existing subsections...
+
+\subsection{Citizen Functions}
+
+...
+
+\subsection{Dispatcher Functions}
+
+...
+
+\subsection{Responder Functions}
+
+...
+
+\subsection{Hospital Functions}
+
+...
+
+\subsection{Administrator Functions}
+
+...
+
+\subsection{Functional Requirements Matrix}
+
+\textit{Placeholder: Software Requirements Specification (SRS) table containing requirement ID, description, actor, and priority.}
+
+%------------------------------------------------
+
+\section{Non-Functional Requirements}
+
+% Existing text...
+
+\subsection{Performance}
+
+...
+
+\subsection{Scalability}
+
+...
+
+\subsection{Availability}
+
+...
+
+\subsection{Maintainability}
+
+...
+
+\subsection{Usability}
+
+...
+
+\subsection{Security}
+
+...
+
+\subsection{Non-Functional Requirements Matrix}
+
+\textit{Placeholder: Table summarizing measurable quality attributes including performance, scalability, security, reliability, maintainability, and usability.}
+
+%------------------------------------------------
+
+\section{User Stories}
+
+\textit{Placeholder: User stories for each actor following the format "As a..., I want..., so that...".}
+
+%------------------------------------------------
+
+\section{Use Case Analysis}
+
+The overall operation of NAJDA begins when a citizen submits an emergency report through the mobile application. After the incident is created, the dispatcher evaluates the reported information and coordinates the appropriate emergency response. Assigned responders receive mission notifications, update mission progress throughout the response process, and complete the mission once the incident has been resolved. Hospital staff participate when patient transportation is required, while administrators supervise overall system management.
+
+\subsection{Overall Use Case Diagram}
+
+\textit{Placeholder: UML Use Case Diagram.}
+
+\subsection{Use Case Specifications}
+
+\textit{Placeholder: Detailed specifications for the primary use cases including preconditions, postconditions, normal flow, and alternative flows.}
+
+%------------------------------------------------
+
+\section{Business Rules}
+
+NAJDA follows several operational rules that govern system behavior.
+
+\begin{itemize}
+    \item Every emergency incident shall have exactly one dispatcher responsible for coordination.
+    \item Emergency vehicles shall only receive missions when an active crew has been assigned to the vehicle.
+    \item Artificial intelligence modules provide recommendations only; all operational decisions remain under human control.
+    \item Users shall only access functions permitted by their assigned role.
+    \item Incident cancellation shall follow predefined operational constraints depending on the current mission status.
+    \item Every incident shall maintain a complete history of operational events.
+\end{itemize}
+
+%------------------------------------------------
+
+\section{Assumptions and Constraints}
+
+The following assumptions apply throughout the project.
+
+\subsection{Assumptions}
+
+\begin{itemize}
+    \item The platform operates as an academic simulation.
+    \item Mobile devices are assumed to have GPS connectivity.
+    \item Internet connectivity is available during normal operation.
+    \item Emergency organizations participating in the simulation maintain updated operational information.
+    \item Hospital availability information is assumed to be accurate.
+\end{itemize}
+
+\subsection{Constraints}
+
+\begin{itemize}
+    \item The project does not integrate with governmental emergency communication systems.
+\end{itemize}
+
+%------------------------------------------------
+
+\section{Overall System Workflow}
+
+The overall workflow begins when a citizen reports an emergency through the mobile application. The system records the incident and provides decision-support recommendations to assist dispatchers in evaluating its priority. Based on the available information, the dispatcher assigns suitable emergency units to respond.
+
+Assigned responders receive mission notifications, travel to the incident location, continuously update mission progress, and complete the assigned task. When medical transportation is required, hospital staff receive advance notification before patient arrival. Throughout the incident lifecycle, the system records operational events for monitoring, reporting, and future analysis.
+
+\subsection{Workflow Activity Diagram}
+
+\textit{Placeholder: UML Activity Diagram illustrating the complete emergency response workflow.}
+
+%------------------------------------------------
+
+\section{Requirements Traceability Matrix}
+
+\textit{Placeholder: Traceability matrix linking functional requirements to use cases, design components, and test cases.}
+
+%------------------------------------------------
+
+\section{Chapter Summary}
+
+This chapter identified the stakeholders of NAJDA and defined the functional and non-functional requirements that guide the development of the system. It also established the primary business rules, operational assumptions, and overall workflow that form the basis for the architectural design presented in the following chapters.

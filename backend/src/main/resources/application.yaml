@@ -1,0 +1,72 @@
+spring:
+  application:
+    name: najda-backend
+    
+  config:
+    import: optional:file:.env[.properties]
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+  jpa:
+    show-sql: ${JPA_SHOW_SQL:false}
+    hibernate:
+      ddl-auto: ${HIBERNATE_DDL_AUTO:validate}
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 1
+      
+  supabase:
+    storage:
+      bucket: incident-media
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 25MB
+
+najda:
+  facilities:
+    # Loads content/facilities.csv at startup, after the test facilities exist. Rows already stored are skipped.
+    enabled: ${FACILITY_SEED_ENABLED:true}
+  auth:
+    otp:
+      code-ttl: 10m
+      resend-cooldown: 60s
+      max-attempts: 5
+      verified-ttl: 15m
+  mail:
+    api-key: ${BREVO_API_KEY}
+    from-email: ${MAIL_FROM_EMAIL}
+    from-name: Najda
+  incident-location:
+    allow-manual-pin: ${INCIDENT_ALLOW_MANUAL_PIN:true}
+    manual-pin-max-radius-meters: ${INCIDENT_MANUAL_PIN_MAX_RADIUS_METERS:300}
+  push:
+    # FCM push delivery (free on the Firebase Spark plan). The in-app inbox works either way.
+    enabled: ${PUSH_ENABLED:true}
+  web:
+    # Where web-push notifications send the user when clicked.
+    base-url: ${WEB_BASE_URL:https://najda-web.vercel.app}
+  app-release:
+    # GET /api/app/version tells the mobile app whether a newer release exists. GitHub is asked at most once per cache-ttl.
+    repository: ${APP_RELEASE_REPOSITORY:youssefry01/najda}
+    cache-ttl: 15m
+    error-backoff: 1m
+  kyc:
+    required: ${KYC_REQUIRED:false}
+    grandfather-before: ${KYC_GRANDFATHER_BEFORE:}
+    exempt-roles: ${KYC_EXEMPT_ROLES:ADMIN,SUPER_ADMIN}
+    didit:
+      base-url: ${DIDIT_BASE_URL:https://verification.didit.me}
+      api-key: ${DIDIT_API_KEY:}
+      workflow-id: ${DIDIT_WORKFLOW_ID:}
+      webhook-secret: ${DIDIT_WEBHOOK_SECRET:}
+      environment: ${DIDIT_ENVIRONMENT:live}
+      return-url: ${WEB_BASE_URL:http://localhost:3000}/kyc/return
+      vendor-prefix: ${DIDIT_VENDOR_PREFIX:}

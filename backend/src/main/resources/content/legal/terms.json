@@ -1,0 +1,120 @@
+{
+  "title": {
+    "en": "Terms & Conditions",
+    "ar": "الشروط والأحكام"
+  },
+  "sections": [
+    {
+      "id": "simulation",
+      "title": {
+        "en": "This is a simulation",
+        "ar": "هذه محاكاة"
+      },
+      "blocks": [
+        {
+          "type": "NOTICE",
+          "text": {
+            "en": "NAJDA is a simulation platform and is not a real emergency service. It is not affiliated with, monitored by, or connected in any way to any government emergency response system, hospital network, or law enforcement agency. Submitting a report through this platform does not dispatch a real ambulance, fire truck, or police unit. If you are experiencing a real emergency, contact your local emergency number directly.",
+            "ar": "نجدة هي منصة محاكاة وليست خدمة طوارئ حقيقية. وهي غير مرتبطة أو خاضعة لإشراف أو متصلة بأي شكل من الأشكال بأي نظام استجابة طوارئ حكومي، أو شبكة مستشفيات، أو جهة تنفيذ قانون. تقديم بلاغ عبر هذه المنصة لا يؤدي إلى إرسال سيارة إسعاف أو سيارة إطفاء أو وحدة شرطة حقيقية. إذا كنت تواجه حالة طوارئ حقيقية، تواصل مباشرة مع رقم الطوارئ المحلي لديك."
+          }
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use",
+      "title": {
+        "en": "Acceptable use",
+        "ar": "الاستخدام المقبول"
+      },
+      "blocks": [
+        {
+          "type": "PARAGRAPH",
+          "text": {
+            "en": "By creating an account, you agree to use this platform only for its intended purpose — testing and demonstrating the simulated dispatch workflow. Submitting false reports intended to disrupt testing, impersonating another person, or attempting to access accounts or data you're not authorized to view is not permitted.",
+            "ar": "بإنشائك حسابًا، فإنك توافق على استخدام هذه المنصة فقط للغرض المخصص لها — اختبار آلية عمل الإرسال المحاكاة وعرضها. لا يُسمح بتقديم بلاغات كاذبة بهدف تعطيل الاختبار، أو انتحال شخصية شخص آخر، أو محاولة الوصول إلى حسابات أو بيانات غير مصرّح لك بالاطلاع عليها."
+          }
+        }
+      ]
+    },
+    {
+      "id": "accounts",
+      "title": {
+        "en": "Accounts",
+        "ar": "الحسابات"
+      },
+      "blocks": [
+        {
+          "type": "PARAGRAPH",
+          "text": {
+            "en": "Employee and responder accounts (Dispatcher, Ambulance Crew, Police, Firefighter, First Responder, Hospital Staff, Admin) are created and managed by system administrators. Citizen accounts are self-registered. You're responsible for keeping your credentials secure.",
+            "ar": "يتم إنشاء وإدارة حسابات الموظفين والمستجيبين (مُرسِل البلاغات، طاقم الإسعاف، الشرطة، الإطفاء، المستجيب الأول، طاقم المستشفى، الإدارة) من قِبل مسؤولي النظام. أما حسابات المواطنين فيتم تسجيلها ذاتيًا. أنت مسؤول عن الحفاظ على سرية بيانات اعتمادك."
+          }
+        }
+      ]
+    },
+    {
+      "id": "first-responder-applications",
+      "title": {
+        "en": "First Responder applications",
+        "ar": "طلبات الانضمام كمستجيب أول"
+      },
+      "blocks": [
+        {
+          "type": "PARAGRAPH",
+          "text": {
+            "en": "Submitting an application to become a First Responder does not guarantee approval. Applications are reviewed manually by an administrator, and any documents submitted are used solely to evaluate the application.",
+            "ar": "تقديم طلب للانضمام كمستجيب أول لا يضمن الموافقة عليه. تُراجَع الطلبات يدويًا من قِبل أحد المسؤولين، وتُستخدم أي مستندات مقدَّمة لتقييم الطلب فقط."
+          }
+        }
+      ]
+    },
+    {
+      "id": "identity-verification",
+      "title": {
+        "en": "Identity verification",
+        "ar": "التحقق من الهوية"
+      },
+      "blocks": [
+        {
+          "type": "PARAGRAPH",
+          "text": {
+            "en": "We may require identity verification before you can report an emergency. Results come from our verification provider, and an administrator can review or override them. Using someone else's ID, a photo of a photo or screen, or any attempt to defeat the check is not permitted. If you cannot be verified, contact Support.",
+            "ar": "قد نطلب منك التحقق من هويتك قبل أن تتمكن من الإبلاغ عن حالة طوارئ. تأتي النتائج من جهة التحقق لدينا، ويمكن لأحد المسؤولين مراجعتها أو تعديلها. يُحظر استخدام بطاقة هوية تخص شخصًا آخر أو صورة لصورة أو لشاشة أو أي محاولة للتحايل على التحقق. إذا تعذّر التحقق منك فتواصل مع الدعم."
+          }
+        }
+      ]
+    },
+    {
+      "id": "no-warranty",
+      "title": {
+        "en": "No warranty",
+        "ar": "بدون ضمان"
+      },
+      "blocks": [
+        {
+          "type": "PARAGRAPH",
+          "text": {
+            "en": "This platform is provided as-is, without warranty of availability, accuracy, or fitness for any particular purpose.",
+            "ar": "تُقدَّم هذه المنصة كما هي، دون أي ضمان لتوافرها أو دقتها أو ملاءمتها لأي غرض معين."
+          }
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "title": {
+        "en": "Contact",
+        "ar": "التواصل"
+      },
+      "blocks": [
+        {
+          "type": "PARAGRAPH",
+          "text": {
+            "en": "Questions can be sent through the [Support](/support) page.",
+            "ar": "يمكن إرسال الاستفسارات عبر صفحة [الدعم](/support)."
+          }
+        }
+      ]
+    }
+  ]
+}

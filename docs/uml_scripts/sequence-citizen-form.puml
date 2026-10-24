@@ -1,0 +1,52 @@
+@startuml sequence-citizen-form
+skinparam backgroundColor white
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam ArrowColor #1E3A5F
+skinparam SequenceLifeLineBorderColor #8A97A8
+skinparam SequenceLifeLineBackgroundColor white
+skinparam ParticipantBorderColor #2E5C8A
+skinparam ParticipantBackgroundColor #EAF2FB
+skinparam ParticipantFontColor #1F2937
+skinparam SequenceArrowFontColor #1F2937
+skinparam NoteBackgroundColor #F4F6F8
+skinparam NoteBorderColor #8A97A8
+
+actor "Citizen" as C
+participant "Mobile App" as App
+participant "Firebase Auth" as FB
+participant "NAJDA Backend" as BE
+database "PostgreSQL" as DB
+
+C -> App : Fill registration form\n(first/last name, email,\nphone, address, gender, password)
+App -> FB : Create account with\nemail + password
+FB --> App : Firebase ID token
+App -> FB : sendEmailVerification()
+FB --> C : Verification email delivered
+App -> BE : POST /api/auth/register/citizen?provider=password\n(Bearer token, full profile)
+BE -> FB : verifyIdToken(token)
+FB --> BE : decoded token (uid)
+BE -> DB : findByFirebaseUid(uid) -> not found
+BE -> DB : save new User\n(role=CITIZEN, all fields present,\nphoneVerified=false)
+note right of DB
+  profileCompleted = true immediately
+  (address, gender, and phone were
+  all supplied on the form).
+  Phone is still unverified; email's
+  verified state lives only in
+  Firebase, not duplicated here.
+end note
+BE -> FB : set custom claim role=CITIZEN
+BE --> App : 201 Created (profileCompleted: true)
+
+== Later, from the account page ==
+C -> App : Tap "Resend" or change email
+App -> FB : updateEmail() / sendEmailVerification()
+FB --> C : New verification email delivered
+App -> BE : POST /api/users/me/sync-email
+BE -> FB : getUser(uid)
+FB --> BE : current email
+BE -> DB : mirror current Firebase email\ninto profile
+BE --> App : 200 OK
+
+@enduml

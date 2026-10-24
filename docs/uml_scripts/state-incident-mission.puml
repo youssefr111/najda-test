@@ -1,0 +1,49 @@
+@startuml state-incident-mission
+skinparam backgroundColor white
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam ArrowColor #5B6B82
+skinparam StateBorderColor #2E5C8A
+skinparam StateBackgroundColor #EAF2FB
+skinparam StateFontColor #1F2937
+skinparam state {
+  BackgroundColor<<complete>> #E3F3E9
+  BorderColor<<complete>> #2E7D5B
+  BackgroundColor<<stopped>> #FBE9E7
+  BorderColor<<stopped>> #B45309
+  BackgroundColor<<ai>> #F4F6F8
+  BorderColor<<ai>> #8A97A8
+}
+
+[*] --> Reported : citizen submits call
+
+state "Duplicate Flagged\n(AI, informational)" as Flagged <<ai>>
+Reported --> Flagged : AI check
+Flagged --> Assigned
+
+Reported --> Assigned : dispatcher picks unit
+Assigned --> Notified : mission created
+Notified --> Accepted : employee accepts
+Notified --> Rejected : employee rejects
+Rejected --> Assigned : dispatcher reassigns
+
+Accepted --> EnRoute
+EnRoute --> Arrived
+
+Arrived --> Completed : police / fire /\nfirst responder
+Arrived --> HospitalSelected : ambulance crew
+state "Hospital Selected" as HospitalSelected
+HospitalSelected --> Completed : arrives at hospital
+
+Reported --> Cancelled : citizen cancels
+Assigned --> Cancelled : citizen cancels
+EnRoute --> Cancelled : citizen cancels
+
+state Completed <<complete>>
+state Cancelled <<stopped>>
+state Rejected <<stopped>>
+
+Completed --> [*]
+Cancelled --> [*]
+
+@enduml

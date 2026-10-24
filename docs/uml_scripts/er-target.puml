@@ -1,0 +1,69 @@
+@startuml er-target
+skinparam backgroundColor white
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam ArrowColor #8A97A8
+skinparam EntityBorderColor #2E5C8A
+skinparam EntityBackgroundColor white
+skinparam EntityHeaderBackgroundColor #1E3A5F
+skinparam EntityFontColor #1F2937
+
+entity "incidents (planned)" as incidents {
+  * id <<PK>>
+  --
+  * reporter_user_id <<FK>>
+  * type (medical / police / fire)
+  description
+  media_attachments
+  location (lat / lng)
+  * status
+  priority, priority_confidence
+  duplicate_of_incident_id
+  cancellation_reason
+  * created_at / updated_at
+}
+
+entity "missions (planned)" as missions {
+  * id <<PK>>
+  --
+  * incident_id <<FK>>
+  * assigned_user_id <<FK>>
+  * unit_type
+  * status
+  rejection_reason
+  destination_hospital_id <<FK>>
+  * created_at / updated_at
+}
+
+entity "hospitals (planned)" as hospitals {
+  * id <<PK>>
+  --
+  * name
+  location (lat / lng)
+  * registered_in_system
+  capacity_info
+}
+
+entity "vital_sign_readings (planned)" as vitals {
+  * id <<PK>>
+  --
+  * mission_id <<FK>>
+  heart_rate
+  blood_pressure
+  * recorded_at
+}
+
+entity "vehicles (planned)" as vehicles {
+  * id <<PK>>
+  --
+  * type
+  station_id <<FK>>
+  current_location
+}
+
+incidents ||--o{ missions
+missions }o--|| hospitals : destination
+missions ||--o{ vitals
+missions }o..o| vehicles
+
+@enduml
