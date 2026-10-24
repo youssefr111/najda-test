@@ -550,7 +550,8 @@
     "SUPER_ADMIN": "لوحة تحكم الإدارة", "ADMIN": "لوحة تحكم الإدارة",
     "DISPATCHER": "وحدة الإرسال", "HOSPITAL_STAFF": "لوحة تحكم المستشفى",
     "FIRST_RESPONDER": "لوحة تحكم المستجيب", "AMBULANCE_CREW": "لوحة تحكم المستجيب",
-    "POLICE": "لوحة تحكم المستجيب", "FIREFIGHTER": "لوحة تحكم المستجيب"
+    "POLICE": "لوحة تحكم المستجيب", "FIREFIGHTER": "لوحة تحكم المستجيب",
+    "FACILITY_MANAGER": "مدير منشأة"
   },
   "address": {
     "governorate": "المحافظة",
