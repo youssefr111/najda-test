@@ -1,0 +1,66 @@
+@startuml architecture
+skinparam backgroundColor white
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam ArrowColor #8A97A8
+skinparam ComponentBorderColor #2E5C8A
+skinparam ComponentBackgroundColor white
+skinparam ComponentFontColor #1F2937
+skinparam DatabaseBorderColor #2E5C8A
+skinparam DatabaseBackgroundColor white
+skinparam QueueBorderColor #B98900
+skinparam QueueBackgroundColor #FDF3E2
+skinparam PackageBorderColor #1E3A5F
+skinparam PackageFontColor #1E3A5F
+skinparam PackageBackgroundColor #F7FAFD
+
+package "Deployed -- Single Service" {
+  [Web Dashboard] as Web1
+  [Mobile App] as Mob1
+  [NAJDA Backend\n(Spring Boot monolith)\nauth / user / audit] as BE1
+  [Firebase Auth] as FB1
+  database "PostgreSQL" as PG1
+
+  Web1 --> BE1 : HTTPS / REST
+  Mob1 ..> BE1 : (mobile app\nnot yet built)
+  BE1 --> FB1 : verify token / manage users
+  BE1 --> PG1 : JPA
+}
+
+package "Target -- Event-Driven Microservices" {
+  [Web Dashboard] as Web2
+  [Mobile Apps] as Mob2
+  [API Gateway / BFF] as GW
+  [Auth & User\nService] as AuthSvc
+  [Incident\nService] as IncSvc
+  [Dispatch\nService] as DispSvc
+  [Hospital\nService] as HospSvc
+  [AI Service] as AISvc
+  queue "RabbitMQ" as MQ
+  [WebSocket Gateway] as WS
+  database "PostgreSQL" as PG2
+  database "Redis" as RD
+  [Firebase\n(Auth / Storage / Push)] as FB2
+
+  Web2 --> GW
+  Mob2 --> GW
+  GW --> AuthSvc
+  GW --> IncSvc
+  GW --> DispSvc
+  GW --> HospSvc
+  AuthSvc --> FB2
+  IncSvc <--> MQ
+  DispSvc <--> MQ
+  HospSvc <--> MQ
+  AISvc <--> MQ
+  MQ --> WS : live events
+  WS ..> Web2 : push
+  WS ..> Mob2 : push
+  IncSvc --> PG2
+  DispSvc --> PG2
+  HospSvc --> PG2
+  AuthSvc --> PG2
+  DispSvc --> RD
+}
+
+@enduml

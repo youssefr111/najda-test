@@ -1,0 +1,140 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@keyframes pop-in { from { opacity: 0; transform: translateY(-4px) scale(0.98); } }
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes slide-in { from { transform: translateX(var(--slide-from, 100%)); } }
+
+@utility animate-pop {
+  animation: pop-in 120ms ease-out;
+  @media (prefers-reduced-motion: reduce) { animation: none; }
+}
+@utility animate-fade {
+  animation: fade-in 150ms ease-out;
+  @media (prefers-reduced-motion: reduce) { animation: none; }
+}
+@utility animate-slide-in {
+  animation: slide-in 200ms ease-out;
+  &:dir(rtl) { --slide-from: -100%; }
+  @media (prefers-reduced-motion: reduce) { animation: none; }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+.dark {
+  --background: #171717;
+  --foreground: #f8fafc;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ---------------------------------------------------------------
+   Landing hero — animation + mouse effects
+   (--mx/--my/--px/--py/--spot are written by useHeroPointer in Hero.tsx)
+---------------------------------------------------------------- */
+@keyframes hero-rise { from { opacity: 0; transform: translate3d(0, 22px, 0); } }
+@keyframes hero-shimmer { to { background-position: 200% center; } }
+@keyframes hero-float {
+  0%, 100% { transform: rotate(var(--r, 0deg)) translateY(0); }
+  50% { transform: rotate(var(--r, 0deg)) translateY(-10px); }
+}
+@keyframes hero-ripple {
+  0% { transform: scale(0.35); opacity: 0.55; }
+  100% { transform: scale(1.25); opacity: 0; }
+}
+@keyframes hero-spin { to { transform: rotate(360deg); } }
+@keyframes hero-breathe {
+  0%, 100% { opacity: 0.6; scale: 1; }
+  50% { opacity: 1; scale: 1.1; }
+}
+
+.hero-rise {
+  animation: hero-rise 800ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+.hero-shimmer-text {
+  background-image: linear-gradient(100deg, #ef4444 0%, #ef4444 30%, #fda4af 50%, #ef4444 70%, #ef4444 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: hero-shimmer 6s linear infinite;
+}
+.hero-float {
+  animation: hero-float var(--dur, 6s) ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+.hero-ripple {
+  animation: hero-ripple 5s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+  animation-delay: var(--d, 0s);
+}
+.hero-orbit { animation: hero-spin var(--dur, 20s) linear infinite; }
+.hero-orbit-reverse { animation-direction: reverse; }
+.hero-breathe { animation: hero-breathe 8s ease-in-out infinite; animation-delay: var(--d, 0s); }
+.hero-sweep {
+  border-radius: 9999px;
+  background: conic-gradient(from 0deg, transparent 0deg, transparent 260deg, rgb(239 68 68 / 0.28) 359deg, rgb(248 113 113 / 0.6) 360deg);
+  -webkit-mask-image: radial-gradient(circle, transparent 20%, #000 21%);
+  mask-image: radial-gradient(circle, transparent 20%, #000 21%);
+  animation: hero-spin 6s linear infinite;
+}
+
+.hero-grid,
+.hero-grid-lit,
+.hero-spotlight { position: absolute; inset: 0; pointer-events: none; }
+
+.hero-grid,
+.hero-grid-lit { background-size: 56px 56px; }
+
+.hero-grid {
+  background-image:
+    linear-gradient(to right, rgb(148 163 184 / 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(148 163 184 / 0.06) 1px, transparent 1px);
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 40%, #000 25%, transparent 100%);
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 40%, #000 25%, transparent 100%);
+}
+/* same grid in red, only visible in a circle around the cursor */
+.hero-grid-lit {
+  background-image:
+    linear-gradient(to right, rgb(248 113 113 / 0.35) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(248 113 113 / 0.35) 1px, transparent 1px);
+  -webkit-mask-image: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), #000, transparent 100%);
+  mask-image: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), #000, transparent 100%);
+  opacity: var(--spot, 0);
+  transition: opacity 500ms;
+}
+.hero-spotlight {
+  background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), rgb(220 38 38 / 0.16), transparent 65%);
+  opacity: var(--spot, 0);
+  transition: opacity 500ms;
+}
+
+/* stop every hero animation while it's scrolled out of view */
+[data-offscreen="true"],
+[data-offscreen="true"] * { animation-play-state: paused !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise, .hero-shimmer-text, .hero-float, .hero-orbit, .hero-breathe, .hero-sweep { animation: none; }
+  .hero-ripple, .hero-sweep, .hero-spotlight, .hero-grid-lit { display: none; }
+}

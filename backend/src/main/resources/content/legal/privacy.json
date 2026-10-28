@@ -1,0 +1,200 @@
+{
+  "title": {
+    "en": "Privacy Policy",
+    "ar": "سياسة الخصوصية"
+  },
+  "subtitle": {
+    "en": "This page explains what data we collect and how it's used.",
+    "ar": "توضح هذه الصفحة البيانات التي نجمعها وكيفية استخدامها."
+  },
+  "sections": [
+    {
+      "id": "what-we-collect",
+      "title": {
+        "en": "What we collect",
+        "ar": "ما الذي نجمعه"
+      },
+      "blocks": [
+        {
+          "type": "LIST",
+          "items": [
+            {
+              "en": "Account information — name, email, phone number, address, and gender, provided at registration.",
+              "ar": "معلومات الحساب — الاسم والبريد الإلكتروني ورقم الهاتف والعنوان والجنس، المقدَّمة عند التسجيل."
+            },
+            {
+              "en": "Location data — GPS coordinates or a manually placed pin, submitted when reporting an incident, and live unit positions for staff/responder accounts.",
+              "ar": "بيانات الموقع — إحداثيات GPS أو دبوس يتم تحديده يدويًا، يُقدَّم عند الإبلاغ عن حادثة، بالإضافة إلى مواقع الوحدات الحية لحسابات الموظفين والمستجيبين."
+            },
+            {
+              "en": "Media — photos, video, or audio voluntarily attached to an incident report, and documents attached to a First Responder application.",
+              "ar": "الوسائط — الصور أو الفيديوهات أو التسجيلات الصوتية المُرفقة طوعًا ببلاغ عن حادثة، والمستندات المُرفقة بطلب الانضمام كمستجيب أول."
+            },
+            {
+              "en": "Identity verification (when you verify your identity) — a photo of your ID, a selfie with a liveness check, a face comparison, and device and IP information, handled by our verification partner Didit. NAJDA itself stores only the result, Didit's session reference, timestamps and a short generic reason if verification fails.",
+              "ar": "التحقق من الهوية (عند التحقق من هويتك) — صورة لبطاقة الهوية، وصورة شخصية مع فحص للتأكد من أنك شخص حقيقي، ومقارنة للوجه، ومعلومات عن الجهاز وعنوان IP، يتولى معالجتها شريك التحقق لدينا Didit. ولا يحتفظ نجدة نفسه إلا بالنتيجة ومعرّف جلسة Didit والتواريخ وسبب عام مختصر في حال تعذّر التحقق."
+            },
+            {
+              "en": "Usage data — chat messages, mission history, and shift records tied to an incident or account.",
+              "ar": "بيانات الاستخدام — رسائل الدردشة، وسجل المهام، وسجلات النوبات المرتبطة بحادثة أو حساب."
+            },
+            {
+              "en": "Medical profile (optional) — date of birth, weight, blood type, allergies, conditions, medications, medical notes and emergency contacts, only if you choose to add them. You can change or delete it at any time from your account page.",
+              "ar": "الملف الطبي (اختياري) — تاريخ الميلاد والوزن وفصيلة الدم والحساسية والحالات الطبية والأدوية والملاحظات الطبية وجهات اتصال الطوارئ، فقط إذا اخترت إضافتها. يمكنك تعديله أو حذفه في أي وقت من صفحة حسابك."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "how-its-used",
+      "title": {
+        "en": "How it's used",
+        "ar": "كيف تُستخدم"
+      },
+      "blocks": [
+        {
+          "type": "PARAGRAPH",
+          "text": {
+            "en": "Data is used only to operate the simulated dispatch workflow (routing incident reports, coordinating responder assignments, and displaying account/incident history) and, if you verify your identity, to confirm who you are.",
+            "ar": "تُستخدم البيانات فقط لتشغيل آلية عمل الإرسال المحاكاة (توجيه بلاغات الحوادث، وتنسيق تعيينات المستجيبين، وعرض سجل الحساب والحوادث)، وعند التحقق من هويتك، لتأكيد هويتك."
+          }
+        },
+        {
+          "type": "PARAGRAPH",
+          "text": {
+            "en": "Incident text and category may be sent to a third-party AI service to generate a priority suggestion — this is advisory only and never made without human review.",
+            "ar": "قد يُرسل نص الحادثة وتصنيفها إلى خدمة ذكاء اصطناعي تابعة لجهة خارجية لاقتراح مستوى الأولوية — وهذا اقتراح استشاري فقط ولا يُعتمد أبدًا دون مراجعة بشرية."
+          }
+        }
+      ]
+    },
+    {
+      "id": "medical-profile",
+      "title": {
+        "en": "Your medical profile",
+        "ar": "ملفك الطبي"
+      },
+      "blocks": [
+        {
+          "type": "PARAGRAPH",
+          "text": {
+            "en": "Your medical profile is optional and private by default. It is only shown to emergency staff if you allow sharing in your profile and then report an emergency. In that case, and only while that emergency is still open, it can be seen by:",
+            "ar": "ملفك الطبي اختياري وخاص بك افتراضيًا. لا يظهر لفرق الطوارئ إلا إذا سمحت بالمشاركة في ملفك ثم أبلغت عن حالة طوارئ. وفي هذه الحالة، وطالما كانت الحالة مفتوحة فقط، يمكن لكل من يلي الاطلاع عليه:"
+          }
+        },
+        {
+          "type": "LIST",
+          "items": [
+            {
+              "en": "dispatchers handling the emergency;",
+              "ar": "منسّقو الإرسال الذين يتعاملون مع الحالة؛"
+            },
+            {
+              "en": "ambulance and first-responder crews who have accepted a mission for it; and",
+              "ar": "فرق الإسعاف والمستجيبون الأوائل الذين قبلوا مهمة للحالة؛"
+            },
+            {
+              "en": "the staff of the hospital the patient is being taken to.",
+              "ar": "العاملون في المستشفى الذي يُنقل إليه المريض."
+            }
+          ]
+        },
+        {
+          "type": "PARAGRAPH",
+          "text": {
+            "en": "They can only read it, never change it, and every view is recorded in an access log. If you report an emergency for someone else, you can choose not to share your profile for that report. Turning sharing off takes effect immediately, even for an emergency that's already open. Administrators, fire and police crews and other users have no access to it through the app. Your medical profile is never sent to the AI service or to any other third party.",
+            "ar": "يمكنهم قراءته فقط ولا يمكنهم تعديله، ويُسجَّل كل اطلاع في سجل وصول. وإذا أبلغت عن حالة طوارئ لشخص آخر فيمكنك اختيار عدم مشاركة ملفك في ذلك البلاغ. إيقاف المشاركة يسري فورًا، حتى على حالة طوارئ مفتوحة بالفعل. لا يملك المسؤولون ولا فرق الإطفاء والشرطة ولا المستخدمون الآخرون أي وصول إليه عبر التطبيق. ولا يُرسل ملفك الطبي أبدًا إلى خدمة الذكاء الاصطناعي ولا إلى أي جهة خارجية أخرى."
+          }
+        }
+      ]
+    },
+    {
+      "id": "identity-verification",
+      "title": {
+        "en": "Identity verification",
+        "ar": "التحقق من الهوية"
+      },
+      "blocks": [
+        {
+          "type": "PARAGRAPH",
+          "text": {
+            "en": "To reduce false reports, you may be asked to verify your identity before reporting an emergency. Verification is carried out by Didit, an identity-verification provider. Didit processes your ID document, a selfie with a liveness check and a face comparison to confirm the ID is genuine and belongs to you.",
+            "ar": "للحد من البلاغات الكاذبة، قد يُطلب منك التحقق من هويتك قبل الإبلاغ عن حالة طوارئ. يتم التحقق عبر Didit، وهي جهة متخصصة في التحقق من الهوية، حيث تعالج بطاقتك الشخصية وصورة شخصية مع فحص للتأكد من أنك شخص حقيقي ومقارنة للوجه، للتأكد من أن البطاقة أصلية وتخصك."
+          }
+        },
+        {
+          "type": "PARAGRAPH",
+          "text": {
+            "en": "NAJDA does not receive or store your ID, photos, name or ID number; it keeps only the result, Didit's session reference, timestamps and a short generic reason. Didit keeps verification data until you ask us to delete it or an administrator resets your verification, at which point your sessions at Didit are deleted. You can ask for deletion through the Support page. If the scan cannot read your ID, contact Support and an administrator can review it. The emergency numbers 122, 123 and 180 are always available without verification.",
+            "ar": "لا يستلم نجدة بطاقتك أو صورك أو اسمك أو رقم بطاقتك ولا يحتفظ بها، ويحتفظ فقط بالنتيجة ومعرّف جلسة Didit والتواريخ وسبب عام مختصر. تحتفظ Didit ببيانات التحقق إلى أن تطلب منا حذفها أو يعيد أحد المسؤولين ضبط التحقق الخاص بك، وعندها تُحذف جلساتك لديها. يمكنك طلب الحذف عبر صفحة الدعم. إذا تعذّر على الماسح قراءة بطاقتك فتواصل مع الدعم ليراجعها أحد المسؤولين. أرقام الطوارئ 122 و123 و180 متاحة دائمًا دون الحاجة إلى التحقق."
+          }
+        }
+      ]
+    },
+    {
+      "id": "where-its-stored",
+      "title": {
+        "en": "Where it's stored",
+        "ar": "أين تُخزَّن"
+      },
+      "blocks": [
+        {
+          "type": "PARAGRAPH",
+          "text": {
+            "en": "Account credentials are managed by Firebase Authentication. Application data is stored in a Postgres database. Free-text parts of your medical profile (medications, notes, and emergency contacts) are additionally encrypted before they're stored. Uploaded media lives in a private storage bucket, accessible only via short-lived, authorization-checked links generated by our backend — never a public URL.",
+            "ar": "تُدار بيانات اعتماد الحساب عبر Firebase Authentication. تُخزَّن بيانات التطبيق في قاعدة بيانات Postgres. وتُشفَّر الأجزاء النصية من ملفك الطبي (الأدوية والملاحظات وجهات اتصال الطوارئ) قبل تخزينها. تُخزَّن الوسائط المرفوعة في حاوية تخزين خاصة، ولا يمكن الوصول إليها إلا عبر روابط قصيرة الأجل ومُتحقَّق من صلاحيتها يُنشئها الخادم لدينا — ولا تُستخدم أبدًا رابطًا عامًا."
+          }
+        }
+      ]
+    },
+    {
+      "id": "third-parties",
+      "title": {
+        "en": "Third parties",
+        "ar": "الجهات الخارجية"
+      },
+      "blocks": [
+        {
+          "type": "PARAGRAPH",
+          "text": {
+            "en": "Map tiles and driving directions are computed by third-party mapping services. Neither receives account information — only the coordinates needed to render a map or a route. Identity verification is performed by Didit, which receives the verification data described above; it does not receive your medical profile or incident reports.",
+            "ar": "يتم توفير خرائط الطرق واتجاهات القيادة عبر خدمات خرائط تابعة لجهات خارجية. لا تتلقى أي منها معلومات عن الحساب — فقط الإحداثيات اللازمة لعرض خريطة أو مسار. ويتم التحقق من الهوية عبر Didit التي تتلقى بيانات التحقق الموضحة أعلاه، ولا تتلقى ملفك الطبي ولا بلاغات الحوادث."
+          }
+        }
+      ]
+    },
+    {
+      "id": "what-we-dont-do",
+      "title": {
+        "en": "What we don't do",
+        "ar": "ما لا نقوم به"
+      },
+      "blocks": [
+        {
+          "type": "PARAGRAPH",
+          "text": {
+            "en": "We do not sell, rent, or share your data with advertisers. This project carries no advertising and no analytics beyond what's needed to operate the platform itself.",
+            "ar": "لا نبيع أو نؤجر أو نشارك بياناتك مع المعلنين. لا تحتوي هذه المنصة على أي إعلانات أو تحليلات تتجاوز ما هو ضروري لتشغيل المنصة نفسها."
+          }
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "title": {
+        "en": "Contact",
+        "ar": "التواصل"
+      },
+      "blocks": [
+        {
+          "type": "PARAGRAPH",
+          "text": {
+            "en": "Questions about this policy or data-deletion requests can be sent through the [Support](/support) page.",
+            "ar": "يمكن إرسال الأسئلة المتعلقة بهذه السياسة أو طلبات حذف البيانات عبر صفحة [الدعم](/support)."
+          }
+        }
+      ]
+    }
+  ]
+}

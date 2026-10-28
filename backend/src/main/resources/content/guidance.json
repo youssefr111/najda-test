@@ -1,0 +1,914 @@
+{
+  "disclaimer": {
+    "en": "General safety and first-aid information. It does not replace professional care. If the dispatcher tells you something different, follow the dispatcher. If the connection drops and nobody responds, call 123 (ambulance), 180 (fire) or 122 (police).",
+    "ar": "معلومات عامة للسلامة والإسعاف الأولي، ولا تغني عن الرعاية المتخصصة. إذا أخبرتك غرفة العمليات بشيء مختلف فاتبع تعليماتها. وإذا انقطع الاتصال ولم يردّ عليك أحد، فاتصل بـ 123 (الإسعاف) أو 180 (الإطفاء) أو 122 (الشرطة)."
+  },
+  "categories": [
+    {
+      "category": "MEDICAL",
+      "cards": [
+        {
+          "id": "medical-general",
+          "general": true,
+          "minInjured": null,
+          "title": {
+            "en": "Stay calm and keep everyone safe",
+            "ar": "حافظ على هدوئك وعلى سلامة الجميع"
+          },
+          "steps": [
+            {
+              "en": "Stay calm. Help is on the way and the dispatcher can see your location.",
+              "ar": "حافظ على هدوئك. المساعدة في الطريق وغرفة العمليات ترى موقعك."
+            },
+            {
+              "en": "Make sure the area is safe for you and the patient (traffic, fire, electricity, gas).",
+              "ar": "تأكد أن المكان آمن لك وللمصاب (مرور، حريق، كهرباء، غاز)."
+            },
+            {
+              "en": "Stay with the patient and keep them still and comfortable. Do not move them unless there is danger.",
+              "ar": "ابقَ بجانب المصاب واجعله ثابتًا ومرتاحًا. لا تحرّكه إلا إذا كان هناك خطر."
+            },
+            {
+              "en": "Do not give food, drink or medicine unless the dispatcher or a medical professional tells you to.",
+              "ar": "لا تعطِه طعامًا أو شرابًا أو دواءً إلا إذا طلبت منك غرفة العمليات أو شخص مختص ذلك."
+            },
+            {
+              "en": "Unlock the door and ask someone to wait outside to guide the responders. Keep medicines and ID ready.",
+              "ar": "افتح الباب واطلب من أحد الانتظار في الخارج لإرشاد المسعفين، وجهّز الأدوية والبطاقة الشخصية."
+            },
+            {
+              "en": "Keep your phone nearby and reply quickly to the dispatcher’s messages.",
+              "ar": "أبقِ هاتفك قريبًا منك ورُدّ بسرعة على رسائل غرفة العمليات."
+            }
+          ],
+          "warning": null
+        },
+        {
+          "id": "medical-multiple-injured",
+          "general": false,
+          "minInjured": 2,
+          "title": {
+            "en": "Several people are injured",
+            "ar": "عدة أشخاص مصابون"
+          },
+          "steps": [
+            {
+              "en": "Help first anyone who is not responding, not breathing normally or bleeding heavily.",
+              "ar": "ابدأ بمن لا يستجيب أو لا يتنفس بشكل طبيعي أو ينزف بشدة."
+            },
+            {
+              "en": "Tell the dispatcher how many people need help and what is wrong with each of them.",
+              "ar": "أخبر غرفة العمليات بعدد المصابين وحالة كل واحد منهم."
+            },
+            {
+              "en": "Ask people nearby to help you, one person per patient if possible.",
+              "ar": "اطلب من الموجودين مساعدتك، وشخصًا لكل مصاب إن أمكن."
+            },
+            {
+              "en": "Keep everyone away from ongoing danger such as traffic, fire or fumes.",
+              "ar": "أبعد الجميع عن أي خطر مستمر مثل المرور أو الحريق أو الأبخرة."
+            }
+          ],
+          "warning": null
+        },
+        {
+          "id": "medical-cardiac-arrest",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Not responding and not breathing normally",
+            "ar": "لا يستجيب ولا يتنفس بشكل طبيعي"
+          },
+          "steps": [
+            {
+              "en": "Tap their shoulders firmly and shout. If there is no response and they are not breathing normally (not breathing, or only gasping), start CPR immediately.",
+              "ar": "اضغط على كتفيه بقوة وناده بصوت عالٍ. إذا لم يستجب ولا يتنفس بشكل طبيعي (لا يتنفس أو يلهث فقط)، فابدأ الإنعاش القلبي الرئوي فورًا."
+            },
+            {
+              "en": "Lay them on their back on a firm, flat surface and kneel beside their chest.",
+              "ar": "اجعله مستلقيًا على ظهره فوق سطح صلب ومستوٍ، واجثُ على ركبتيك بجانب صدره."
+            },
+            {
+              "en": "Put the heel of one hand on the center of the chest and your other hand on top. Keep your arms straight.",
+              "ar": "ضع كعب يدك في منتصف الصدر، وضع يدك الأخرى فوقها، وأبقِ ذراعيك مستقيمتين."
+            },
+            {
+              "en": "Push hard and fast: about 5 to 6 cm deep, 100 to 120 times a minute. Let the chest rise fully between pushes.",
+              "ar": "اضغط بقوة وسرعة: بعمق نحو 5 إلى 6 سم وبمعدل 100 إلى 120 ضغطة في الدقيقة، واترك الصدر يرتفع بالكامل بين الضغطات."
+            },
+            {
+              "en": "If you are trained and willing, give 2 rescue breaths after every 30 compressions. If not, keep doing compressions without stopping.",
+              "ar": "إذا كنت مدرّبًا ومستعدًا، فأعطِ نفَسين إنقاذيين بعد كل 30 ضغطة. وإن لم تكن كذلك فاستمر في الضغطات دون توقف."
+            },
+            {
+              "en": "If a defibrillator (AED) is nearby, ask someone to bring it. Switch it on and follow its voice instructions.",
+              "ar": "إن وُجد جهاز صدمات كهربائية (AED) قريب، فاطلب من أحد إحضاره، وشغّله واتبع تعليماته الصوتية."
+            },
+            {
+              "en": "Do not stop until the ambulance arrives, they start breathing normally, or you cannot continue. If someone else can help, swap every 2 minutes.",
+              "ar": "لا تتوقف حتى يصل الإسعاف أو يبدأ المصاب بالتنفس بشكل طبيعي أو لا تستطيع المتابعة. وإن كان معك شخص آخر فبدّلا كل دقيقتين."
+            }
+          ],
+          "warning": {
+            "en": "Do this only if the person is not responding and not breathing normally.",
+            "ar": "افعل هذا فقط إذا كان المصاب لا يستجيب ولا يتنفس بشكل طبيعي."
+          }
+        },
+        {
+          "id": "medical-severe-bleeding",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Severe bleeding",
+            "ar": "نزيف شديد"
+          },
+          "steps": [
+            {
+              "en": "Press firmly and directly on the wound with a clean cloth, gauze or your hand. Use gloves or a plastic bag if you have them, but do not wait for them.",
+              "ar": "اضغط بقوة وبشكل مباشر على الجرح بقطعة قماش نظيفة أو شاش أو بيدك. استخدم قفازًا أو كيسًا بلاستيكيًا إن وُجد، ولا تنتظر توفّره."
+            },
+            {
+              "en": "Keep pressing without stopping. If blood soaks through, add more cloth on top and keep pressing. Do not remove the first layer.",
+              "ar": "استمر في الضغط دون توقف. إذا تشرّبت القماشة بالدم فضع قماشًا إضافيًا فوقها واستمر في الضغط، ولا تُزِل الطبقة الأولى."
+            },
+            {
+              "en": "If something is stuck in the wound, do not pull it out. Press around it.",
+              "ar": "إذا كان هناك جسم مغروس في الجرح فلا تُخرجه، واضغط حوله."
+            },
+            {
+              "en": "Keep the person lying down and warm, and reassure them until help arrives.",
+              "ar": "أبقِ المصاب مستلقيًا ودافئًا وطمئنه حتى تصل المساعدة."
+            }
+          ],
+          "warning": {
+            "en": "A tourniquet is only for life-threatening bleeding from an arm or leg that pressure cannot stop, and only if you have a proper one and know how to use it. Never use a belt, string or wire.",
+            "ar": "لا يُستخدم الرباط الضاغط (تورنيكيه) إلا في النزيف المهدد للحياة من اليد أو الرجل إذا لم يتوقف بالضغط، وبشرط أن يكون لديك رباط مخصص وأن تعرف استخدامه. لا تستخدم حزامًا أو خيطًا أو سلكًا أبدًا."
+          }
+        },
+        {
+          "id": "medical-choking",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Choking (adult or child over 1 year)",
+            "ar": "اختناق (شخص بالغ أو طفل أكبر من سنة)"
+          },
+          "steps": [
+            {
+              "en": "If the person can cough, speak or breathe, encourage them to keep coughing. Do not slap their back or put fingers in their mouth.",
+              "ar": "إذا كان المصاب يستطيع السعال أو الكلام أو التنفس، فشجّعه على الاستمرار في السعال، ولا تضربه على ظهره ولا تُدخل أصابعك في فمه."
+            },
+            {
+              "en": "If they cannot cough, speak or breathe: lean them forward and give up to 5 firm back blows between the shoulder blades with the heel of your hand.",
+              "ar": "إذا لم يستطع السعال أو الكلام أو التنفس: أمِله للأمام واضربه حتى 5 ضربات قوية بين لوحي الكتف بكعب يدك."
+            },
+            {
+              "en": "If that does not work, stand behind them, put a fist just above the belly button with your other hand over it, and pull sharply inwards and upwards up to 5 times.",
+              "ar": "إذا لم ينجح ذلك، فقف خلفه وضع قبضتك فوق السرّة مباشرة ويدك الأخرى فوقها، واسحب بقوة للداخل وللأعلى حتى 5 مرات."
+            },
+            {
+              "en": "Keep alternating 5 back blows and 5 abdominal thrusts until the object comes out or help arrives.",
+              "ar": "استمر بالتناوب بين 5 ضربات على الظهر و5 دفعات على البطن حتى يخرج الجسم أو تصل المساعدة."
+            },
+            {
+              "en": "If they become unresponsive, lower them to the floor and start CPR with chest compressions.",
+              "ar": "إذا فقد الاستجابة فأنزله برفق إلى الأرض وابدأ الإنعاش القلبي الرئوي بضغطات الصدر."
+            }
+          ],
+          "warning": {
+            "en": "Babies under 1 year need a different technique. Tell the dispatcher straight away.",
+            "ar": "الرضّع دون السنة يحتاجون أسلوبًا مختلفًا، فأخبر غرفة العمليات فورًا."
+          }
+        },
+        {
+          "id": "medical-unconscious-breathing",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Unconscious but breathing normally",
+            "ar": "فاقد للوعي لكنه يتنفس بشكل طبيعي"
+          },
+          "steps": [
+            {
+              "en": "Check that the chest is rising and breathing is normal.",
+              "ar": "تأكد أن الصدر يتحرك وأن التنفس طبيعي."
+            },
+            {
+              "en": "Gently roll the person onto their side. Tilt the head back slightly so the mouth faces down and fluids can drain, and bend the top knee to keep them stable.",
+              "ar": "اقلب المصاب برفق على جنبه، وأمِل رأسه قليلًا للخلف ليكون الفم للأسفل فيخرج أي سائل، واثنِ الركبة العلوية ليبقى ثابتًا."
+            },
+            {
+              "en": "Keep watching their breathing until help arrives. If it stops or becomes abnormal, start CPR.",
+              "ar": "راقب تنفسه حتى تصل المساعدة. إذا توقف أو أصبح غير طبيعي فابدأ الإنعاش القلبي الرئوي."
+            },
+            {
+              "en": "Do not give anything by mouth.",
+              "ar": "لا تعطه أي شيء عن طريق الفم."
+            }
+          ],
+          "warning": {
+            "en": "If you suspect a neck or back injury, move them as little as possible and follow the dispatcher’s instructions.",
+            "ar": "إذا اشتبهت في إصابة بالرقبة أو الظهر فحرّكه بأقل قدر ممكن واتبع تعليمات غرفة العمليات."
+          }
+        },
+        {
+          "id": "medical-heart-attack",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Chest pain or suspected heart attack",
+            "ar": "ألم في الصدر أو اشتباه في جلطة قلبية"
+          },
+          "steps": [
+            {
+              "en": "Help them sit down in a comfortable position, such as on the floor with their back supported and knees bent. Keep them calm and still.",
+              "ar": "ساعده على الجلوس في وضع مريح، مثل الجلوس على الأرض مع إسناد ظهره وثني ركبتيه، وحافظ على هدوئه وسكونه."
+            },
+            {
+              "en": "Loosen tight clothing around the neck and chest.",
+              "ar": "فُكّ الملابس الضيقة حول الرقبة والصدر."
+            },
+            {
+              "en": "Tell the dispatcher exactly how they feel: chest pressure or pain spreading to the arm, jaw or back, shortness of breath, sweating or nausea.",
+              "ar": "أخبر غرفة العمليات بما يشعر به بالتحديد: ضغط أو ألم في الصدر ينتشر إلى الذراع أو الفك أو الظهر، ضيق في التنفس، تعرّق أو غثيان."
+            },
+            {
+              "en": "If the dispatcher or a doctor advises it and they are not allergic, they can slowly chew one adult aspirin (300 mg).",
+              "ar": "إذا نصحت بذلك غرفة العمليات أو الطبيب ولم يكن لديه حساسية، فيمكنه مضغ قرص أسبرين واحد للبالغين (300 ملغ) ببطء."
+            },
+            {
+              "en": "If they have prescribed heart medicine, help them take it as prescribed.",
+              "ar": "إذا كان لديه دواء قلب موصوف له فساعده على تناوله كما وُصف."
+            },
+            {
+              "en": "Do not let them walk around, eat or drink. Be ready to start CPR if they collapse.",
+              "ar": "لا تدعه يمشي أو يأكل أو يشرب، وكن مستعدًا لبدء الإنعاش القلبي الرئوي إذا انهار."
+            }
+          ],
+          "warning": {
+            "en": "Never give aspirin to a child under 16. If they become unresponsive and stop breathing normally, start CPR.",
+            "ar": "لا تعطِ الأسبرين لطفل دون 16 سنة. وإذا فقد الاستجابة وتوقف عن التنفس بشكل طبيعي فابدأ الإنعاش القلبي الرئوي."
+          }
+        },
+        {
+          "id": "medical-stroke",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Possible stroke (FAST)",
+            "ar": "اشتباه في سكتة دماغية (FAST)"
+          },
+          "steps": [
+            {
+              "en": "Check FAST. Face: does one side droop when they smile? Arms: can they raise both arms? Speech: is it slurred or confused? Time: if you see any of these, tell the dispatcher now.",
+              "ar": "افحص العلامات: الوجه: هل يتدلّى أحد جانبيه عند الابتسام؟ الذراعان: هل يستطيع رفعهما معًا؟ الكلام: هل هو متداخل أو مشوّش؟ الوقت: إذا لاحظت أيًّا منها فأخبر غرفة العمليات فورًا."
+            },
+            {
+              "en": "Note the exact time the symptoms started, or when they were last seen well, and tell the dispatcher.",
+              "ar": "سجّل الوقت الدقيق لبداية الأعراض أو آخر وقت رُئي فيه بخير، وأخبر به غرفة العمليات."
+            },
+            {
+              "en": "Keep them sitting or lying comfortably with the head and shoulders slightly raised, and stay with them.",
+              "ar": "أبقِه جالسًا أو مستلقيًا بشكل مريح مع رفع الرأس والكتفين قليلًا، وابقَ بجانبه."
+            },
+            {
+              "en": "Do not give food, drink or medicine, including aspirin.",
+              "ar": "لا تعطه طعامًا أو شرابًا أو دواءً، بما في ذلك الأسبرين."
+            },
+            {
+              "en": "If they become unresponsive, check their breathing. Place them on their side if breathing, or start CPR if not.",
+              "ar": "إذا فقد الاستجابة فتحقق من تنفسه. ضعه على جنبه إن كان يتنفس، أو ابدأ الإنعاش القلبي الرئوي إن لم يكن."
+            }
+          ],
+          "warning": {
+            "en": "A stroke is time-critical. Do not wait to see if the symptoms go away.",
+            "ar": "السكتة الدماغية حالة لا تحتمل التأخير. لا تنتظر لترى هل ستزول الأعراض."
+          }
+        },
+        {
+          "id": "medical-severe-allergy",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Severe allergic reaction (anaphylaxis)",
+            "ar": "حساسية شديدة (صدمة تحسسية)"
+          },
+          "steps": [
+            {
+              "en": "Look for signs: trouble breathing, swelling of the face, lips, tongue or throat, a spreading rash, dizziness or collapse after a sting, food or medicine.",
+              "ar": "ابحث عن العلامات: صعوبة في التنفس، تورّم الوجه أو الشفتين أو اللسان أو الحلق، طفح جلدي منتشر، دوخة أو انهيار بعد لدغة أو طعام أو دواء."
+            },
+            {
+              "en": "If they have an adrenaline auto-injector (such as an EpiPen), help them use it now. Press it firmly into the middle of the outer thigh, through clothing if needed, and hold it as the device instructions say.",
+              "ar": "إذا كان معه حاقن أدرينالين ذاتي (مثل إيبي بن) فساعده على استخدامه فورًا. اضغطه بقوة على منتصف الفخذ من الخارج، ولو فوق الملابس عند الحاجة، وثبّته كما في تعليمات الجهاز."
+            },
+            {
+              "en": "Lay them flat with their legs raised. If breathing is hard, let them sit up. Do not let them stand or walk.",
+              "ar": "أبقِه مستلقيًا على ظهره مع رفع ساقيه. وإذا كان التنفس صعبًا فدعه يجلس مائلًا قليلًا للخلف. لا تدعه يقف أو يمشي."
+            },
+            {
+              "en": "If there is no improvement after 5 minutes and a second auto-injector is available, give a second dose.",
+              "ar": "إذا لم يتحسن بعد 5 دقائق وكان معه حاقن ثانٍ فأعطه جرعة ثانية."
+            },
+            {
+              "en": "Tell the dispatcher it is a suspected severe allergic reaction. If they become unresponsive and stop breathing normally, start CPR.",
+              "ar": "أخبر غرفة العمليات أنها حالة اشتباه في حساسية شديدة. وإذا فقد الاستجابة وتوقف عن التنفس بشكل طبيعي فابدأ الإنعاش القلبي الرئوي."
+            }
+          ],
+          "warning": {
+            "en": "Keep asking for help even if they seem better. Symptoms can come back.",
+            "ar": "استمر في طلب المساعدة حتى لو بدا أفضل، فقد تعود الأعراض."
+          }
+        },
+        {
+          "id": "medical-seizure",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Seizure",
+            "ar": "تشنجات"
+          },
+          "steps": [
+            {
+              "en": "Clear the area around the person and cushion their head. Loosen anything tight around the neck.",
+              "ar": "أبعد أي أشياء حول المصاب وضع شيئًا ناعمًا تحت رأسه، وفُكّ أي شيء ضيق حول رقبته."
+            },
+            {
+              "en": "Do not hold them down and do not put anything in their mouth.",
+              "ar": "لا تُثبّته بالقوة ولا تضع أي شيء في فمه."
+            },
+            {
+              "en": "Note the time the seizure started.",
+              "ar": "سجّل وقت بداية التشنج."
+            },
+            {
+              "en": "When the shaking stops, check their breathing and gently turn them onto their side.",
+              "ar": "عندما يتوقف التشنج تحقق من تنفسه واقلبه برفق على جنبه."
+            },
+            {
+              "en": "Stay with them until they are fully awake, and speak to them calmly.",
+              "ar": "ابقَ معه حتى يفيق تمامًا، وكلّمه بهدوء."
+            }
+          ],
+          "warning": {
+            "en": "Tell the dispatcher if it lasts more than 5 minutes, happens again, is their first seizure, or if they are injured, pregnant, diabetic or struggling to breathe.",
+            "ar": "أخبر غرفة العمليات إذا استمر التشنج أكثر من 5 دقائق أو تكرر أو كان الأول للمصاب، أو إذا أُصيب أو كانت حاملًا أو مصابًا بالسكري أو واجه صعوبة في التنفس."
+          }
+        },
+        {
+          "id": "medical-burns",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Burns and scalds",
+            "ar": "حروق"
+          },
+          "steps": [
+            {
+              "en": "Move away from the source of the burn. Remove rings, watches and tight clothing near the burn, unless they are stuck to the skin.",
+              "ar": "ابتعد عن مصدر الحرق. انزع الخواتم والساعات والملابس الضيقة قرب الحرق ما لم تكن ملتصقة بالجلد."
+            },
+            {
+              "en": "Cool the burn under cool running water for 20 minutes, as soon as possible. If there is no running water, use clean, cool, wet cloths and change them often.",
+              "ar": "برّد الحرق تحت ماء جارٍ بارد لمدة 20 دقيقة في أسرع وقت ممكن. وإن لم يتوفر ماء جارٍ فاستخدم قطعًا نظيفة مبللة بماء بارد وبدّلها باستمرار."
+            },
+            {
+              "en": "Do not use ice, butter, toothpaste, oils or creams, and do not burst blisters.",
+              "ar": "لا تستخدم الثلج أو الزبدة أو معجون الأسنان أو الزيوت أو الكريمات، ولا تفقأ الفقاعات."
+            },
+            {
+              "en": "After cooling, cover the burn loosely with cling film or a clean, non-fluffy cloth. Do not use cling film on the face.",
+              "ar": "بعد التبريد غطِّ الحرق بشكل فضفاض بغلاف بلاستيكي شفاف أو قماش نظيف غير مُوبِر. لا تستخدم الغلاف البلاستيكي على الوجه."
+            },
+            {
+              "en": "Keep the person warm and watch for signs of shock (pale, cold, sweaty, weak or confused).",
+              "ar": "أبقِ المصاب دافئًا وراقب علامات الصدمة (شحوب، برودة، تعرّق، ضعف أو تشوّش)."
+            }
+          ],
+          "warning": {
+            "en": "For a chemical burn, rinse with plenty of running water for at least 20 minutes and tell the dispatcher what the chemical is.",
+            "ar": "في الحروق الكيميائية اغسل المكان بكمية كبيرة من الماء الجاري لمدة 20 دقيقة على الأقل، وأخبر غرفة العمليات باسم المادة."
+          }
+        },
+        {
+          "id": "medical-drowning",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Drowning",
+            "ar": "غرق"
+          },
+          "steps": [
+            {
+              "en": "Do not enter the water unless you are trained. Reach or throw something that floats (a rope, life ring, bottle or stick) and shout for help.",
+              "ar": "لا تدخل الماء إلا إذا كنت مدرّبًا. مُدّ أو ارمِ له شيئًا يطفو (حبلًا أو طوق نجاة أو زجاجة أو عصا) واطلب النجدة."
+            },
+            {
+              "en": "Once they are out of the water, lay them on their back. If they are not responding and not breathing normally, start CPR.",
+              "ar": "بعد إخراجه من الماء ضعه مستلقيًا على ظهره. إذا لم يستجب ولا يتنفس بشكل طبيعي فابدأ الإنعاش القلبي الرئوي."
+            },
+            {
+              "en": "If you are trained, give rescue breaths along with the chest compressions, as breathing is especially important after drowning.",
+              "ar": "إذا كنت مدرّبًا فأعطِ أنفاسًا إنقاذية مع ضغطات الصدر، فالتنفس مهم بشكل خاص بعد الغرق."
+            },
+            {
+              "en": "Remove wet clothes if you can and keep them warm.",
+              "ar": "اخلع عنه الملابس المبللة إن أمكن وأبقِه دافئًا."
+            }
+          ],
+          "warning": {
+            "en": "Even if they seem fine, they must be checked by a doctor. Problems can appear hours later.",
+            "ar": "حتى لو بدا بخير فيجب أن يفحصه طبيب، فقد تظهر مشكلات بعد ساعات."
+          }
+        },
+        {
+          "id": "medical-electric-shock",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Electric shock",
+            "ar": "صعق كهربائي"
+          },
+          "steps": [
+            {
+              "en": "Do not touch the person while they may still be in contact with electricity.",
+              "ar": "لا تلمس المصاب ما دام قد يكون ما زال على اتصال بالكهرباء."
+            },
+            {
+              "en": "If you can do it safely, switch off the power at the main switch or unplug the device.",
+              "ar": "إذا كان ذلك آمنًا فافصل الكهرباء من المفتاح الرئيسي أو افصل الجهاز من المقبس."
+            },
+            {
+              "en": "If you cannot switch it off, stand on something dry and push the person away with a dry non-metal object, such as a wooden broom handle.",
+              "ar": "إذا لم تستطع فصلها، فقف على سطح جاف وأبعد المصاب بجسم جاف غير معدني مثل عصا مكنسة خشبية."
+            },
+            {
+              "en": "Once it is safe, check whether they respond and breathe normally. If not, start CPR.",
+              "ar": "عندما يصبح المكان آمنًا تحقق من استجابته وتنفسه. إن لم يكن طبيعيًا فابدأ الإنعاش القلبي الرئوي."
+            },
+            {
+              "en": "Cool any burns under running water for 20 minutes. Everyone who has had an electric shock needs to be checked by a doctor.",
+              "ar": "برّد أي حروق تحت ماء جارٍ لمدة 20 دقيقة. وكل من تعرض لصعق كهربائي يحتاج إلى فحص طبي."
+            }
+          ],
+          "warning": {
+            "en": "Never go near fallen power lines or high-voltage equipment. Stay well away and wait for the responders.",
+            "ar": "لا تقترب أبدًا من أسلاك الكهرباء الساقطة أو معدات الضغط العالي. ابقَ بعيدًا وانتظر المسعفين."
+          }
+        },
+        {
+          "id": "medical-road-accident",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Road accident",
+            "ar": "حادث طريق"
+          },
+          "steps": [
+            {
+              "en": "Make sure you are safe first. Stay out of traffic, switch on hazard lights and wear a reflective vest if you have one.",
+              "ar": "تأكد من سلامتك أولًا. ابتعد عن حركة المرور، وشغّل أضواء التحذير، وارتدِ سترة عاكسة إن وُجدت."
+            },
+            {
+              "en": "If it is safe, switch off the engines. Do not smoke, and watch for fuel leaks or fire.",
+              "ar": "إذا كان ذلك آمنًا فأطفئ محركات المركبات. لا تدخّن، وانتبه لتسرب الوقود أو الحريق."
+            },
+            {
+              "en": "Do not move injured people unless there is immediate danger such as fire. Do not remove a motorcyclist’s helmet unless they are not breathing.",
+              "ar": "لا تحرّك المصابين إلا عند وجود خطر مباشر مثل الحريق. ولا تخلع خوذة راكب الدراجة النارية إلا إذا كان لا يتنفس."
+            },
+            {
+              "en": "Control severe bleeding with firm pressure, and keep injured people still and warm.",
+              "ar": "أوقف النزيف الشديد بالضغط المباشر، وأبقِ المصابين ثابتين ودافئين."
+            },
+            {
+              "en": "Tell the dispatcher how many vehicles and people are involved and whether anyone is trapped.",
+              "ar": "أخبر غرفة العمليات بعدد المركبات والأشخاص وهل هناك أحد محتجز."
+            }
+          ],
+          "warning": null
+        },
+        {
+          "id": "medical-poisoning",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Poisoning or overdose",
+            "ar": "تسمم أو جرعة زائدة"
+          },
+          "steps": [
+            {
+              "en": "Move the person away from the source, such as fumes, a chemical or medicine. If fumes are the cause, get to fresh air without putting yourself at risk.",
+              "ar": "أبعد المصاب عن المصدر، مثل الأبخرة أو المادة الكيميائية أو الدواء. وإذا كان السبب أبخرة فانتقل إلى هواء نقي دون تعريض نفسك للخطر."
+            },
+            {
+              "en": "Find out what was taken, how much and when. Keep the container or packaging to show the responders.",
+              "ar": "اعرف ما الذي تناوله وبأي كمية ومتى، واحتفظ بالعبوة أو غلافها لتُريها للمسعفين."
+            },
+            {
+              "en": "Do not make them vomit, and do not give food, drink or home remedies such as milk unless a medical professional tells you to.",
+              "ar": "لا تحاول إجباره على القيء، ولا تعطه طعامًا أو شرابًا أو علاجات منزلية مثل الحليب إلا إذا طلب منك ذلك مختص."
+            },
+            {
+              "en": "If a chemical is on the skin or in the eyes, rinse with running water for at least 20 minutes and remove contaminated clothing.",
+              "ar": "إذا لامست مادة كيميائية الجلد أو العينين فاغسلها بماء جارٍ لمدة 20 دقيقة على الأقل وانزع الملابس الملوثة."
+            },
+            {
+              "en": "If they are drowsy but breathing, place them on their side. If they stop breathing normally, start CPR.",
+              "ar": "إذا كان ناعسًا لكنه يتنفس فضعه على جنبه. وإذا توقف عن التنفس بشكل طبيعي فابدأ الإنعاش القلبي الرئوي."
+            }
+          ],
+          "warning": null
+        },
+        {
+          "id": "medical-heat-illness",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Heat exhaustion or heat stroke",
+            "ar": "إجهاد حراري أو ضربة شمس"
+          },
+          "steps": [
+            {
+              "en": "Move the person to a cool, shaded or air-conditioned place and lay them down.",
+              "ar": "انقل المصاب إلى مكان بارد أو مظلل أو مكيّف واجعله يستلقي."
+            },
+            {
+              "en": "Remove extra clothing and cool them quickly: wet their skin with cool water, fan them, and place cool wet cloths or wrapped ice packs on the neck, armpits and groin.",
+              "ar": "اخلع عنه الملابس الزائدة وبرّده بسرعة: بلّل جلده بماء بارد، وحرّك الهواء حوله بمروحة، وضع قطعًا مبللة باردة أو أكياس ثلج ملفوفة بقماش على الرقبة وتحت الإبطين وعند الفخذين."
+            },
+            {
+              "en": "If they are fully awake and able to swallow, give small sips of cool water.",
+              "ar": "إذا كان مستيقظًا تمامًا ويستطيع البلع فأعطه رشفات صغيرة من الماء البارد."
+            },
+            {
+              "en": "Stay with them and keep cooling until the responders arrive.",
+              "ar": "ابقَ معه واستمر في التبريد حتى يصل المسعفون."
+            }
+          ],
+          "warning": {
+            "en": "Confusion, fainting, seizures or a very hot body mean heat stroke, which can be life-threatening. Keep cooling and tell the dispatcher. Do not give drinks to someone who is confused, drowsy or vomiting.",
+            "ar": "التشوّش أو الإغماء أو التشنجات أو ارتفاع حرارة الجسم الشديد تعني ضربة شمس وقد تهدد الحياة. استمر في التبريد وأخبر غرفة العمليات. لا تعطِ شرابًا لمن هو مشوّش أو ناعس أو يتقيأ."
+          }
+        },
+        {
+          "id": "medical-breathing-difficulty",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Asthma attack or trouble breathing",
+            "ar": "نوبة ربو أو صعوبة في التنفس"
+          },
+          "steps": [
+            {
+              "en": "Help them sit upright and lean slightly forward. Loosen tight clothing and keep them calm.",
+              "ar": "ساعده على الجلوس بشكل مستقيم مع الميل قليلًا للأمام، وفُكّ الملابس الضيقة وحافظ على هدوئه."
+            },
+            {
+              "en": "If they have a reliever inhaler, help them use it exactly as prescribed or as the dispatcher tells you.",
+              "ar": "إذا كان معه بخاخ الربو المُسعف فساعده على استخدامه تمامًا كما وُصف له أو كما تطلب غرفة العمليات."
+            },
+            {
+              "en": "Stay with them and keep the area free of smoke, dust and strong smells.",
+              "ar": "ابقَ معه وأبعد عنه الدخان والغبار والروائح القوية."
+            },
+            {
+              "en": "Tell the dispatcher at once if they cannot speak a full sentence, their lips turn blue, or they get worse.",
+              "ar": "أخبر غرفة العمليات فورًا إذا لم يستطع إكمال جملة، أو ازرقّت شفتاه، أو ساءت حالته."
+            }
+          ],
+          "warning": {
+            "en": "If they stop breathing normally, start CPR.",
+            "ar": "إذا توقف عن التنفس بشكل طبيعي فابدأ الإنعاش القلبي الرئوي."
+          }
+        }
+      ]
+    },
+    {
+      "category": "FIRE",
+      "cards": [
+        {
+          "id": "fire-general",
+          "general": true,
+          "minInjured": null,
+          "title": {
+            "en": "Get out and stay safe",
+            "ar": "اخرج وابقَ في أمان"
+          },
+          "steps": [
+            {
+              "en": "Get out now. Do not stop for belongings, and never go back inside.",
+              "ar": "اخرج فورًا ولا تتوقف لأخذ أغراضك، ولا تعد إلى الداخل أبدًا."
+            },
+            {
+              "en": "Stay low under the smoke and cover your nose and mouth with a cloth if you can.",
+              "ar": "ابقَ منخفضًا تحت الدخان، وغطِّ أنفك وفمك بقطعة قماش إن أمكن."
+            },
+            {
+              "en": "Before opening a closed door, touch it with the back of your hand. If it is hot, do not open it. Use another way out.",
+              "ar": "قبل فتح أي باب مغلق المسه بظهر يدك. إذا كان ساخنًا فلا تفتحه واستخدم مخرجًا آخر."
+            },
+            {
+              "en": "Close doors behind you to slow the fire. Use the stairs, never the lift.",
+              "ar": "أغلق الأبواب خلفك لإبطاء الحريق. استخدم السلالم ولا تستخدم المصعد أبدًا."
+            },
+            {
+              "en": "Warn people on your way out, but do not stop to fight the fire.",
+              "ar": "نبّه من تقابلهم أثناء خروجك، لكن لا تتوقف لمحاولة إطفاء الحريق."
+            },
+            {
+              "en": "Go to a safe place well away from the building and stay there. Tell the dispatcher and the firefighters if anyone is still inside.",
+              "ar": "اذهب إلى مكان آمن بعيدًا عن المبنى وابقَ فيه. وأخبر غرفة العمليات ورجال الإطفاء إذا كان أحد ما زال بالداخل."
+            }
+          ],
+          "warning": null
+        },
+        {
+          "id": "fire-trapped",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "If you are trapped",
+            "ar": "إذا حوصرت"
+          },
+          "steps": [
+            {
+              "en": "Close every door between you and the fire, and seal the gaps with wet towels or cloths.",
+              "ar": "أغلق كل الأبواب بينك وبين الحريق، وسُدّ فتحاتها بمناشف أو قماش مبلل."
+            },
+            {
+              "en": "Go to a window and stay low. Signal for help with a bright cloth or a light.",
+              "ar": "اذهب إلى نافذة وابقَ منخفضًا، وأشر لطلب المساعدة بقماش لامع أو ضوء."
+            },
+            {
+              "en": "Tell the dispatcher your floor, room and which window you are at, and keep the chat open.",
+              "ar": "أخبر غرفة العمليات بالطابق والغرفة والنافذة التي تقف عندها، وأبقِ المحادثة مفتوحة."
+            },
+            {
+              "en": "Open the window slightly only if smoke is not coming in. Close it again if smoke enters.",
+              "ar": "افتح النافذة قليلًا فقط إذا لم يدخل منها دخان، وأغلقها إذا دخل الدخان."
+            }
+          ],
+          "warning": {
+            "en": "Do not jump from a height. Wait at the window for the firefighters.",
+            "ar": "لا تقفز من مكان مرتفع. انتظر عند النافذة حتى يصل رجال الإطفاء."
+          }
+        },
+        {
+          "id": "fire-clothes",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Clothes on fire",
+            "ar": "اشتعال الملابس"
+          },
+          "steps": [
+            {
+              "en": "Stop. Do not run.",
+              "ar": "توقف ولا تركض."
+            },
+            {
+              "en": "Drop to the ground and cover your face with your hands.",
+              "ar": "اسقط على الأرض وغطِّ وجهك بيديك."
+            },
+            {
+              "en": "Roll over and over until the flames are out.",
+              "ar": "تقلّب على الأرض حتى تنطفئ النيران."
+            },
+            {
+              "en": "If someone else is on fire, tell them to stop, drop and roll, or smother the flames with a blanket.",
+              "ar": "إذا كان شخص آخر مشتعلًا فاطلب منه التوقف والسقوط والتقلّب، أو أخمد النيران ببطانية."
+            },
+            {
+              "en": "Then cool the burn under cool running water for 20 minutes.",
+              "ar": "ثم برّد الحرق تحت ماء جارٍ بارد لمدة 20 دقيقة."
+            }
+          ],
+          "warning": null
+        },
+        {
+          "id": "fire-oil-electrical",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Cooking oil or electrical fire",
+            "ar": "حريق زيت أو كهرباء"
+          },
+          "steps": [
+            {
+              "en": "If it is safe, turn off the heat or switch off the power at the main switch.",
+              "ar": "إذا كان ذلك آمنًا فأوقف مصدر الحرارة أو افصل الكهرباء من المفتاح الرئيسي."
+            },
+            {
+              "en": "For a small fire in a pan, cover it with a lid or a fire blanket. Do not lift it to check.",
+              "ar": "لحريق صغير في وعاء، غطِّه بغطاء أو ببطانية إطفاء ولا ترفعه لتتفقد."
+            },
+            {
+              "en": "If the fire spreads or you are not sure, leave immediately and close the door behind you.",
+              "ar": "إذا انتشر الحريق أو لم تكن متأكدًا فاخرج فورًا وأغلق الباب خلفك."
+            }
+          ],
+          "warning": {
+            "en": "Never use water on an oil or electrical fire, and never carry a burning pan.",
+            "ar": "لا تستخدم الماء أبدًا على حريق زيت أو كهرباء، ولا تحمل وعاءً مشتعلًا."
+          }
+        },
+        {
+          "id": "fire-gas-leak",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Gas leak or smell of gas",
+            "ar": "تسرب غاز أو رائحة غاز"
+          },
+          "steps": [
+            {
+              "en": "Do not use lighters, matches or any switch, and do not turn electrical items on or off.",
+              "ar": "لا تستخدم ولاعة أو أعواد ثقاب أو أي مفتاح كهربائي، ولا تشغّل أو تطفئ أي جهاز كهربائي."
+            },
+            {
+              "en": "If it is safe, close the gas valve or the cylinder regulator.",
+              "ar": "إذا كان ذلك آمنًا فأغلق محبس الغاز أو منظّم الأسطوانة."
+            },
+            {
+              "en": "Open doors and windows to let the gas out.",
+              "ar": "افتح الأبواب والنوافذ ليخرج الغاز."
+            },
+            {
+              "en": "Leave the building by the stairs and warn your neighbours. Use your phone only once you are outside and away from the smell.",
+              "ar": "اخرج من المبنى عبر السلالم ونبّه جيرانك. لا تستخدم هاتفك إلا بعد أن تصبح في الخارج وبعيدًا عن الرائحة."
+            },
+            {
+              "en": "Do not go back in until the firefighters or the gas company say it is safe.",
+              "ar": "لا تعد إلى الداخل حتى يعلن رجال الإطفاء أو شركة الغاز أن المكان آمن."
+            }
+          ],
+          "warning": null
+        },
+        {
+          "id": "fire-smoke-inhalation",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Breathed in smoke",
+            "ar": "استنشاق الدخان"
+          },
+          "steps": [
+            {
+              "en": "Move the person into fresh air straight away.",
+              "ar": "انقل المصاب إلى هواء نقي فورًا."
+            },
+            {
+              "en": "Help them sit upright and keep them calm. Loosen tight clothing.",
+              "ar": "ساعده على الجلوس بشكل مستقيم وحافظ على هدوئه، وفُكّ الملابس الضيقة."
+            },
+            {
+              "en": "Watch their breathing. If they become unresponsive and stop breathing normally, start CPR.",
+              "ar": "راقب تنفسه. وإذا فقد الاستجابة وتوقف عن التنفس بشكل طبيعي فابدأ الإنعاش القلبي الرئوي."
+            }
+          ],
+          "warning": {
+            "en": "Tell the dispatcher even if they feel fine. Smoke can cause problems hours later.",
+            "ar": "أخبر غرفة العمليات حتى لو شعر بأنه بخير، فقد يسبب الدخان مشكلات بعد ساعات."
+          }
+        }
+      ]
+    },
+    {
+      "category": "POLICE",
+      "cards": [
+        {
+          "id": "police-general",
+          "general": true,
+          "minInjured": null,
+          "title": {
+            "en": "If you are in danger",
+            "ar": "إذا كنت في خطر"
+          },
+          "steps": [
+            {
+              "en": "If you can get away safely, leave and go to a safe, busy place. Leave your belongings behind.",
+              "ar": "إذا استطعت الابتعاد بأمان فاخرج واذهب إلى مكان آمن ومزدحم، واترك أغراضك."
+            },
+            {
+              "en": "If you cannot leave, hide somewhere out of sight, and lock or block the door.",
+              "ar": "إذا لم تستطع المغادرة فاختبئ في مكان بعيد عن الأنظار، وأغلق الباب بالمفتاح أو سُدّه."
+            },
+            {
+              "en": "Stay quiet and silence your phone’s sound and vibration. Use the chat to update the dispatcher: what is happening, where, and how many people.",
+              "ar": "التزم الهدوء وأوقف صوت هاتفك واهتزازه. استخدم المحادثة لإبلاغ غرفة العمليات: ماذا يحدث وأين وكم شخصًا."
+            },
+            {
+              "en": "Do not confront, chase or argue with anyone.",
+              "ar": "لا تواجه أحدًا ولا تلاحقه ولا تجادله."
+            },
+            {
+              "en": "When the police arrive, stay calm, keep your hands visible and empty, and follow their instructions.",
+              "ar": "عند وصول الشرطة حافظ على هدوئك، وأبقِ يديك ظاهرتين وفارغتين، واتبع تعليماتهم."
+            },
+            {
+              "en": "If you can, do not touch or move things at the scene.",
+              "ar": "إن أمكن، لا تلمس الأشياء في مكان الحادث ولا تنقلها."
+            }
+          ],
+          "warning": null
+        },
+        {
+          "id": "police-followed",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Someone is following or threatening you",
+            "ar": "شخص يتتبعك أو يهددك"
+          },
+          "steps": [
+            {
+              "en": "Go to a busy, well-lit place, such as a shop, café, pharmacy or petrol station, and ask for help.",
+              "ar": "اذهب إلى مكان مزدحم ومضاء جيدًا، مثل محل أو مقهى أو صيدلية أو محطة وقود، واطلب المساعدة."
+            },
+            {
+              "en": "Do not go home or to a quiet place, because the person may follow you.",
+              "ar": "لا تذهب إلى بيتك أو إلى مكان هادئ، فقد يتبعك الشخص."
+            },
+            {
+              "en": "Keep your phone with you and tell the dispatcher in the chat where you are and what the person looks like.",
+              "ar": "أبقِ هاتفك معك وأخبر غرفة العمليات في المحادثة بمكانك وبمواصفات الشخص."
+            },
+            {
+              "en": "Note what you can: their description, clothes, vehicle and plate number, and the direction they went.",
+              "ar": "دوّن ما تستطيع: شكله وملابسه ومركبته ورقم لوحتها والاتجاه الذي سلكه."
+            },
+            {
+              "en": "If someone you trust is nearby, ask them to stay with you until the police arrive.",
+              "ar": "إذا كان قريبًا منك شخص تثق به فاطلب منه البقاء معك حتى تصل الشرطة."
+            }
+          ],
+          "warning": null
+        },
+        {
+          "id": "police-robbery",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Robbery or theft",
+            "ar": "سرقة أو سطو"
+          },
+          "steps": [
+            {
+              "en": "Your safety comes first. Do not resist or chase anyone, and hand over what is demanded.",
+              "ar": "سلامتك أولًا. لا تقاوم ولا تلاحق أحدًا، وسلّم ما يُطلب منك."
+            },
+            {
+              "en": "Move to a safe place before anything else.",
+              "ar": "انتقل إلى مكان آمن قبل أي شيء آخر."
+            },
+            {
+              "en": "Tell the dispatcher what happened, how many people were involved, what they looked like, any vehicle or plate number, and which way they went.",
+              "ar": "أخبر غرفة العمليات بما حدث وعدد الأشخاص ومواصفاتهم وأي مركبة أو رقم لوحة والاتجاه الذي ذهبوا إليه."
+            },
+            {
+              "en": "Do not touch or clean the scene. Stay nearby if it is safe, so you can speak to the police.",
+              "ar": "لا تلمس مكان الحادث ولا تنظّفه. وابقَ قريبًا إن كان ذلك آمنًا لتتحدث مع الشرطة."
+            }
+          ],
+          "warning": null
+        },
+        {
+          "id": "police-violence-at-home",
+          "general": false,
+          "minInjured": null,
+          "title": {
+            "en": "Violence at home",
+            "ar": "عنف داخل المنزل"
+          },
+          "steps": [
+            {
+              "en": "If you can leave safely, go to a neighbour, relative or friend you trust, or to a safe public place.",
+              "ar": "إذا استطعت المغادرة بأمان فاذهب إلى جار أو قريب أو صديق تثق به، أو إلى مكان عام آمن."
+            },
+            {
+              "en": "If you cannot leave, go to a room with a door that locks and a way out, and stay away from the kitchen and anywhere with weapons.",
+              "ar": "إذا لم تستطع المغادرة فاذهب إلى غرفة بابها يُقفل ولها مخرج، وابتعد عن المطبخ وعن أي مكان فيه أسلحة."
+            },
+            {
+              "en": "Keep your phone with you. If the person is near, use the chat instead of speaking.",
+              "ar": "أبقِ هاتفك معك. وإذا كان الشخص قريبًا منك فاستخدم المحادثة بدل الكلام."
+            },
+            {
+              "en": "Tell the dispatcher if there are children in the home, if there are weapons, and if anyone is hurt.",
+              "ar": "أخبر غرفة العمليات إن كان في المنزل أطفال، وإن كانت هناك أسلحة، وإن كان أحد مصابًا."
+            },
+            {
+              "en": "If you are attacked, protect your head and body, and try to get to a door that leads out.",
+              "ar": "إذا تعرضت لاعتداء فاحمِ رأسك وجسمك، وحاول الوصول إلى باب يؤدي إلى الخارج."
+            }
+          ],
+          "warning": {
+            "en": "If someone is hurt, tell the dispatcher so a medical team can be sent too.",
+            "ar": "إذا كان أحد مصابًا فأخبر غرفة العمليات ليُرسَل فريق طبي أيضًا."
+          }
+        }
+      ]
+    }
+  ]
+}

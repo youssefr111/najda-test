@@ -1,0 +1,13 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.najda.mobile",
+    "sha256_cert_fingerprints": [
+      "FA:C6:17:45:DC:09:03:78:6F:B9:ED:E6:2A:96:2B:39:9F:73:48:F0:BB:6F:89:9B:83:32:66:75:91:03:3B:9C",
+      "59:CD:A6:A9:EE:55:2A:FB:DD:28:06:3D:42:FB:F2:58:35:70:27:71:B4:CD:91:A6:E3:AE:CE:CE:F8:5C:FE:80",
+      "D2:65:BF:EB:C0:6F:BD:9E:AD:99:A3:CC:40:56:67:5D:EA:F9:86:82:ED:14:29:27:72:25:BA:D5:B7:64:46:A6",
+      "86:8E:79:26:D4:18:1B:D4:78:0E:2E:EB:B5:C0:CB:B6:1A:1A:CC:7D:E6:0D:72:2F:BE:B9:63:05:96:B2:D9:76"
+    ]
+  }
+}]

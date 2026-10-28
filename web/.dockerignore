@@ -1,0 +1,11 @@
+node_modules/
+.next/
+npm-debug.log*
+.git
+.idea/
+.vscode/
+
+# Never bake secrets into an image layer. (Public NEXT_PUBLIC_* values arrive as build args, not from files.)
+.env
+.env.*
+!.env.example

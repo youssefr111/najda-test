@@ -1,0 +1,9 @@
+# Pin to EXACTLY what the AI team trained with (see "libraries" in each manifest.json).
+fastapi==0.115.*
+uvicorn[standard]==0.32.*
+pydantic>=2.7
+pandas>=2.2
+numpy
+joblib
+scikit-learn==1.8.0
+xgboost==3.0.*

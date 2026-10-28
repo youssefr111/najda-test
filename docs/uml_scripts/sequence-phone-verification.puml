@@ -1,0 +1,36 @@
+@startuml sequence-phone-verification
+skinparam backgroundColor white
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam ArrowColor #1E3A5F
+skinparam SequenceLifeLineBorderColor #8A97A8
+skinparam SequenceLifeLineBackgroundColor white
+skinparam ParticipantBorderColor #2E5C8A
+skinparam ParticipantBackgroundColor #EAF2FB
+skinparam ParticipantFontColor #1F2937
+skinparam SequenceArrowFontColor #1F2937
+skinparam NoteBackgroundColor #F4F6F8
+skinparam NoteBorderColor #8A97A8
+
+actor "Registered User" as U
+participant "Account Page" as App
+participant "Firebase Auth" as FB
+participant "NAJDA Backend" as BE
+
+U -> App : Enter/change phone number
+App -> BE : PATCH /api/users/me/phone\n(phone)
+BE -> BE : setUnverifiedPhone(phone)\nphoneVerified = false
+BE --> App : 200 OK (phone saved, unverified)
+
+U -> App : Tap "Verify Phone"
+App -> FB : Phone-OTP sign-in / linking flow
+FB --> App : SMS code sent
+U -> App : Enter OTP code
+App -> FB : Confirm code
+FB --> App : Firebase ID token\n(phone_number claim verified)
+App -> BE : POST /api/users/me/sync-phone\n(Bearer token)
+BE -> BE : read verified phone from\ntoken's "firebasePhone" attribute
+BE -> BE : syncVerifiedPhone(phone)\nphoneVerified = true
+BE --> App : 200 OK (phone verified)
+
+@enduml
