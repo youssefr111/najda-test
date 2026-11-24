@@ -1,0 +1,13 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*189/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*568/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*243/1000\relax}@{}}
+\caption{How accounts are created}\label{tab:accounts}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Role(s)} & \textcolor{white}{\sffamily\bfseries\small How the account is created} & \textcolor{white}{\sffamily\bfseries\small How the person signs in}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Role(s)} & \textcolor{white}{\sffamily\bfseries\small How the account is created} & \textcolor{white}{\sffamily\bfseries\small How the person signs in}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{Citizen} & Self-registration. \textbf{E-mail path:} e-mail address verified by a six-digit code, then name, phone, address, gender, password and acceptance of the current Terms and Privacy Policy. \textbf{Google path:} sign in with Google, then complete phone, address and gender. & E-mail and password, or Google\\
+\textbf{First Responder} & A citizen applies with documents; an Admin approves, which changes the role and creates the personal unit. & As a citizen\\
+\textbf{Ambulance Crew, Police, Firefighter, Dispatcher, Hospital Staff, Admin, Super Admin} & Provisioned by an Admin (or by a Facility Manager for their own facility’s staff). The server creates the Firebase account with a throw-away password and returns a one-time password-reset link to hand to the employee. & E-mail and the password the employee chose through the link\\
+\textbf{Facility Manager} & Provisioned by an Admin and linked to exactly one facility. & As an employee\\
+\end{longtable}}

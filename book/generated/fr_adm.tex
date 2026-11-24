@@ -1,0 +1,17 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*146/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*629/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*107/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*118/1000\relax}@{}}
+\caption{Functional requirements: facility, unit and content administration}\label{tab:fr-adm}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Requirement} & \textcolor{white}{\sffamily\bfseries\small Priority} & \textcolor{white}{\sffamily\bfseries\small Platform}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Requirement} & \textcolor{white}{\sffamily\bfseries\small Priority} & \textcolor{white}{\sffamily\bfseries\small Platform}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{FR-ADM-01} & An Admin can create and edit facilities (hospital, ambulance station, fire station, police station) with name, address and coordinates, and list them with paging. & Must & Web\\
+\textbf{FR-ADM-02} & Before changing a facility’s type the Admin sees an impact assessment (units and staff that would no longer fit). & Should & Web\\
+\textbf{FR-ADM-03} & A first start loads a bundled list of Egyptian facilities (about 800). An Admin can additionally import hospitals, fire stations and police stations from OpenStreetMap through the Overpass API (ambulance stations are added manually) and backfill missing addresses through reverse geocoding; imports skip facilities already present. & Should & Web\\
+\textbf{FR-ADM-04} & A facility is “registered” (usable as a destination or station) only while it has a linked active staff member or a non-archived unit; the flag is maintained automatically and reconciled nightly. & Must & Backend\\
+\textbf{FR-ADM-05} & An Admin can create, edit and retire response units. A unit with history is archived instead of deleted, after a delete-impact check. & Must & Web\\
+\textbf{FR-ADM-06} & An Admin can reconcile unit statuses that no longer match reality (for example a unit marked busy with no active mission). & Should & Web\\
+\textbf{FR-ADM-07} & An Admin can search all incidents and edit the first-aid guidance content. & Should & Web\\
+\textbf{FR-ADM-08} & A Facility Manager can list, create, edit and retire the units of their own facility, and list, create, disable and enable its staff. The unit type and the permitted staff roles are determined by the facility type, never by the request. & Must & Web\\
+\end{longtable}}

@@ -1,0 +1,16 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-4\tabcolsep)*474/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-4\tabcolsep)*526/1000\relax}@{}}
+\caption{Endpoints that do not require a token}\label{tab:public-endpoints}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Endpoint} & \textcolor{white}{\sffamily\bfseries\small Purpose}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Endpoint} & \textcolor{white}{\sffamily\bfseries\small Purpose}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{POST /\allowbreak{}api/\allowbreak{}auth/\allowbreak{}register/\allowbreak{}otp/\allowbreak{}send, /\allowbreak{}otp/\allowbreak{}verify, /\allowbreak{}citizen/\allowbreak{}password} & E-mail registration (rate limited).\\
+\textbf{POST /\allowbreak{}api/\allowbreak{}auth/\allowbreak{}register/\allowbreak{}citizen} & Citizen profile creation for a Firebase identity (the token is read by the filter; 401 without it).\\
+\textbf{GET /\allowbreak{}api/\allowbreak{}auth/\allowbreak{}email-exists} & Whether an address is registered (rate limited).\\
+\textbf{POST /\allowbreak{}api/\allowbreak{}kyc/\allowbreak{}webhook} & Didit webhook; authenticated by signature, not by token.\\
+\textbf{GET /\allowbreak{}api/\allowbreak{}legal/\allowbreak{}documents/\allowbreak{}\{type\}} & Current Terms and Privacy Policy.\\
+\textbf{GET /\allowbreak{}api/\allowbreak{}app/\allowbreak{}version, /\allowbreak{}api/\allowbreak{}health, /\allowbreak{}api/\allowbreak{}status, /\allowbreak{}actuator/\allowbreak{}health} & Release lookup and health.\\
+\textbf{/\allowbreak{}ws/\allowbreak{}**} & WebSocket handshake (origin-restricted).\\
+\end{longtable}}

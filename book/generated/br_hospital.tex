@@ -1,0 +1,14 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*92/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*736/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*172/1000\relax}@{}}
+\caption{Business rules: hospital coordination}\label{tab:br-hospital}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Rule} & \textcolor{white}{\sffamily\bfseries\small Enforced in}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Rule} & \textcolor{white}{\sffamily\bfseries\small Enforced in}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{BR-31} & Only the LEAD of an ambulance mission that is ARRIVED can select a destination. Exactly one of a registered hospital or a free-text destination is required; one transfer per mission. & Hospital transfer service\\
+\textbf{BR-32} & The recommended list contains registered hospitals within 30 km of the incident, nearest first. & Hospital transfer service\\
+\textbf{BR-33} & Selecting a registered hospital notifies its staff. A free-text destination notifies nobody and accepts no vitals. & Transfer service, notification publisher\\
+\textbf{BR-34} & Transfer states advance SELECTED $\rightarrow$ EN\_\allowbreak{}ROUTE $\rightarrow$ ARRIVED in order; arrival completes the mission, frees the unit and resolves the incident if it was the last active mission. & Transfer service\\
+\textbf{BR-35} & A medical profile is visible to a dispatcher; to the crew of an ambulance or first-responder unit on an active mission; and to staff of the hospital selected as the destination, from selection until the mission closes. Only while the incident is open, only if consent is on, never to administrators; every read is audited and fails if the audit cannot be written. & Incident medical-profile service\\
+\end{longtable}}

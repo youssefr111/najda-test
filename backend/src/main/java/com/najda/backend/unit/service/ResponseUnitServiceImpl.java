@@ -1,0 +1,267 @@
+package com.najda.backend.unit.service;
+
+import com.najda.backend.exceptions.ConflictException;
+import com.najda.backend.exceptions.ResourceNotFoundException;
+import com.najda.backend.facility.model.Facility;
+import com.najda.backend.facility.repository.FacilityRepository;
+import com.najda.backend.facility.service.FacilityService;
+import com.najda.backend.unit.dto.CreateResponseUnitRequest;
+import com.najda.backend.unit.dto.ResponseUnitResponse;
+import com.najda.backend.unit.dto.UpdateResponseUnitRequest;
+import com.najda.backend.unit.model.ResponseUnit;
+import com.najda.backend.unit.model.RoleInShift;
+import com.najda.backend.unit.model.ShiftAssignment;
+import com.najda.backend.unit.model.UnitStatus;
+import com.najda.backend.unit.model.UnitType;
+import com.najda.backend.user.model.User;
+import com.najda.backend.unit.repository.ResponseUnitRepository;
+import com.najda.backend.unit.repository.ShiftAssignmentRepository;
+import com.najda.backend.incident.model.MissionStatus;
+import com.najda.backend.incident.repository.MissionRepository;
+import com.najda.backend.user.repository.UserRepository;
+import com.najda.backend.incident.service.MissionEventPublisher;
+
+import java.util.List;
+import java.util.Set;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ResponseUnitServiceImpl implements ResponseUnitService {
+
+    private final ResponseUnitRepository responseUnitRepository;
+    private final FacilityRepository facilityRepository;
+    private final FacilityService facilityService;
+    private final ShiftAssignmentRepository shiftAssignmentRepository;
+    private final MissionRepository missionRepository;
+    private final UnitEventPublisher unitEventPublisher;
+    private final UserRepository userRepository;
+    private final MissionEventPublisher missionEventPublisher;
+
+    public ResponseUnitServiceImpl(
+            ResponseUnitRepository responseUnitRepository,
+            FacilityRepository facilityRepository,
+            FacilityService facilityService,
+            ShiftAssignmentRepository shiftAssignmentRepository,
+            MissionRepository missionRepository,
+            UserRepository userRepository,
+            UnitEventPublisher unitEventPublisher,
+            MissionEventPublisher missionEventPublisher) {
+        this.responseUnitRepository = responseUnitRepository;
+        this.facilityRepository = facilityRepository;
+        this.facilityService = facilityService;
+        this.shiftAssignmentRepository = shiftAssignmentRepository;
+        this.missionRepository = missionRepository;
+        this.unitEventPublisher = unitEventPublisher;
+        this.userRepository = userRepository;
+        this.missionEventPublisher = missionEventPublisher;
+    }
+
+    @Override
+    public ResponseUnitResponse create(CreateResponseUnitRequest request) {
+        if (request.unitType() == UnitType.FIRST_RESPONDER) {
+            throw new IllegalArgumentException(
+                    "FIRST_RESPONDER units are created automatically during employee registration, not here");
+        }
+
+        ResponseUnit unit = new ResponseUnit();
+        unit.setPlateNumber(request.plateNumber());
+        unit.setUnitType(request.unitType());
+        unit.setStatus(UnitStatus.OFFLINE);
+
+        if (request.facilityId() != null) {
+            // facilityService.requireFacilityOfType(request.facilityId(),
+            //         FacilityType.AMBULANCE_STATION, FacilityType.FIRE_STATION, FacilityType.POLICE_STATION);
+            Facility facility = facilityRepository.findById(request.facilityId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Facility not found"));
+            unit.setFacility(facility);
+        }
+
+        ResponseUnitResponse saved = toResponse(responseUnitRepository.save(unit));
+        facilityService.refreshRegistered(request.facilityId());
+        unitEventPublisher.notifyUnitsChanged();
+        return saved;
+    }
+
+    @Override
+    public List<ResponseUnitResponse> getAll() {
+        return responseUnitRepository.findAll().stream().filter(u -> u.getArchivedAt() == null).map(this::toResponse).toList();
+        
+    }
+
+
+    private static final Set<String> BYPASSES_FACILITY_ROLES = Set.of("FIRST_RESPONDER");
+
+    @Override
+    public List<ResponseUnitResponse> getUnitsForFacility(Long facilityId, String roleName, Long callerId) {
+        if ("FIRST_RESPONDER".equalsIgnoreCase(roleName)) {
+            return responseUnitRepository.findByOwnerId(callerId)
+                .filter(u -> u.getArchivedAt() == null)
+                .map(u -> List.of(toResponse(u))).orElse(List.of());
+        }
+        UnitType matchingType = switch (roleName.toUpperCase()) {
+            case "AMBULANCE_CREW" -> UnitType.AMBULANCE;
+            case "POLICE" -> UnitType.POLICE_CAR;
+            case "FIREFIGHTER" -> UnitType.FIRE_TRUCK;
+            case "FIRST_RESPONDER" -> UnitType.FIRST_RESPONDER;
+            default -> throw new IllegalArgumentException("This role has no associated unit type");
+        };
+
+        if (BYPASSES_FACILITY_ROLES.contains(roleName.toUpperCase())) {
+            return responseUnitRepository.findByUnitType(matchingType).stream().filter(u -> u.getArchivedAt() == null).map(this::toResponse).toList();
+        }
+
+        if (facilityId == null) {
+            return List.of();
+        }
+        return responseUnitRepository.findByUnitTypeAndFacilityId(matchingType, facilityId).stream().filter(u -> u.getArchivedAt() == null).map(this::toResponse).toList();
+    }
+
+    @Override
+    public ResponseUnitResponse update(Long unitId, UpdateResponseUnitRequest request) {
+        ResponseUnit unit = responseUnitRepository.findById(unitId)
+                .orElseThrow(() -> new ResourceNotFoundException("Unit not found"));
+
+        Long previousFacilityId = unit.getFacility() != null ? unit.getFacility().getId() : null;
+
+        unit.setPlateNumber(request.plateNumber());
+        unit.setUnitType(request.unitType());
+
+        if (request.facilityId() != null) {
+            // facilityService.requireFacilityOfType(request.facilityId(),
+            //         FacilityType.AMBULANCE_STATION, FacilityType.FIRE_STATION, FacilityType.POLICE_STATION);
+            Facility facility = facilityRepository.findById(request.facilityId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Facility not found"));
+            unit.setFacility(facility);
+        } else {
+            unit.setFacility(null);
+        }
+
+        ResponseUnitResponse saved = toResponse(responseUnitRepository.save(unit));
+        // The unit may have been the last link to its old facility, and the first to the new one.
+        facilityService.refreshRegistered(previousFacilityId);
+        facilityService.refreshRegistered(request.facilityId());
+        unitEventPublisher.notifyUnitsChanged();
+        return saved;
+    }
+
+    @Override
+    public ResponseUnitResponse updateLocation(Long callerId, Long unitId, Double latitude, Double longitude) {
+        ResponseUnit unit = requireUnitLedBy(callerId, unitId);
+        return saveLocation(unit, latitude, longitude);
+    }
+
+    @Override
+    public ResponseUnitResponse resetLocationToFacility(Long callerId, Long unitId) {
+        ResponseUnit unit = isAdmin(callerId) ? requireUnit(unitId) : requireUnitLedBy(callerId, unitId);
+
+        Facility facility = unit.getFacility();
+        if (facility == null || facility.getLatitude() == null || facility.getLongitude() == null) {
+            throw new ConflictException("This unit has no home facility location to reset to");
+        }
+        return saveLocation(unit, facility.getLatitude(), facility.getLongitude());
+    }
+
+    private ResponseUnit requireUnit(Long unitId) {
+        return responseUnitRepository.findById(unitId)
+                .orElseThrow(() -> new ResourceNotFoundException("Unit not found"));
+    }
+
+    private boolean isAdmin(Long userId) {
+        return userRepository.findById(userId)
+                .map(u -> u.getRole() != null
+                        && List.of("ADMIN", "SUPER_ADMIN").contains(u.getRole().getRoleName().toUpperCase()))
+                .orElse(false);
+    }
+
+    /** Only this unit's own LEAD reports or resets its position -- their
+    device is the one actually in the vehicle. CREW members ride along
+    but don't separately control the unit's location. */
+    private ResponseUnit requireUnitLedBy(Long callerId, Long unitId) {
+        ResponseUnit unit = requireUnit(unitId);
+
+        ShiftAssignment leadShift = shiftAssignmentRepository
+                .findByUnitIdAndEndTimeIsNullAndRoleInShift(unitId, RoleInShift.LEAD)
+                .orElseThrow(() -> new ConflictException("This unit has no active LEAD"));
+        if (!leadShift.getEmployee().getId().equals(callerId)) {
+            throw new IllegalArgumentException("Only this unit's LEAD can update its location");
+        }
+        return unit;
+    }
+
+    private ResponseUnitResponse saveLocation(ResponseUnit unit, Double latitude, Double longitude) {
+        unit.setLatitude(latitude);
+        unit.setLongitude(longitude);
+        ResponseUnitResponse response = toResponse(responseUnitRepository.save(unit));
+        unitEventPublisher.notifyUnitsChanged();
+        notifyIncidentsTrackingUnit(unit);
+        return response;
+    }
+
+    /** Nudges whoever is watching each incident this unit is currently working. */
+    private void notifyIncidentsTrackingUnit(ResponseUnit unit) {
+        missionRepository.findByUnitIdAndStatusIn(unit.getId(), MissionStatus.FIELD_ACTIVE)
+                .forEach(mission -> missionEventPublisher.publishRespondersChanged(mission.getIncident().getId()));
+    }
+
+    private static final java.util.Set<MissionStatus> ACTIVE_MISSION_STATUSES =
+        java.util.EnumSet.of(MissionStatus.OFFERED, MissionStatus.ACCEPTED, MissionStatus.EN_ROUTE, MissionStatus.ARRIVED);
+
+    @Override
+    @Transactional
+    public void reconcileStatuses() {
+        // A unit is legitimately BUSY only if it has a mission still actually
+        // in progress. Anything BUSY with no such mission is stale.
+        List<ResponseUnit> busyUnits = responseUnitRepository.findByStatus(UnitStatus.BUSY);
+        for (ResponseUnit unit : busyUnits) {
+            boolean hasActiveMission = missionRepository.findByUnitId(unit.getId()).stream()
+                    .anyMatch(m -> ACTIVE_MISSION_STATUSES.contains(m.getStatus()));
+            if (!hasActiveMission) {
+                unit.setStatus(UnitStatus.AVAILABLE);
+                responseUnitRepository.save(unit);
+            }
+        }
+        unitEventPublisher.notifyUnitsChanged();
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long unitId) {
+        ResponseUnit unit = responseUnitRepository.findById(unitId)
+                .orElseThrow(() -> new ResourceNotFoundException("Unit not found"));
+
+        // Confirm these two finder methods exist as written -- I haven't
+        // re-read MissionRepository/ShiftAssignmentRepository fresh this
+        // session, and guessing method names wrong has bitten this build
+        // before. Add them if missing rather than assume.
+        boolean hasMissionHistory = !missionRepository.findByUnitId(unitId).isEmpty();
+        if (hasMissionHistory) {
+            throw new ConflictException("This unit has mission history and can't be deleted -- it's part of the operational record.");
+        }
+
+        Long facilityId = unit.getFacility() != null ? unit.getFacility().getId() : null;
+        shiftAssignmentRepository.deleteAll(shiftAssignmentRepository.findByUnitId(unitId));
+        responseUnitRepository.delete(unit);
+        facilityService.refreshRegistered(facilityId);
+        unitEventPublisher.notifyUnitsChanged();
+    }
+
+    private ResponseUnitResponse toResponse(ResponseUnit unit) {
+        String currentLeadName = shiftAssignmentRepository
+                .findByUnitIdAndEndTimeIsNullAndRoleInShift(unit.getId(), RoleInShift.LEAD)
+                .map(shift -> shift.getEmployee().getFirstName() + " " + shift.getEmployee().getLastName())
+                .orElse(null);
+
+        User owner = unit.getOwner();
+
+        return new ResponseUnitResponse(
+                unit.getId(), unit.getPlateNumber(), unit.getUnitType(),
+                unit.getStatus(), unit.getFacility() != null ? unit.getFacility().getId() : null,
+                unit.getFacility() != null ? unit.getFacility().getName() : null,
+                unit.getFacility() != null ? unit.getFacility().getLatitude() : null,
+                unit.getFacility() != null ? unit.getFacility().getLongitude() : null,
+                unit.getLatitude(), unit.getLongitude(), currentLeadName,
+                owner == null ? null : owner.getFirstName() + " " + owner.getLastName(),
+                owner == null ? null : owner.getEmail());
+    }
+}

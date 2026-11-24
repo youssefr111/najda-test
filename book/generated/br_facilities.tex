@@ -1,0 +1,14 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*92/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*736/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*172/1000\relax}@{}}
+\caption{Business rules: facilities, units and content}\label{tab:br-facilities}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Rule} & \textcolor{white}{\sffamily\bfseries\small Enforced in}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Rule} & \textcolor{white}{\sffamily\bfseries\small Enforced in}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{BR-36} & A facility is “registered” while it has an active linked staff member or a non-archived unit. The flag is refreshed on every link change and reconciled nightly. Only registered hospitals can be destinations. & Facility service, reconciler\\
+\textbf{BR-37} & A facility manager runs exactly one facility; the unit type (hospital or ambulance station $\rightarrow$ ambulance, fire station $\rightarrow$ fire truck, police station $\rightarrow$ police car) and the permitted staff roles come from the facility type, never from the request. & Facility-manager policy\\
+\textbf{BR-38} & Plate numbers are unique. A unit with no history is deleted; a unit with history is archived (offline, kept for the record). Removal is refused while the unit is on a live mission or someone is on shift with it. & Facility-manager service\\
+\textbf{BR-39} & Changing a facility’s type shows an impact assessment first; units and staff that no longer fit are handled by the change. & Facility type-change service\\
+\textbf{BR-40} & Facility import skips unnamed entries and facilities already at the same coordinates; ambulance stations are never imported. & Facility seeder\\
+\end{longtable}}

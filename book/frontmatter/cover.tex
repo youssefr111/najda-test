@@ -1,0 +1,56 @@
+% ----------------------------------------------------------------------
+%  Cover page
+% ----------------------------------------------------------------------
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[najdanavy] (current page.north west) rectangle ($(current page.north east)+(0,-0.55cm)$);
+  \fill[najdanavy] (current page.south west) rectangle ($(current page.south east)+(0,0.55cm)$);
+  \fill[najdablue] ($(current page.north west)+(0,-0.55cm)$) rectangle ($(current page.north east)+(0,-0.68cm)$);
+  \fill[najdablue] ($(current page.south west)+(0,0.55cm)$) rectangle ($(current page.south east)+(0,0.68cm)$);
+\end{tikzpicture}
+\centering
+\vspace*{0.2cm}
+\includegraphics[height=2.3cm]{figures/branding/logo.jpeg}\par
+\vspace{0.25cm}
+{\sffamily\najdasemibold\Large\color{najdanavy}\University\par}
+\vspace{0.1cm}
+{\sffamily\small\color{najdagrey}\Faculty\ \ \textbullet\ \ \Department\par}
+
+\vfill
+{\sffamily\bfseries\fontsize{62}{66}\selectfont\color{najdanavy}\ProjectName\par}
+\vspace{0.2cm}
+\begin{tikzpicture}
+  \draw[najdablue,line width=1.5pt,line cap=round,line join=round]
+    (0,0) -- (3.4,0) -- (3.65,0.42) -- (4.0,-0.55) -- (4.4,0.95) -- (4.75,0) -- (8.2,0);
+  \fill[najdared] (4.4,0.95) circle (2.1pt);
+\end{tikzpicture}\par
+\vspace{0.3cm}
+{\sffamily\najdamedium\Large\color{najdablue}\ProjectFullName\par}
+\vspace{0.2cm}
+{\small\itshape\color{najdagrey}\ProjectTagline\par}
+
+\vfill
+{\small\color{najdagrey}A Graduation Project Submitted in Partial Fulfillment\\
+of the Requirements for the Degree of\\[3pt]
+{\normalsize\bfseries\color{najdanavy}\Degree}\par}
+
+\vfill
+\vspace{0.35cm}
+{\sffamily\najdasemibold\scriptsize\color{najdablue}\addfontfeature{LetterSpace=14}PREPARED BY\par}
+\vspace{0.25cm}
+{\large\buildteamrows
+\begin{tabular}{@{}c@{\hspace{2.2cm}}c@{}}
+\TeamTabRows
+\end{tabular}\par}
+
+\vspace{0.7cm}
+{\sffamily\najdasemibold\scriptsize\color{najdablue}\addfontfeature{LetterSpace=14}SUPERVISED BY\par}
+\vspace{0.25cm}
+{\large\Supervisor\par}
+
+\vfill
+{\sffamily\color{najdagrey}\SubmissionDate\par}
+\vspace{0.7cm}
+\end{titlepage}
+\clearpage

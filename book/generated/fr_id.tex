@@ -1,0 +1,22 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*146/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*629/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*107/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*118/1000\relax}@{}}
+\caption{Functional requirements: identity verification, legal consent and medical profile}\label{tab:fr-id}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Requirement} & \textcolor{white}{\sffamily\bfseries\small Priority} & \textcolor{white}{\sffamily\bfseries\small Platform}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Requirement} & \textcolor{white}{\sffamily\bfseries\small Priority} & \textcolor{white}{\sffamily\bfseries\small Platform}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{FR-ID-01} & A user can start identity verification; the system opens a hosted Didit session and records the user’s verification status (not started, in progress, in review, verified, declined, expired, abandoned). & Must & Web, Mobile\\
+\textbf{FR-ID-02} & The verification status is written only by the backend: from the signed Didit webhook, from a reconciliation with the provider when a status is stale, or from an audited Super Admin override. A person can start again after a decline, expiry or abandonment. & Must & Backend\\
+\textbf{FR-ID-03} & Webhooks are authenticated by signature and timestamp, de-duplicated by event id, and confirmed against the provider’s decision before the status changes. & Must & Backend\\
+\textbf{FR-ID-04} & Deployments can require verified identity before a citizen may report an emergency. The requirement can exempt roles and can grandfather accounts created before a cut-off date. & Should & Backend\\
+\textbf{FR-ID-05} & A Super Admin can mark a user verified or reset a user’s verification (which also deletes the provider sessions). & Should & Web\\
+\textbf{FR-LEG-01} & The system stores versioned Terms and Privacy Policy documents in English and Arabic. A Super Admin can publish a new version, optionally requiring re-acceptance. & Must & Web\\
+\textbf{FR-LEG-02} & Registration records acceptance of the latest versions. When a version that requires acceptance is published, every user is notified and must accept before using protected features; the API answers 403 LEGAL\_\allowbreak{}CONSENT\_\allowbreak{}REQUIRED until they do. & Must & Web, Mobile\\
+\textbf{FR-LEG-03} & Anyone can read the current Terms and Privacy Policy without signing in. & Must & Web, Mobile\\
+\textbf{FR-MED-01} & A citizen or first responder can keep a medical profile: date of birth, weight, blood type, allergies, conditions (or an explicit “none”), medication, notes and up to three emergency contacts. & Should & Web, Mobile\\
+\textbf{FR-MED-02} & Free-text medical fields and emergency-contact names and phones are encrypted at rest. & Must & Backend\\
+\textbf{FR-MED-03} & Sharing the profile with responders is off by default and is a standing consent that can be withdrawn at any time; withdrawal takes effect immediately, even for open incidents. & Must & Web, Mobile\\
+\textbf{FR-MED-04} & A report carries a per-report choice to share the profile. The server never attaches the reporter’s profile when the report is for someone else. & Must & Backend\\
+\textbf{FR-MED-05} & Only people treating the patient can read the profile: a dispatcher, an ambulance or first-responder crew member on an active mission, and staff of the destination hospital; only while the incident is open. Administrators are excluded. Every read is audited and fails if the audit cannot be written. & Must & Backend\\
+\end{longtable}}

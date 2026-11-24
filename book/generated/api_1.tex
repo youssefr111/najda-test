@@ -1,0 +1,31 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*408/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*447/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*145/1000\relax}@{}}
+\caption{REST API: authentication and users}\label{tab:api-1}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Method and path} & \textcolor{white}{\sffamily\bfseries\small Purpose} & \textcolor{white}{\sffamily\bfseries\small Access}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Method and path} & \textcolor{white}{\sffamily\bfseries\small Purpose} & \textcolor{white}{\sffamily\bfseries\small Access}\\
+\endhead
+\bottomrule\endlastfoot
+POST /\allowbreak{}api/\allowbreak{}auth/\allowbreak{}register/\allowbreak{}otp/\allowbreak{}send & Send a registration code & public\\
+POST /\allowbreak{}api/\allowbreak{}auth/\allowbreak{}register/\allowbreak{}otp/\allowbreak{}verify & Verify the code, return the registration token & public\\
+POST /\allowbreak{}api/\allowbreak{}auth/\allowbreak{}register/\allowbreak{}citizen/\allowbreak{}password & Create an e-mail citizen account & public\\
+POST /\allowbreak{}api/\allowbreak{}auth/\allowbreak{}register/\allowbreak{}citizen & Create the citizen profile for a Firebase identity (Google/\allowbreak{}phone) & token\\
+POST /\allowbreak{}api/\allowbreak{}auth/\allowbreak{}register/\allowbreak{}employee & Provision an employee; returns reset link & A, SA\\
+GET /\allowbreak{}api/\allowbreak{}auth/\allowbreak{}email-exists & Whether an e-mail is registered & public\\
+GET /\allowbreak{}api/\allowbreak{}auth/\allowbreak{}me & Current profile & any\\
+GET /\allowbreak{}api/\allowbreak{}users & Search users (role, enabled, text; paged) & A, SA\\
+PATCH /\allowbreak{}api/\allowbreak{}users/\allowbreak{}\{id\}/\allowbreak{}profile & Edit name, gender, address & A, SA or self\\
+PATCH /\allowbreak{}api/\allowbreak{}users/\allowbreak{}\{id\}/\allowbreak{}facility & Assign or clear facility & A, SA\\
+PATCH /\allowbreak{}api/\allowbreak{}users/\allowbreak{}me/\allowbreak{}complete-profile & Complete own profile & any\\
+PATCH /\allowbreak{}api/\allowbreak{}users/\allowbreak{}me/\allowbreak{}phone, POST /\allowbreak{}api/\allowbreak{}users/\allowbreak{}me/\allowbreak{}sync-phone & Set and synchronise own phone & any\\
+POST /\allowbreak{}api/\allowbreak{}users/\allowbreak{}me/\allowbreak{}sync-email & Synchronise own e-mail & any\\
+POST /\allowbreak{}api/\allowbreak{}users/\allowbreak{}\{id\}/\allowbreak{}admin-override-email & Override e-mail & A, SA\\
+POST /\allowbreak{}api/\allowbreak{}users/\allowbreak{}\{id\}/\allowbreak{}admin-phone-verification & Mark phone verified (audited) & A, SA\\
+POST /\allowbreak{}api/\allowbreak{}users/\allowbreak{}\{id\}/\allowbreak{}admin-override-phone & Replace phone without OTP (audited) & SA\\
+POST /\allowbreak{}api/\allowbreak{}users/\allowbreak{}\{id\}/\allowbreak{}password-reset-link & Generate a reset link & A, SA\\
+POST /\allowbreak{}api/\allowbreak{}users/\allowbreak{}\{id\}/\allowbreak{}disable, /\allowbreak{}enable & Disable or enable account & A, SA\\
+GET /\allowbreak{}api/\allowbreak{}roles, POST /\allowbreak{}api/\allowbreak{}roles, GET /\allowbreak{}api/\allowbreak{}roles/\allowbreak{}\{id\} & List, create, read roles & A, SA\\
+GET /\allowbreak{}api/\allowbreak{}users/\allowbreak{}\{id\}/\allowbreak{}role, PATCH /\allowbreak{}api/\allowbreak{}users/\allowbreak{}\{id\}/\allowbreak{}role & Read or change a role & A, SA (read: or self)\\
+GET/\allowbreak{}PUT/\allowbreak{}DELETE /\allowbreak{}api/\allowbreak{}users/\allowbreak{}me/\allowbreak{}medical-profile & Own medical profile & any\\
+GET /\allowbreak{}api/\allowbreak{}admin/\allowbreak{}firebase-sync/\allowbreak{}report; POST .../\allowbreak{}sync-user/\allowbreak{}\{uid\}; DELETE .../\allowbreak{}firebase-user/\allowbreak{}\{uid\}; POST .../\allowbreak{}postgres-user/\allowbreak{}\{id\}/\allowbreak{}sync & Reconcile Firebase and database & SA\\
+\end{longtable}}

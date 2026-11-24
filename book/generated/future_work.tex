@@ -1,0 +1,19 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-4\tabcolsep)*289/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-4\tabcolsep)*711/1000\relax}@{}}
+\caption{Planned improvements}\label{tab:future-work}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Improvement} & \textcolor{white}{\sffamily\bfseries\small Description}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Improvement} & \textcolor{white}{\sffamily\bfseries\small Description}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{Clinical vitals model} & Connect the AI model service (registry, contract and backend client already exist) to the transfer vitals stream so that hospitals see an acuity score beside each vitals record, with shadow-mode evaluation before it is shown.\\
+\textbf{Wearable and sensor reports} & Accept automatically generated reports from consenting devices; the incident source field already reserves a sensor-device value.\\
+\textbf{Channel-level WebSocket authorisation} & Authenticate STOMP connections and authorise each subscription by role and ownership, in addition to the current origin restriction.\\
+\textbf{Distributed rate limiting} & Move the in-memory limiter to a shared store so limits hold across several API instances.\\
+\textbf{Server-side unit ranking by road ETA} & Move ranking from the web console to the API using routed travel times, and expose it to other clients.\\
+\textbf{iOS distribution} & Build and distribute the existing cross-platform app for iOS.\\
+\textbf{Deeper automated testing} & Add service-level integration tests against a containerised PostgreSQL, and end-to-end browser tests for the console workflows.\\
+\textbf{Operational analytics} & Response-time, coverage and false-report dashboards for administrators.\\
+\textbf{Richer incident handling} & Sub-categories, multi-agency coordination and two-way voice or video with the caller.\\
+\textbf{Offline maps and guidance packs} & Cache map tiles and guidance for areas with poor coverage.\\
+\end{longtable}}

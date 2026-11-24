@@ -1,0 +1,20 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-4\tabcolsep)*178/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-4\tabcolsep)*822/1000\relax}@{}}
+\caption{Human actors}\label{tab:actors}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Actor} & \textcolor{white}{\sffamily\bfseries\small Role in the platform}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Actor} & \textcolor{white}{\sffamily\bfseries\small Role in the platform}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{Visitor} & Reads the public landing page, Terms, Privacy Policy, system status and support form; can start registration.\\
+\textbf{Citizen} & Reports emergencies, tracks the response, chats with responders, keeps a medical profile, verifies their identity, applies to become a first responder.\\
+\textbf{First Responder} & A vetted volunteer (an approved citizen). Keeps all citizen abilities and owns one personal response unit that they operate alone.\\
+\textbf{Ambulance Crew} & Works shifts on an ambulance (LEAD or CREW); the LEAD runs missions and the hospital handoff. Linked to an ambulance station or a hospital.\\
+\textbf{Police Officer} & Works shifts on a police car; linked to a police station.\\
+\textbf{Firefighter} & Works shifts on a fire truck; linked to a fire station.\\
+\textbf{Dispatcher} & Runs the live queue: reviews triage, resolves duplicates, assigns units, cancels, marks false reports, reviews caller history.\\
+\textbf{Hospital Staff} & Sees incoming transfers and live patient vitals for their hospital, and the medical profile of patients inbound to it.\\
+\textbf{Facility Manager} & Runs one facility: creates and retires its units and creates, disables and enables its staff. What they may create is decided by the facility type.\\
+\textbf{Admin} & Everything a dispatcher can do, plus users, roles, facilities, units, applications, guidance and incident oversight. Cannot touch a Super Admin account.\\
+\textbf{Super Admin} & Everything an Admin can do, plus legal-document publishing, identity-verification overrides, phone overrides, Firebase reconciliation, incident deletion and granting the Super Admin role.\\
+\end{longtable}}

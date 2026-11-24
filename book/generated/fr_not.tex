@@ -1,0 +1,14 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*146/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*629/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*107/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*118/1000\relax}@{}}
+\caption{Functional requirements: notifications}\label{tab:fr-not}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Requirement} & \textcolor{white}{\sffamily\bfseries\small Priority} & \textcolor{white}{\sffamily\bfseries\small Platform}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Requirement} & \textcolor{white}{\sffamily\bfseries\small Priority} & \textcolor{white}{\sffamily\bfseries\small Platform}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{FR-NOT-01} & Significant events create an in-app notification for each concerned user and a push notification to their registered devices; the inbox shows an unread count and supports mark-read and mark-all-read. & Must & Web, Mobile\\
+\textbf{FR-NOT-02} & Notification text is produced in English and Arabic and delivered in the language of the recipient’s device. & Must & Backend\\
+\textbf{FR-NOT-03} & Notifications are created only after the triggering transaction commits, so a rolled-back action never produces a notification. & Must & Backend\\
+\textbf{FR-NOT-04} & Four notification types are urgent (new incident, mission offered, mission rejected, patient incoming) and use high-priority, short-lived push on a dedicated channel. & Should & Backend\\
+\textbf{FR-NOT-05} & Devices register and unregister their push tokens; invalid tokens are pruned automatically. Notifications and tokens are purged on a schedule. & Must & Backend\\
+\end{longtable}}

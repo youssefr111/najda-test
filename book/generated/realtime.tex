@@ -1,0 +1,21 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*342/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*368/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*289/1000\relax}@{}}
+\caption{Real-time channels}\label{tab:realtime}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Channel} & \textcolor{white}{\sffamily\bfseries\small Carries} & \textcolor{white}{\sffamily\bfseries\small Consumers}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Channel} & \textcolor{white}{\sffamily\bfseries\small Carries} & \textcolor{white}{\sffamily\bfseries\small Consumers}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{/\allowbreak{}topic/\allowbreak{}incidents} & Incident created or updated; refresh signals. & Dispatch console, citizen screens, admin.\\
+\textbf{/\allowbreak{}topic/\allowbreak{}incidents/\allowbreak{}\{id\}/\allowbreak{}chat} & A chat message. & Members of the incident.\\
+\textbf{/\allowbreak{}topic/\allowbreak{}incidents/\allowbreak{}\{id\}/\allowbreak{}responders} & Responder set changed. & Citizen tracking, dispatch.\\
+\textbf{/\allowbreak{}topic/\allowbreak{}incidents/\allowbreak{}\{id\}/\allowbreak{}presence} & Who is viewing the incident. & Dispatchers.\\
+\textbf{/\allowbreak{}topic/\allowbreak{}missions} & A mission created or changed. & Dispatch, responders, citizen.\\
+\textbf{/\allowbreak{}topic/\allowbreak{}units} & Unit positions and status. & Dispatch, responders.\\
+\textbf{/\allowbreak{}topic/\allowbreak{}users} & User list changed. & Admin console.\\
+\textbf{/\allowbreak{}topic/\allowbreak{}facilities} & Facility list changed. & Admin and manager consoles.\\
+\textbf{/\allowbreak{}topic/\allowbreak{}hospital-transfers} & Transfers changed. & Hospital dashboard.\\
+\textbf{/\allowbreak{}topic/\allowbreak{}hospital-transfers/\allowbreak{}\{id\}/\allowbreak{}vitals} & A new vitals record. & Hospital dashboard.\\
+\textbf{/\allowbreak{}topic/\allowbreak{}vitals} & Vitals refresh signal. & Hospital dashboard.\\
+\textbf{/\allowbreak{}topic/\allowbreak{}users/\allowbreak{}\{id\}/\allowbreak{}notifications} & Refresh signal for one user’s inbox. & That user’s clients.\\
+\end{longtable}}

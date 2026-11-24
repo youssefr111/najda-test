@@ -1,0 +1,29 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*146/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*629/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*107/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*118/1000\relax}@{}}
+\caption{Functional requirements: identity and access management}\label{tab:fr-iam}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Requirement} & \textcolor{white}{\sffamily\bfseries\small Priority} & \textcolor{white}{\sffamily\bfseries\small Platform}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Requirement} & \textcolor{white}{\sffamily\bfseries\small Priority} & \textcolor{white}{\sffamily\bfseries\small Platform}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{FR-IAM-01} & A visitor can register as a citizen with an e-mail address. The system e-mails a six-digit verification code that expires after 10 minutes, can be re-sent only after a 60-second cool-down, and allows at most five wrong attempts. & Must & Web, Mobile\\
+\textbf{FR-IAM-02} & Only after the e-mail is verified, the visitor supplies first and last name, phone number, address (governorate, city, street, optional landmark), gender and a password to create the account. Nothing is created in Firebase or the database before verification succeeds. & Must & Web, Mobile\\
+\textbf{FR-IAM-03} & Registration is atomic across the identity provider and the database: if the database step fails, the newly created Firebase account is deleted again. & Must & Backend\\
+\textbf{FR-IAM-04} & Code requests, code verification and registration are rate-limited per client address, and code requests are also limited per e-mail address. & Must & Backend\\
+\textbf{FR-IAM-05} & A visitor can sign in with Google. If no NAJDA profile exists yet, the client collects phone, address and gender, and the account is created as a citizen. & Must & Web, Mobile\\
+\textbf{FR-IAM-06} & The server alone decides whether a profile is complete (phone, governorate, city, street and gender present); clients use that flag to route the user to profile completion. & Must & Backend\\
+\textbf{FR-IAM-07} & A signed-in user can sign in with e-mail and password, recover a forgotten password, and sign out. & Must & Web, Mobile\\
+\textbf{FR-IAM-08} & A user can edit their own first name, last name, gender and address. & Must & Web, Mobile\\
+\textbf{FR-IAM-09} & A user can change their e-mail address; the change is verified by Firebase and then synchronised into the NAJDA profile. & Should & Web, Mobile\\
+\textbf{FR-IAM-10} & A user can verify a phone number with an SMS code or change it. A phone number already verified on another account cannot be claimed. & Must & Web, Mobile\\
+\textbf{FR-IAM-11} & A user can change their password. & Must & Web, Mobile\\
+\textbf{FR-IAM-12} & An Admin can provision accounts for staff roles. The server enforces the role--facility rules, creates the Firebase account with a temporary password and returns a one-time password-reset link; only a Super Admin can create another Super Admin. & Must & Web\\
+\textbf{FR-IAM-13} & An Admin can search, filter (role, enabled) and page through all users, and edit a user’s name, gender and address. & Must & Web\\
+\textbf{FR-IAM-14} & An Admin can change a user’s role. A plain Admin cannot modify a Super Admin or grant Super Admin; a Super Admin cannot remove their own Super Admin role. The new role is written to the Firebase custom claim, and a facility link that no longer fits the new role is released. & Must & Web\\
+\textbf{FR-IAM-15} & An Admin can assign or clear a staff member’s facility, subject to the facility-type rules for the role. & Must & Web\\
+\textbf{FR-IAM-16} & An Admin can disable and re-enable an account. The only remaining Super Admin cannot be disabled, and a plain Admin cannot disable a Super Admin. & Must & Web\\
+\textbf{FR-IAM-17} & An Admin can generate a password-reset link for a user, mark a user’s phone as verified (audited), and override a user’s e-mail. A Super Admin can override a phone number without re-verification. & Should & Web\\
+\textbf{FR-IAM-18} & A Super Admin can compare Firebase and the database, import a Firebase account that has no profile, remove an orphaned Firebase account, and repair a database user that has no Firebase account. & Should & Web\\
+\textbf{FR-IAM-19} & A citizen with a verified e-mail and phone and a verified identity can apply to become a First Responder with a motivation and supporting documents; at most one application may be pending. & Must & Web, Mobile\\
+\textbf{FR-IAM-20} & An Admin can list applications, open their documents through signed links, and approve or reject (with notes). Approval requires at least one document, changes the role to First Responder, updates the Firebase claim and creates the user’s personal response unit. & Must & Web\\
+\end{longtable}}

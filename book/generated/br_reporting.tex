@@ -1,0 +1,18 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*92/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*736/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*172/1000\relax}@{}}
+\caption{Business rules: reporting}\label{tab:br-reporting}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Rule} & \textcolor{white}{\sffamily\bfseries\small Enforced in}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Rule} & \textcolor{white}{\sffamily\bfseries\small Enforced in}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{BR-13} & A citizen may have only one active incident (NEW, AI\_\allowbreak{}PROCESSED, DISPATCHER\_\allowbreak{}REVIEW, ASSIGNED). & Incident service\\
+\textbf{BR-14} & A repeated submission with the same client request id returns the original incident before any other rule is applied and causes no side effects; the database enforces uniqueness per citizen. & Incident service, unique index\\
+\textbf{BR-15} & The incident location must be inside Egypt. A manual pin is allowed only when switched on and within the configured radius (default 300 m) of the device position, which must also be in Egypt. & Location policy\\
+\textbf{BR-16} & Someone else’s emergency never carries the reporter’s medical profile. For self-reports the profile is attached only if the citizen allows it for this report and the standing consent is on. & Incident service\\
+\textbf{BR-17} & The citizen may update the injured count while the incident is active. Until a unit is assigned the citizen may also edit the original message and delete evidence; evidence can be added while the incident is live. & Incident and media services\\
+\textbf{BR-18} & Cancelling needs a reason category; “other” needs an explanation (length-limited). It is refused once a unit has arrived. It stands down every offered, accepted or en-route mission and frees the units. & Incident service\\
+\textbf{BR-19} & A false-report verdict (prank or hoax, spam or test, malicious) can be set once by dispatch staff and cleared by an Admin. The incident is closed and units stood down only if no unit has arrived and it is still open; otherwise the verdict is recorded and the status left alone. Both actions are audited. & Incident service\\
+\textbf{BR-20} & A duplicate suggestion considers open incidents of the same category within 2 km and 120 minutes. Only a dispatcher confirms: the duplicate closes as cancelled, linked to the original. & AI duplicate service, incident service\\
+\textbf{BR-21} & AI failures never affect an incident. AI is disabled by a switch and automatically when no key is configured. & AI services\\
+\end{longtable}}

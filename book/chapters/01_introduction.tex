@@ -1,0 +1,165 @@
+\chapter{Introduction}\label{chap:introduction}
+
+\section{Background}
+
+Emergency response is a chain of decisions. A person recognises that something is wrong and asks for help;
+a call-taker or system records what is happening and where; someone judges how urgent it is; a dispatcher
+chooses which unit to send; a crew travels, treats and, when needed, delivers the patient to a hospital that
+must be ready for them. The quality of the whole chain is limited by its weakest link, and every link is
+sensitive to time \cite{aringhieri2017ems}. Decades of operations research on emergency medical services have
+shown that where vehicles are positioned and how quickly they are assigned strongly influence the time to
+reach a patient \cite{gendreau1997tabu,brotcorne2003ambulance}, but those models assume that a good report
+and a good assignment decision are already available. In practice they are the hard part.
+
+In Egypt a person in distress must first decide \emph{whom} to call: the police, the ambulance service and
+the fire brigade are reached through separate numbers (122, 123 and 180). The report is then a spoken
+description, often given in panic, that a human must interpret, locate and prioritise. Once units are on their
+way, the person who asked for help usually knows nothing more, and the hospital that will receive a patient
+typically learns about them only on arrival. Each of these gaps is a place where minutes are lost.
+
+At the same time, the software that could close the gaps has become far more accessible. Smartphones provide
+precise positioning and cameras; managed cloud services provide identity, storage and messaging; open
+geographic data and routing engines are freely available \cite{haklay2008osm,luxen2011osrm}; and large language
+models can classify free text at a level that was out of reach a few years ago \cite{brown2020gpt3}. A small team
+can now assemble, with modern software engineering practice \cite{pressman2020se,sommerville2016software}, a
+platform that would once have required a large organisation.
+
+\section{Problem Statement}\label{sec:problem}
+
+An emergency-response platform for a country like Egypt has to solve several distinct problems at once:
+
+\begin{enumerate}
+  \item \textbf{Reporting is fragmented and fragile.} A citizen should be able to ask for help in one action,
+        without choosing a service, even with a poor connection, and without the system creating duplicate
+        emergencies when a request is retried.
+  \item \textbf{Reports arrive unstructured and unprioritised.} Dispatchers need a live, ordered queue in which
+        the most urgent reports are visible first and duplicate reports of the same event are recognised.
+  \item \textbf{Coordination is opaque.} Dispatchers need to see which units are free and where they are;
+        crews need a clear mission workflow; and the reporter needs to know that help is coming.
+  \item \textbf{Hospitals are not prepared.} An ambulance crew should be able to choose a receiving hospital
+        and send the patient's vital signs ahead, so the hospital can prepare before the patient arrives.
+  \item \textbf{Medical information is sensitive but life-saving.} A patient's allergies and conditions help the
+        people treating them, but must never be exposed to anyone else.
+  \item \textbf{The service can be abused.} False reports waste scarce resources, yet an emergency line must
+        never refuse a genuine caller.
+\end{enumerate}
+
+Existing solutions tend to address one of these problems in isolation. Citizen-facing applications improve
+reporting but stop at the point where a human takes over; dispatch software organises resources but expects
+the report to arrive by telephone; and academic prototypes frequently reduce the whole domain to a form that
+an administrator approves. No single system connects the citizen, the dispatcher, the field crew and the
+hospital in one auditable workflow while treating privacy and abuse as first-class design concerns
+(\cref{chap:literature}).
+
+\section{Proposed Solution}
+
+\textbf{\ProjectName} (\ProjectFullName) is a complete emergency-response platform that connects all four
+parties in a single workflow. A citizen files a report with one tap. The platform captures the location,
+classifies the report's priority and flags possible duplicates with a language model, and places the report in a
+live queue. A dispatcher reviews the queue and offers the work to the nearest suitable response unit. The unit's
+crew accepts, travels, arrives and completes the mission from a mobile app; an ambulance crew additionally selects
+a receiving hospital and streams the patient's vital signs to it during transport. Throughout, the reporter
+follows every step live and can talk to the people responding.
+
+The platform serves ten roles --- citizen, first responder, ambulance crew, police officer, firefighter,
+dispatcher, hospital staff, facility manager, administrator and super administrator --- through two clients and one
+backend (\cref{fig:intro-context}):
+
+\begin{itemize}
+  \item a \textbf{Flutter mobile app} for citizens and field responders;
+  \item a \textbf{Next.js web console} for every role, and the main workspace of dispatchers, hospital staff,
+        facility managers and administrators;
+  \item a \textbf{Spring Boot API} that enforces every business rule and persists to PostgreSQL, supported by a
+        separately deployable \textbf{AI model service} and by managed services for identity, storage, messaging,
+        identity verification and maps.
+\end{itemize}
+
+\diagram{arch_context.png}{\ProjectName{} at a glance: two clients, one backend and the external services it relies on.}{fig:intro-context}
+
+Artificial intelligence plays a deliberately limited role. It \emph{recommends}: it suggests a priority and a possible
+duplicate. A human always decides, and a failure of the AI never affects the handling of a report.
+
+\section{Project Objectives}
+
+The primary objective is to design and implement a platform that shortens the path from an emergency to a
+properly equipped response, while remaining safe, private and trustworthy. The specific objectives are to:
+
+\begin{enumerate}
+  \item shorten the time from an emergency to a unit being offered the work, by giving dispatchers a prioritised,
+        de-duplicated, live queue;
+  \item make reporting safe and fast under stress: one-tap SOS, automatic location, and correct behaviour through
+        poor connectivity;
+  \item give every actor exactly the visibility their role requires, including a consent-based, audited path to a
+        patient's medical profile;
+  \item keep the service trustworthy through identity verification, a graduated caller-trust policy that never
+        blocks a genuine emergency, and an audit trail for sensitive actions;
+  \item coordinate the hand-off to hospitals, with live vital signs during transport; and
+  \item operate in Arabic and English, in both text directions, on phones and desktops.
+\end{enumerate}
+
+\section{Project Scope}
+
+\subsection*{In scope}
+\begin{itemize}
+  \item Account lifecycle: e-mail and Google registration, e-mail verification by one-time code, phone verification,
+        profile completion and administrator-provisioned staff accounts.
+  \item Identity verification, versioned legal consent, and a citizen medical profile with consent controls.
+  \item Emergency reporting for three categories (medical, police, fire), evidence attachments, live tracking,
+        chat, history and first-aid guidance.
+  \item Dispatch operations: live queue, AI priority and duplicate suggestion, unit assignment, cancellation,
+        false-report handling and caller history.
+  \item Field operations: shifts with a unit lead and crew, mission lifecycle, live unit location, hospital
+        selection and patient-vitals streaming.
+  \item Administration: facilities, response units, users and roles, responder applications, guidance content, legal
+        documents; and facility management for one facility's units and staff.
+  \item Notifications (in-app inbox with push delivery) and platform services (status, update check, support form).
+\end{itemize}
+
+\subsection*{Out of scope}
+\begin{itemize}
+  \item Direct integration with national emergency telephone numbers or legacy computer-aided dispatch systems.
+        \ProjectName{} is designed to operate alongside existing services, not to replace or connect to them.
+  \item Payment, billing or insurance processing.
+  \item Medical diagnosis or treatment recommendations: the platform transports information; it does not advise on care.
+  \item An iOS build of the mobile app. The code base is cross-platform, but only Android is built and distributed.
+\end{itemize}
+
+\section{Development Methodology}
+
+\ProjectName{} was developed iteratively and incrementally, following the principles of agile development
+\cite{beck2001agile}: each feature is taken in a small vertical slice through database migration, backend rule,
+API, both clients and tests before the next one begins. The database schema is versioned with Flyway and validated
+against the entities when the backend starts, so a code change that disagrees with the schema fails at once rather
+than in production. Continuous integration builds and tests the mobile app and the AI service on every change and
+produces a signed Android release when a version tag is pushed. The rules that matter most --- caller trust,
+identity-verification policy, webhook verification, one-time-code handling --- are kept in small, pure, unit-tested
+classes (\cref{chap:implementation}).
+
+\section{Contributions}
+
+The main contributions of this work are:
+
+\begin{itemize}
+  \item a \textbf{complete, working platform} that connects citizens, dispatchers, field crews and hospitals, built
+        from a Flutter app, a Next.js console, a Spring Boot API and an AI model service;
+  \item a set of \textbf{reliability patterns} suited to emergency software: idempotent submission, an offline outbox,
+        after-commit side effects and graceful degradation when an external service fails;
+  \item a \textbf{privacy-by-design medical-profile model}: standing consent plus per-report choice, access restricted to
+        treating roles and open incidents, every read audited and failing closed;
+  \item a \textbf{graduated caller-trust policy} that slows repeated abuse without ever refusing a genuine emergency;
+  \item a \textbf{versioned AI model-serving service} with a strict input contract, ready to host clinical models; and
+  \item \textbf{complete engineering documentation}: requirements, 64 use cases, 41 diagrams, a 26-table data
+        dictionary, an API reference and a traceability matrix.
+\end{itemize}
+
+\section{Organisation of the Book}
+
+\Cref{chap:requirements} presents the stakeholders, the functional and non-functional requirements, the user
+stories, the use cases and the business rules. \Cref{chap:literature} reviews the literature on emergency
+dispatch, decision support, software architecture, real-time communication and privacy, and identifies the gap
+that \ProjectName{} fills. \Cref{chap:design} describes the design: architecture, data model, classes, states,
+behaviour, security and deployment. \Cref{chap:implementation} explains how the design was implemented, with
+excerpts of the real code. \Cref{chap:testing} describes the verification strategy and the scenarios used to check
+the requirements. \Cref{chap:conclusion} concludes with an assessment of the objectives, the limitations and the
+future work. The appendices contain the database reference, the REST API reference, further screens, the complete
+use-case specifications, the design decisions and the configuration reference.

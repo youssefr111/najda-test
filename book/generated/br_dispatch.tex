@@ -1,0 +1,18 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*92/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*736/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*172/1000\relax}@{}}
+\caption{Business rules: dispatch and field response}\label{tab:br-dispatch}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Rule} & \textcolor{white}{\sffamily\bfseries\small Enforced in}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Rule} & \textcolor{white}{\sffamily\bfseries\small Enforced in}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{BR-22} & A unit can be offered a mission only if it is AVAILABLE, not archived, has an active LEAD on shift, and the incident is not closed. Assignment takes a pessimistic lock on the unit so two dispatchers cannot book it together. & Mission service\\
+\textbf{BR-23} & An incident can have several missions. The incident becomes ASSIGNED with the first. & Mission service\\
+\textbf{BR-24} & A unit whose current crew includes the person who reported the emergency cannot be assigned to it --- the reporter is the one who needs help. When a mission is offered, everyone on the unit’s active shift is recorded as a participant. & Mission service\\
+\textbf{BR-25} & Only the unit’s LEAD accepts, rejects, advances (en route, arrived), completes or withdraws a mission. Withdrawing is allowed only from accepted or en route. Dispatch can cancel at any non-terminal stage. & Mission service\\
+\textbf{BR-26} & Rejected, cancelled and completed missions free the unit. When the last active mission is cancelled or withdrawn while the incident is ASSIGNED, the incident returns to DISPATCHER\_\allowbreak{}REVIEW; when the last active mission completes, the incident is RESOLVED. & Mission service\\
+\textbf{BR-27} & A unit has at most one active LEAD; an employee is on one shift at a time; nobody can end or leave a shift while the unit is on an active mission. Starting the LEAD shift sets the unit AVAILABLE; ending it sets it OFFLINE; a crew member leaving changes nothing. Archived units cannot start shifts. & Shift service\\
+\textbf{BR-28} & Only the LEAD updates a unit’s position; positions are visible to staff only; the LEAD may reset the position to the home facility. & Unit controller, service\\
+\textbf{BR-29} & Chat: the citizen, dispatch staff and participants of an active mission (offered to arrived) may send; anyone who ever participated may read. Chat notifications never include the message text. & Chat service, notification publisher\\
+\textbf{BR-30} & Concurrent edits are guarded by optimistic version fields on incidents and missions. & JPA\\
+\end{longtable}}

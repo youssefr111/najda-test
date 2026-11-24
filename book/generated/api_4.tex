@@ -1,0 +1,23 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*408/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*447/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*145/1000\relax}@{}}
+\caption{REST API: units, shifts, missions and hospital transfers}\label{tab:api-4}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Method and path} & \textcolor{white}{\sffamily\bfseries\small Purpose} & \textcolor{white}{\sffamily\bfseries\small Access}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Method and path} & \textcolor{white}{\sffamily\bfseries\small Purpose} & \textcolor{white}{\sffamily\bfseries\small Access}\\
+\endhead
+\bottomrule\endlastfoot
+GET /\allowbreak{}api/\allowbreak{}units; GET /\allowbreak{}api/\allowbreak{}units/\allowbreak{}mine & Live units; own facility’s units & staff; any\\
+POST /\allowbreak{}api/\allowbreak{}units; PATCH /\allowbreak{}api/\allowbreak{}units/\allowbreak{}\{id\}; DELETE /\allowbreak{}api/\allowbreak{}units/\allowbreak{}\{id\}; GET .../\allowbreak{}delete-impact & Manage units & A, SA\\
+PATCH /\allowbreak{}api/\allowbreak{}units/\allowbreak{}\{id\}/\allowbreak{}location; POST .../\allowbreak{}location/\allowbreak{}reset & Live position; reset to facility & LEAD\\
+POST /\allowbreak{}api/\allowbreak{}units/\allowbreak{}reconcile-statuses & Fix stale BUSY units & A, SA\\
+POST /\allowbreak{}api/\allowbreak{}shifts/\allowbreak{}start, /\allowbreak{}join, /\allowbreak{}leave, /\allowbreak{}end; GET /\allowbreak{}api/\allowbreak{}shifts/\allowbreak{}me; GET /\allowbreak{}api/\allowbreak{}shifts/\allowbreak{}unit/\allowbreak{}\{id\}/\allowbreak{}crew & Shift operations & field staff\\
+POST /\allowbreak{}api/\allowbreak{}shifts/\allowbreak{}admin-force-end/\allowbreak{}\{unitId\} & Force-end a shift & A, SA\\
+POST /\allowbreak{}api/\allowbreak{}missions/\allowbreak{}assign-unit & Offer a mission to a unit & D, A, SA\\
+GET /\allowbreak{}api/\allowbreak{}missions; GET /\allowbreak{}api/\allowbreak{}missions/\allowbreak{}mine & Missions of an incident; own missions & scoped\\
+POST /\allowbreak{}api/\allowbreak{}missions/\allowbreak{}\{id\}/\allowbreak{}accept, /\allowbreak{}reject, /\allowbreak{}withdraw, /\allowbreak{}en-route, /\allowbreak{}arrived, /\allowbreak{}complete & Mission steps & LEAD\\
+POST /\allowbreak{}api/\allowbreak{}missions/\allowbreak{}\{id\}/\allowbreak{}cancel & Cancel a mission & D, A, SA\\
+GET /\allowbreak{}api/\allowbreak{}hospital-transfers/\allowbreak{}recommended/\allowbreak{}\{missionId\} & Hospitals within 30 km & LEAD\\
+POST /\allowbreak{}api/\allowbreak{}hospital-transfers/\allowbreak{}select; POST .../\allowbreak{}\{id\}/\allowbreak{}en-route; POST .../\allowbreak{}\{id\}/\allowbreak{}arrived & Transfer steps & LEAD\\
+POST /\allowbreak{}api/\allowbreak{}hospital-transfers/\allowbreak{}vitals; GET .../\allowbreak{}\{id\}/\allowbreak{}vitals & Record and read vitals & LEAD; hospital, dispatch\\
+GET /\allowbreak{}api/\allowbreak{}hospital-transfers; GET .../\allowbreak{}incident/\allowbreak{}\{id\}; GET .../\allowbreak{}mission/\allowbreak{}\{id\} & Dashboard and lookups & scoped\\
+\end{longtable}}

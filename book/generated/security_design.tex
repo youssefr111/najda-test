@@ -1,0 +1,20 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-4\tabcolsep)*224/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-4\tabcolsep)*776/1000\relax}@{}}
+\caption{Security and privacy design}\label{tab:security-design}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Concern} & \textcolor{white}{\sffamily\bfseries\small Design}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Concern} & \textcolor{white}{\sffamily\bfseries\small Design}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{Credentials} & Passwords exist only in Firebase and are never seen by the API. Employees receive a one-time reset link; the temporary password used to create the account is never shown or stored.\\
+\textbf{Registration abuse} & Per-IP and per-e-mail rate limits; resend cool-down; five-attempt limit; code and registration token stored as keyed hashes and compared in constant time.\\
+\textbf{Account integrity} & Atomic cross-store registration with compensation; protected Super Admin accounts; role claim kept in step with the database role.\\
+\textbf{Data at rest} & Application-layer encryption of chat, text evidence, free-text medical fields, emergency contacts and vitals notes; private object bucket.\\
+\textbf{File handling} & Signed, short-lived upload and download URLs; extension allow-list; ownership and incident-state checks before issuing a URL.\\
+\textbf{Medical privacy} & Standing consent plus per-report choice; server-enforced exclusion for reports on behalf of others; treating-roles-only access; admins excluded; every read audited and fail-closed.\\
+\textbf{Abuse control} & Caller-trust tiers that slow but never block; false-report verdicts by humans only; manual account suspension.\\
+\textbf{Webhooks} & Signature, timestamp window and event-id de-duplication; the decision is re-fetched from the provider.\\
+\textbf{Consent} & Immutable versions; recorded acceptance with source; interceptor enforces latest consent.\\
+\textbf{Live channel} & Origin-restricted WebSocket with heartbeats; notification text never carries chat content.\\
+\textbf{Auditing} & Audit rows for medical-profile reads, false-report verdicts and clearing, phone overrides, unit delete or archive, and employee creation.\\
+\end{longtable}}

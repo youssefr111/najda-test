@@ -1,0 +1,13 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*92/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*736/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*172/1000\relax}@{}}
+\caption{Business rules: data protection and retention}\label{tab:br-data}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Rule} & \textcolor{white}{\sffamily\bfseries\small Enforced in}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Rule} & \textcolor{white}{\sffamily\bfseries\small Enforced in}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{BR-41} & Chat content, text evidence, free-text medical fields, emergency-contact names and phones, and vitals notes are encrypted at rest with a configured key. & Attribute converters\\
+\textbf{BR-42} & Evidence and application documents live in a private bucket; access is by signed URL only; incident deletion removes the evidence folder after commit. & Storage service\\
+\textbf{BR-43} & Notifications and device tokens older than 90 days are purged nightly; webhook event ids after 7 days; expired verification rows every 15 minutes. & Scheduled jobs\\
+\textbf{BR-44} & Medical-profile reads, false-report verdicts and their clearing, phone and e-mail overrides, employee creation, unit deletion or archiving and identity overrides are audited. & Services\\
+\end{longtable}}

@@ -1,0 +1,25 @@
+% ======================================================================
+%  Fonts -- serif body (TeX Gyre Pagella), sans headings (Inter),
+%  monospace code (DejaVu Sans Mono). Inter and DejaVu ship in ./fonts
+%  so the project compiles identically on any machine and on Overleaf.
+% ======================================================================
+\usepackage{fontspec}
+\usepackage{unicode-math}
+
+\setmainfont{TeX Gyre Pagella}[Ligatures=TeX]
+\setsansfont{Inter}[
+  Path=fonts/, Extension=.otf, Ligatures=TeX,
+  UprightFont=*-Regular, ItalicFont=*-Italic,
+  BoldFont=*-Bold, BoldItalicFont=*-BoldItalic,
+  FontFace={sb}{n}{Font=*-SemiBold},
+  FontFace={md}{n}{Font=*-Medium},
+  Scale=0.92]
+\setmonofont{DejaVuSansMono}[
+  Path=fonts/, Extension=.ttf,
+  UprightFont=*, BoldFont=*-Bold, ItalicFont=*-Oblique, BoldItalicFont=*-BoldOblique,
+  Scale=0.84]
+\setmathfont{Latin Modern Math}
+
+% Short names for the heading font weights
+\newfontfamily\najdasemibold{Inter}[Path=fonts/, Extension=.otf, Ligatures=TeX, UprightFont=*-SemiBold, BoldFont=*-SemiBold, ItalicFont=*-SemiBold, BoldItalicFont=*-SemiBold, Scale=0.92]
+\newfontfamily\najdamedium{Inter}[Path=fonts/, Extension=.otf, Ligatures=TeX, UprightFont=*-Medium, BoldFont=*-SemiBold, ItalicFont=*-Medium, BoldItalicFont=*-SemiBold, Scale=0.92]

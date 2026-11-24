@@ -1,0 +1,17 @@
+\chapter{REST API Reference}\label{app:api}
+
+All endpoints live under \code{/api} and require a Firebase ID token in the \code{Authorization: Bearer}
+header unless marked \emph{public}. The access column gives the minimum authorisation; ownership and scope
+checks are applied again inside the services (\cref{sec:authorisation}). Abbreviations: A\,=\,Admin,
+SA\,=\,Super Admin, D\,=\,Dispatcher, FM\,=\,Facility Manager, LEAD\,=\,the unit's accountable operator.
+
+\section{Authentication and users}
+\input{generated/api_1}
+\section{Identity verification, legal documents, notifications and content}
+\input{generated/api_2}
+\section{Incidents and evidence}
+\input{generated/api_3}
+\section{Units, shifts, missions and hospital transfers}
+\input{generated/api_4}
+\section{Facilities, facility managers and responder applications}
+\input{generated/api_5}

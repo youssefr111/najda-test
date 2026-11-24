@@ -1,0 +1,222 @@
+\chapter{Implementation}\label{chap:implementation}
+
+\section{Introduction}
+
+This chapter explains how the design of \cref{chap:design} was realised. It describes the technology stack and the
+structure of the repository, then follows the implementation through the backend, the mobile app, the web console
+and the AI components, and finishes with the integrations, deployment and the main engineering challenges. Short
+excerpts of the real source code illustrate the points that matter most; they are taken unchanged from the
+repository, with only blank lines and long comments removed.
+
+\section{Technology Stack}
+
+The stack (\cref{tab:stack}) uses mainstream, well-documented technologies with strong ecosystems, chosen so that
+the team could deliver a complete system and so that the project can be maintained afterwards.
+
+\begin{table}[!htbp]
+\caption{Technology stack.}\label{tab:stack}
+\centering\tabfont\rowband
+\begin{tabular}{@{}>{\bfseries\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{12cm}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Layer} & \textcolor{white}{\sffamily\bfseries\small Technology} \\
+Backend & Java 21; Spring Boot 4.1 (Web, Security, Data JPA, Validation, WebSocket/STOMP) \cite{springboot}; Hibernate; Flyway \cite{flyway}; Firebase Admin SDK; PostgreSQL 17 \cite{postgresql} \\
+Mobile app & Flutter \cite{flutter} with Riverpod \cite{riverpod} and go\_router; Dio; stomp\_dart\_client; firebase\_auth, firebase\_messaging, google\_sign\_in; geolocator; maplibre\_gl and flutter\_map; image\_picker, record, audioplayers, video\_player; local\_auth; connectivity\_plus; shared\_preferences \\
+Web console & Next.js 16 with the App Router and React 19 \cite{nextjs}; TanStack Query 5 \cite{tanstackquery}; Zustand 5; next-intl 4; Firebase web SDK; @stomp/stompjs; MapLibre GL with react-map-gl; idb-keyval; EmailJS \\
+AI model service & Python 3.12; FastAPI \cite{fastapi}; Uvicorn; pandas and NumPy; scikit-learn \cite{pedregosa2011sklearn}; XGBoost \cite{chen2016xgboost}; joblib \\
+External services & Firebase Authentication and Cloud Messaging \cite{firebase}; Supabase Storage \cite{supabase}; OpenRouter \cite{openrouter}; Brevo \cite{brevo}; Didit \cite{didit}; Nominatim \cite{nominatim}; Overpass; OSRM \cite{osrm}; OpenFreeMap; GitHub Releases \\
+Delivery & Docker and Docker Compose \cite{docker}; GitHub Actions \cite{githubactions}; Vercel (web); container hosting (API); signed Android APK \\
+\end{tabular}
+\end{table}
+
+\section{Repository Structure}
+
+The project is a single repository with one folder per deployable unit:
+
+\begin{lstlisting}[language={},numbers=none,caption={Repository layout.},label={lst:repo}]
+najda/
+|-- backend/              Spring Boot API: modules, Flyway migrations, tests
+|-- mobile/               Flutter app (Android): features, core services, tests
+|-- web/                  Next.js console: app routes, components, hooks, store
+|-- ai/                   FastAPI model service: registry, tests, Dockerfile
+|-- docs/                 documentation, diagrams and their UML sources
+|-- docker-compose.yml    local stack: PostgreSQL, AI service, backend, web
+`-- .github/workflows/    CI for the AI service and the mobile app, release build
+\end{lstlisting}
+
+\section{Backend Implementation}
+
+\subsection{Layering and conventions}
+Each feature module has the same three layers. \emph{Controllers} translate HTTP to method calls and carry the
+role annotations (\code{@PreAuthorize}); \emph{services} contain the rules and own the transactions; \emph{repositories}
+are Spring Data interfaces. Request and response bodies are immutable record types, so an entity is never exposed
+directly. Rule violations are raised as typed exceptions (not found, conflict, forbidden, too many requests, KYC or
+legal-consent required) which a central handler maps to the right HTTP status and a stable error code that the clients
+can act on.
+
+\subsection{Concurrency control}\label{sec:impl-concurrency}
+Two users can easily try to act on the same thing at the same time: two dispatchers offering the same unit, or a
+dispatcher cancelling a mission as the crew accepts it. Unit assignment takes a \emph{pessimistic row lock} on the unit
+(\cref{lst:assign}), so the availability check and the status change are one atomic step and the loser of a race
+receives a clear conflict message. Incidents and missions carry a \code{@Version} field, so concurrent edits fail instead
+of silently overwriting each other.
+
+\lstinputlisting[language=Java,caption={Unit assignment: lock, guard, then create the mission (\code{MissionServiceImpl}, abridged).},label={lst:assign}]{code/MissionAssign.java}
+
+Note the guard against a subtle failure of the domain: a responder can report an emergency too, and the unit they
+crew must never be sent to their own report.
+
+\subsection{Idempotent submission}
+The client generates a request id for each report and sends it with every attempt. The service looks the id up
+\emph{first}; if the incident exists it is returned unchanged, with no new side effects. A partial unique index makes the
+guarantee hold even if two attempts race (\cref{lst:idempotency}).
+
+\lstinputlisting[language=SQL,caption={The database-level guarantee behind idempotent submission.},label={lst:idempotency}]{code/idempotency.sql}
+
+\subsection{Side effects after commit}\label{sec:impl-aftercommit}
+Live updates and notifications are published from inside business transactions, but must reach clients only after the
+data is committed; otherwise a client that refetches on a nudge reads the old state, or is told about an action that
+rolled back. A tiny utility registers the action with Spring's transaction synchronisation (\cref{lst:aftercommit}) and
+every event publisher goes through it.
+
+\lstinputlisting[language=Java,caption={Running an action after the surrounding transaction commits (\code{AfterCommit}).},label={lst:aftercommit}]{code/AfterCommit.java}
+
+\subsection{Caller trust as a pure function}
+The caller-trust policy is implemented as a final class of static functions with no database access and no clock, so it
+is trivial to test exhaustively (\cref{lst:trust}). Weights, half-life, window, tier thresholds and the cool-down
+gap are named constants that mirror \cref{tab:trust-params}.
+
+\lstinputlisting[language=Java,caption={Scoring, decay and tiers in \code{CallerTrustPolicy}.},label={lst:trust}]{code/CallerTrustPolicy.java}
+
+\subsection{One-time codes}
+Registration codes are six random digits from a cryptographically secure generator. Only a keyed hash bound to the
+e-mail address is stored, so a leaked row is useless without the server's secret, and verification compares hashes in
+constant time (\cref{lst:otp}). A code is valid for 10 minutes, allows five attempts and can be re-sent only after 60 seconds;
+code requests and verifications are also rate-limited per client address.
+
+\lstinputlisting[language=Java,caption={Keyed hashing of one-time codes (\code{OtpCodec}).},label={lst:otp}]{code/OtpCodec.java}
+
+\subsection{Persistence}
+The schema is created by a Flyway baseline migration and validated against the entities by Hibernate at start-up, so
+drift between code and database fails fast. Sensitive fields --- chat content, text evidence, free-text medical
+fields, emergency-contact names and phones, and vitals notes --- are stored through attribute converters that encrypt
+them with a configured key. Notifications and device tokens older than 90 days are purged nightly, and other
+maintenance jobs run on fixed schedules (\cref{tab:jobs}).
+
+\subsection{Evidence storage}
+Evidence and application documents are stored in a private bucket. For an upload the service checks that the caller
+owns a live incident and that the file extension is on an allow-list, then returns a short-lived signed upload URL;
+the client uploads directly to storage and then registers the file, and the service confirms that the object exists
+before saving the reference. Downloads use short-lived signed URLs issued only to people allowed to see the incident.
+Deleting an incident removes its storage folder after the transaction commits.
+
+\section{Mobile Application}
+
+The Flutter app is organised into feature folders --- \code{auth}, \code{account}, \code{incident}, \code{map},
+\code{chat}, \code{responder}, \code{handoff}, \code{kyc}, \code{legal}, \code{medical}, \code{notifications},
+\code{guidance}, \code{applications}, \code{settings} and \code{status} --- over a \code{core} layer for networking, live
+updates, push, storage, localisation, routing, security and theming. State is held in Riverpod providers; navigation uses
+go\_router with guards that route a user by role, by profile completeness, by legal consent and by the app lock.
+
+\subsection{Offline-first reporting}
+The outbox is the most safety-critical piece of the client. When a report cannot be sent, it is first written to disk
+together with its media, so a crash or a dead battery cannot lose it (\cref{lst:outbox}). Every attempt carries the same
+request id, so a retry after a lost response returns the original incident. Progress is saved after creating the incident
+and after each upload, so a retry resumes where it stopped; failed attempts back off from 30 seconds to 5 minutes, and
+no attempt is made while the device is offline. Reports saved long ago ask the citizen to confirm before they are sent, and
+reports the server refuses are shown to the citizen instead of being retried silently.
+
+\lstinputlisting[language=Dart,caption={The guarantees of the offline outbox (\code{OutboxController}).},label={lst:outbox}]{code/outbox_controller.dart}
+
+\subsection{Live updates, push and security}
+A single STOMP connection delivers live changes; screens refetch when they are told something changed. Firebase Cloud
+Messaging delivers push notifications on a dedicated channel for urgent types, with the token registered together with the
+device language so that text arrives in the right language. An optional biometric or device-credential lock protects the
+app when it returns from the background, and an update notifier offers newer releases found by the API on GitHub.
+
+\subsection{Maps and location}
+Maps are drawn with MapLibre using OpenFreeMap tiles, and routes and ETAs come from OSRM. A boundary check in the app
+mirrors the server's Egypt boundary so that a citizen is told immediately when a location cannot be used.
+
+\section{Web Console}
+
+The console is a Next.js application with one route tree per workspace: dispatch, responder, hospital, facility manager and
+administration, plus the citizen emergency, account, identity-verification and notification pages and the public
+pages (landing, terms, privacy, status and support). Server state is cached by TanStack Query and invalidated by STOMP
+subscriptions, which gives a live console without polling. The dispatcher workspace ranks available units by distance
+and estimated travel time computed in the browser from live positions, and draws routes with OSRM; the hospital workspace
+shows incoming transfers on a map with ETA and a live vitals stream. Text is localised in English and Arabic with
+right-to-left layout through next-intl, and the interface supports light and dark themes.
+
+\Needspace{16\baselineskip}
+\section{AI Implementation}
+
+\subsection{Priority and duplicate classification}
+The priority service builds a structured prompt from the category, the optional message and the context, calls the
+language model with temperature zero and a time-out, and parses the answer into a priority and a confidence. The
+duplicate service first selects candidate incidents with a database query (same category, open, within 2\,km and 120
+minutes) and asks the model only to judge those. Both run asynchronously after the transaction commits and both swallow
+and log failures, so a provider outage never affects a report.
+
+\subsection{Model-serving platform}
+The model service loads each model package in two steps that guard against silent errors: it verifies the artifact's hash
+against the manifest and refuses to load a model whose key libraries differ from the training environment
+(\cref{lst:registry}). Prediction validates the input against the manifest --- unknown features, out-of-range values and
+unknown categories are rejected --- and returns a label, a confidence and the full probability distribution.
+
+\lstinputlisting[language=Python,caption={Loading a model package safely (\code{registry.py}).},label={lst:registry}]{code/registry_load.py}
+
+\section{Integrations}
+
+\paragraph{Firebase.} The backend verifies ID tokens with the Admin SDK, creates accounts (employees with a temporary
+password and a one-time reset link), writes the role into a custom claim, reads the verified phone and e-mail during
+synchronisation, and sends push notifications.
+\paragraph{Didit.} A hosted verification session is created for the user; the signed webhook is authenticated by signature
+and timestamp, de-duplicated by event id, and confirmed against the provider's decision before the status changes. A stale
+status is reconciled directly with the provider when the app asks for it.
+\paragraph{Supabase Storage.} Signed upload and download URLs for a private bucket; the service never handles file bytes.
+\paragraph{Brevo.} Sends registration codes; its failure only fails the code request.
+\paragraph{OpenStreetMap services.} Nominatim for reverse geocoding (throttled), Overpass (with mirror fall-back) for importing
+hospitals, fire and police stations, and OSRM for routes. A bundled list of about 800 Egyptian facilities is loaded on first
+start so the system is usable immediately.
+
+\section{Deployment and Delivery}
+
+The backend and the AI service are packaged as container images; the backend image runs on a Java 21 runtime as a
+non-root user, and the AI service publishes no port. A single Compose file starts PostgreSQL, the AI service, the backend
+and the web console in the right order, waiting for the database to be healthy. GitHub Actions runs the AI service tests
+and image build on every push, analyses the mobile app on every pull request, and on a version tag builds and publishes the
+signed production APK (\cref{tab:pipelines}). Configuration is entirely environment-driven (Appendix~\ref{app:configuration}).
+
+\section{Engineering Challenges and Solutions}
+
+\Cref{tab:challenges} lists the main engineering problems met during the implementation and how each was solved.
+
+\begin{table}[!htbp]
+\caption{Main engineering challenges and their solutions.}\label{tab:challenges}
+\centering\tabfont\rowband
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.6cm}>{\raggedright\arraybackslash}p{9.6cm}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Challenge} & \textcolor{white}{\sffamily\bfseries\small Solution} \\
+An account lives in two systems (identity provider and database) that cannot share a transaction. & Verify the e-mail first; create the identity account; save the database rows in one transaction; delete the identity account if the database step fails. \\
+A flaky network sends the same report twice. & Client-generated request id, checked before any other rule and backed by a partial unique index; the outbox reuses the same id. \\
+Two dispatchers offer the same unit. & Pessimistic row lock on the unit and a clear conflict message. \\
+Live updates arrive before the data is committed. & All broadcasts and notifications go through \code{AfterCommit}. \\
+Webhooks arrive late, twice or forged. & Signature and timestamp check, event-id table, decision re-fetched from the provider, and a settled status is never undone by a late \emph{in progress} message. \\
+Medical data is sensitive but life-saving. & Layered rule: report consent, standing consent, open incident, treating role; administrators excluded; every read audited and failing closed. \\
+Abuse must be limited without ever refusing a caller. & A pure trust policy that only adds a short gap between reports and always shows the emergency numbers. \\
+The language model may fail or be slow. & Asynchronous, time-limited, deterministic calls whose failure is logged and ignored; retry available. \\
+Arabic and English with right-to-left layout everywhere, including notifications. & Localisation in both clients; notification text produced in both languages and delivered in the device's language. \\
+\end{tabular}
+\end{table}
+
+\section{The User Interface}
+
+The following screens illustrate the main workflows; further screens are in Appendix~\ref{app:ui}.
+
+\screenshotrow[0.78\textheight]{mobile_report,mobile_tracking_and_chat,mobile_handoff,mobile_handoff2}{Mobile app, full-length screens from left to right: the emergency report screen with the first-aid guidance below it; following the response (status timeline, map, assigned responder, incident details and chat); the ambulance handoff on arrival (patient information, medical profile and choice of destination hospital); and the handoff while transporting (vital-signs entry and the latest vitals sent).}{fig:ui-mobile}
+\screenshot[0.92\linewidth]{web_dispatch}{Web console: the dispatcher workspace with live queue, map and unit panel.}{fig:ui-dispatch}
+
+\section{Chapter Summary}
+
+The implementation realises each design decision in a small, testable piece of code: a row lock for assignment, a unique index
+for idempotency, an after-commit helper for events, a pure function for caller trust, keyed hashes for codes, and a
+durable outbox on the phone. Together with the integrations and the deployment pipeline they form a complete platform;
+\cref{chap:testing} describes how it is verified.

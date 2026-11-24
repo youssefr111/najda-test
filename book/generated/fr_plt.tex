@@ -1,0 +1,16 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*146/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*629/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*107/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*118/1000\relax}@{}}
+\caption{Functional requirements: platform services}\label{tab:fr-plt}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Requirement} & \textcolor{white}{\sffamily\bfseries\small Priority} & \textcolor{white}{\sffamily\bfseries\small Platform}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Requirement} & \textcolor{white}{\sffamily\bfseries\small Priority} & \textcolor{white}{\sffamily\bfseries\small Platform}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{FR-PLT-01} & The application is available in English and Arabic with right-to-left layout and light and dark themes; the choice persists. & Must & Web, Mobile\\
+\textbf{FR-PLT-02} & A public status page and endpoint report the health of the platform and its dependencies. & Should & Web, Mobile\\
+\textbf{FR-PLT-03} & The mobile app checks the latest published release and offers an update. & Should & Mobile\\
+\textbf{FR-PLT-04} & The mobile app can be protected by a biometric or device-credential lock. & Could & Mobile\\
+\textbf{FR-PLT-05} & A visitor can send a message to the support team from the public support page. & Could & Web\\
+\textbf{FR-PLT-06} & Significant administrative and privacy-relevant actions are written to an audit log. & Must & Backend\\
+\textbf{FR-PLT-07} & Live changes (incidents, missions, units, chat, vitals, notifications) are pushed to clients over WebSocket so screens update without polling. & Must & Web, Mobile\\
+\end{longtable}}

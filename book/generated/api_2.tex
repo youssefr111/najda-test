@@ -1,0 +1,19 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*408/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*447/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*145/1000\relax}@{}}
+\caption{REST API: identity verification, legal, notifications and content}\label{tab:api-2}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Method and path} & \textcolor{white}{\sffamily\bfseries\small Purpose} & \textcolor{white}{\sffamily\bfseries\small Access}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Method and path} & \textcolor{white}{\sffamily\bfseries\small Purpose} & \textcolor{white}{\sffamily\bfseries\small Access}\\
+\endhead
+\bottomrule\endlastfoot
+GET /\allowbreak{}api/\allowbreak{}kyc/\allowbreak{}status; POST /\allowbreak{}api/\allowbreak{}kyc/\allowbreak{}session & Read status; start a session & any\\
+POST /\allowbreak{}api/\allowbreak{}kyc/\allowbreak{}webhook & Didit webhook (signature) & public\\
+POST /\allowbreak{}api/\allowbreak{}kyc/\allowbreak{}admin/\allowbreak{}\{userId\}/\allowbreak{}status & Mark verified /\allowbreak{} reset & SA\\
+GET /\allowbreak{}api/\allowbreak{}legal/\allowbreak{}consent; POST /\allowbreak{}api/\allowbreak{}legal/\allowbreak{}consent & Consent status; accept latest & any\\
+GET /\allowbreak{}api/\allowbreak{}legal/\allowbreak{}documents/\allowbreak{}\{type\} & Current document & public\\
+GET /\allowbreak{}api/\allowbreak{}legal/\allowbreak{}documents/\allowbreak{}\{type\}/\allowbreak{}versions; GET .../\allowbreak{}versions/\allowbreak{}\{n\}; POST .../\allowbreak{}versions & List, read and publish versions & SA\\
+GET /\allowbreak{}api/\allowbreak{}notifications; GET .../\allowbreak{}unread-count; POST .../\allowbreak{}\{id\}/\allowbreak{}read; POST .../\allowbreak{}read-all & Inbox & any\\
+POST /\allowbreak{}api/\allowbreak{}notifications/\allowbreak{}devices; DELETE /\allowbreak{}api/\allowbreak{}notifications/\allowbreak{}devices & Register or remove a push device & any\\
+GET /\allowbreak{}api/\allowbreak{}guidance; PUT /\allowbreak{}api/\allowbreak{}guidance & Read or replace guidance & any; A, SA\\
+GET /\allowbreak{}api/\allowbreak{}app/\allowbreak{}version; GET /\allowbreak{}api/\allowbreak{}health; GET /\allowbreak{}api/\allowbreak{}status & Release, health, status & public\\
+\end{longtable}}

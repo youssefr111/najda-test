@@ -1,0 +1,15 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*171/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*447/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*382/1000\relax}@{}}
+\caption{Authorisation layers}\label{tab:authz-layers}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Layer} & \textcolor{white}{\sffamily\bfseries\small Mechanism} & \textcolor{white}{\sffamily\bfseries\small Example}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Layer} & \textcolor{white}{\sffamily\bfseries\small Mechanism} & \textcolor{white}{\sffamily\bfseries\small Example}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{Authentication} & Firebase token filter loads the NAJDA user; a disabled account is refused. & 401 /\allowbreak{} 403 account disabled\\
+\textbf{Role} & \code{@PreAuthorize(hasRole /\allowbreak{} hasAnyRole)} on controller methods and classes. & Only dispatch roles may assign a unit.\\
+\textbf{Ownership} & Service checks that the caller owns or is attached to the resource. & Only the citizen cancels their incident; only the unit’s LEAD advances a mission.\\
+\textbf{Scope} & Facility scoping for managers; role--facility policies. & A manager touches only their facility’s units.\\
+\textbf{Consent} & \code{@RequiresLegalConsent} interceptor on protected endpoints. & 403 LEGAL\_\allowbreak{}CONSENT\_\allowbreak{}REQUIRED until the latest terms are accepted.\\
+\textbf{Data-level} & Medical-profile access service with audit. & Treating roles only, open incident only.\\
+\end{longtable}}

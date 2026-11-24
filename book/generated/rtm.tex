@@ -1,0 +1,38 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*211/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*158/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*316/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*316/1000\relax}@{}}
+\caption{Requirements traceability matrix}\label{tab:rtm}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Requirements} & \textcolor{white}{\sffamily\bfseries\small Use cases} & \textcolor{white}{\sffamily\bfseries\small Implemented in} & \textcolor{white}{\sffamily\bfseries\small Verified by}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Requirements} & \textcolor{white}{\sffamily\bfseries\small Use cases} & \textcolor{white}{\sffamily\bfseries\small Implemented in} & \textcolor{white}{\sffamily\bfseries\small Verified by}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{FR-IAM-01 -- 04} & UC-1 & auth, mail, security & TC-01 -- 03\\
+\textbf{FR-IAM-05 -- 11} & UC-2 -- 8 & auth, user & TC-01, TC-28\\
+\textbf{FR-IAM-12 -- 18} & UC-12 -- 15, 18 & auth, user, security & TC-04, TC-05\\
+\textbf{FR-IAM-19 -- 20} & UC-16, 17 & user, notification & Application scenario\\
+\textbf{FR-ID-01 -- 05} & UC-10, 19 & kyc & KycPolicyTest, KycStatusTest, DiditWebhookVerifierTest, TC-06\\
+\textbf{FR-LEG-01 -- 03} & UC-9, 57 & legal & TC-07\\
+\textbf{FR-MED-01 -- 05} & UC-11, 47 & user, incident & medical\_\allowbreak{}profile\_\allowbreak{}test, TC-12 -- 14\\
+\textbf{FR-REP-01 -- 04, 14} & UC-20 & incident, geo & geo\_\allowbreak{}boundary\_\allowbreak{}test, TC-08 -- 10\\
+\textbf{FR-REP-05} & UC-20 & incident & TC-12\\
+\textbf{FR-REP-06 -- 07} & UC-21, 22 & incident (media, storage) & Evidence scenario\\
+\textbf{FR-REP-08} & UC-23 & incident & TC-19\\
+\textbf{FR-REP-09 -- 11} & UC-24 -- 26 & incident, WebSocket publishers & Tracking scenario\\
+\textbf{FR-REP-12} & UC-27, 56 & guidance, content & Guidance scenario\\
+\textbf{FR-REP-13} & UC-28 & mobile outbox & outbox\_\allowbreak{}report\_\allowbreak{}test, TC-11\\
+\textbf{FR-DSP-01 -- 05} & UC-29 -- 32 & incident, ai, web console & TC-29\\
+\textbf{FR-DSP-06 -- 09} & UC-32 -- 34 & incident (missions) & TC-15 -- 18\\
+\textbf{FR-DSP-10 -- 13} & UC-35, 36, 55 & incident (false report, caller trust) & CallerTrustPolicyTest, TC-20, 21\\
+\textbf{FR-DSP-14} & UC-37 & incident & Deletion scenario\\
+\textbf{FR-FLD-01 -- 04} & UC-38, 42 & unit (shifts) & Shift scenario\\
+\textbf{FR-FLD-05 -- 10} & UC-39 -- 41 & incident (missions), unit & TC-17\\
+\textbf{FR-HOS-01 -- 06} & UC-43 -- 46 & incident (transfers), hospital & TC-22, 23\\
+\textbf{FR-ADM-01 -- 04} & UC-48 -- 50 & facility & FacilityCsvParserTest, FacilityCsvSeederTest\\
+\textbf{FR-ADM-05 -- 06} & UC-51, 52 & unit & TC-25\\
+\textbf{FR-ADM-07} & UC-55, 56 & incident, guidance & ---\\
+\textbf{FR-ADM-08} & UC-53, 54 & unit (facility manager) & FacilityManagerPolicyTest, TC-24\\
+\textbf{FR-NOT-01 -- 05} & UC-58, 59 & notification & NotificationMessagesTest, TC-26, 27\\
+\textbf{FR-PLT-01} & UC-60 & clients & TC-28\\
+\textbf{FR-PLT-02 -- 05} & UC-61 -- 64 & status, appversion, clients & AppReleaseServiceTest, ReleaseVersionsTest, TC-30\\
+\textbf{FR-PLT-06 -- 07} & --- & audit, WebSocket & Audit scenarios in TC-14, TC-20\\
+\end{longtable}}

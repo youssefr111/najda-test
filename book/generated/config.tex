@@ -1,0 +1,18 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-4\tabcolsep)*197/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-4\tabcolsep)*803/1000\relax}@{}}
+\caption{Configuration variables (all supplied through the environment)}\label{tab:config}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Area} & \textcolor{white}{\sffamily\bfseries\small Variables (default)}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Area} & \textcolor{white}{\sffamily\bfseries\small Variables (default)}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{Core} & SPRING\_\allowbreak{}PROFILES\_\allowbreak{}ACTIVE, SPRING\_\allowbreak{}DATASOURCE\_\allowbreak{}URL /\allowbreak{} USERNAME /\allowbreak{} PASSWORD, FIREBASE\_\allowbreak{}SERVICE\_\allowbreak{}ACCOUNT\_\allowbreak{}PATH, WEB\_\allowbreak{}BASE\_\allowbreak{}URL (web-push click target), JPA\_\allowbreak{}SHOW\_\allowbreak{}SQL, HIBERNATE\_\allowbreak{}DDL\_\allowbreak{}AUTO (validate)\\
+\textbf{E-mail} & BREVO\_\allowbreak{}API\_\allowbreak{}KEY, MAIL\_\allowbreak{}FROM\_\allowbreak{}EMAIL; OTP: code TTL 10 min, resend cool-down 60 s, 5 attempts, verified TTL 15 min\\
+\textbf{Identity verification} & KYC\_\allowbreak{}REQUIRED (false), KYC\_\allowbreak{}GRANDFATHER\_\allowbreak{}BEFORE, KYC\_\allowbreak{}EXEMPT\_\allowbreak{}ROLES (ADMIN, SUPER\_\allowbreak{}ADMIN), DIDIT\_\allowbreak{}BASE\_\allowbreak{}URL, DIDIT\_\allowbreak{}API\_\allowbreak{}KEY, DIDIT\_\allowbreak{}WORKFLOW\_\allowbreak{}ID, DIDIT\_\allowbreak{}WEBHOOK\_\allowbreak{}SECRET, DIDIT\_\allowbreak{}ENVIRONMENT, DIDIT\_\allowbreak{}VENDOR\_\allowbreak{}PREFIX\\
+\textbf{AI} & OPENROUTER\_\allowbreak{}API\_\allowbreak{}KEY, OPENROUTER\_\allowbreak{}MODEL (triage); AI\_\allowbreak{}ENABLED (true), AI\_\allowbreak{}URL (http:/\allowbreak{}/\allowbreak{}localhost:8000), AI\_\allowbreak{}API\_\allowbreak{}KEY (model service)\\
+\textbf{Reporting} & INCIDENT\_\allowbreak{}ALLOW\_\allowbreak{}MANUAL\_\allowbreak{}PIN (false), INCIDENT\_\allowbreak{}MANUAL\_\allowbreak{}PIN\_\allowbreak{}MAX\_\allowbreak{}RADIUS\_\allowbreak{}METERS (300)\\
+\textbf{Facilities} & FACILITY\_\allowbreak{}SEED\_\allowbreak{}ENABLED (true)\\
+\textbf{Notifications} & PUSH\_\allowbreak{}ENABLED (true)\\
+\textbf{Releases} & APP\_\allowbreak{}RELEASE\_\allowbreak{}REPOSITORY, APP\_\allowbreak{}RELEASE\_\allowbreak{}GITHUB\_\allowbreak{}TOKEN\\
+\textbf{Web (build time)} & NEXT\_\allowbreak{}PUBLIC\_\allowbreak{}API\_\allowbreak{}BASE\_\allowbreak{}URL, NEXT\_\allowbreak{}PUBLIC\_\allowbreak{}WS\_\allowbreak{}URL, NEXT\_\allowbreak{}PUBLIC\_\allowbreak{}FIREBASE\_\allowbreak{}*, NEXT\_\allowbreak{}PUBLIC\_\allowbreak{}SUPABASE\_\allowbreak{}URL /\allowbreak{} ANON\_\allowbreak{}KEY, NEXT\_\allowbreak{}PUBLIC\_\allowbreak{}EMAILJS\_\allowbreak{}*, NEXT\_\allowbreak{}PUBLIC\_\allowbreak{}ANDROID\_\allowbreak{}DOWNLOAD\_\allowbreak{}URL\\
+\end{longtable}}

@@ -1,0 +1,22 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-4\tabcolsep)*342/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-4\tabcolsep)*658/1000\relax}@{}}
+\caption{Key design decisions and their rationale}\label{tab:decisions}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Decision} & \textcolor{white}{\sffamily\bfseries\small Rationale}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Decision} & \textcolor{white}{\sffamily\bfseries\small Rationale}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{Firebase for identity, local roles for authority} & Avoids storing or handling passwords and gives phone/\allowbreak{}Google sign-in for free, while keeping all authorisation decisions auditable in the NAJDA database.\\
+\textbf{E-mail verification by one-time code before account creation} & Nothing exists in either store until the address is proven, so there are no half-registered accounts to clean up, and the account is created with a verified address.\\
+\textbf{One-time reset link for employees} & No password is ever shown, e-mailed or shared; the temporary password exists only because the identity provider requires one.\\
+\textbf{Idempotent report submission with a client request id} & A report may be sent twice by a flaky network; the second must never create a second emergency.\\
+\textbf{Pessimistic lock on unit assignment, optimistic versions elsewhere} & Double-booking a unit is the costliest race in dispatch; contention on other rows is rare, so versions are cheaper.\\
+\textbf{Side effects after commit} & A notification or live update for an action that rolled back would mislead people in an emergency.\\
+\textbf{Caller trust slows but never blocks} & An emergency line that can refuse a caller can cost a life; abuse is handled by delay, human verdicts and manual suspension.\\
+\textbf{Medical profile: consent, role attachment, audit, fail-closed} & The data is sensitive and valuable only to those treating the patient; every read must be explainable afterwards.\\
+\textbf{Direct-to-storage uploads with signed URLs} & Large media never loads the API, and the bucket stays private.\\
+\textbf{Notification inbox plus push} & The inbox is the reliable record; push is a best-effort alert that is allowed to fail.\\
+\textbf{Separate AI model service} & Models are versioned artifacts with a strict input contract and can be rolled forward or back without redeploying the API; the service stays on the internal network.\\
+\textbf{Flyway baseline with entity validation} & The schema is reviewable and reproducible, and drift between code and database fails at start-up.\\
+\textbf{Flutter for the mobile app} & One cross-platform code base with a mature location, map and push ecosystem.\\
+\end{longtable}}

@@ -1,0 +1,26 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*408/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*447/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*145/1000\relax}@{}}
+\caption{REST API: incidents and evidence}\label{tab:api-3}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Method and path} & \textcolor{white}{\sffamily\bfseries\small Purpose} & \textcolor{white}{\sffamily\bfseries\small Access}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Method and path} & \textcolor{white}{\sffamily\bfseries\small Purpose} & \textcolor{white}{\sffamily\bfseries\small Access}\\
+\endhead
+\bottomrule\endlastfoot
+POST /\allowbreak{}api/\allowbreak{}incidents & Submit a report (idempotent) & citizen roles\\
+GET /\allowbreak{}api/\allowbreak{}incidents/\allowbreak{}mine; GET /\allowbreak{}api/\allowbreak{}incidents/\allowbreak{}\{id\} & Own incidents; one incident & any (scoped)\\
+PATCH /\allowbreak{}api/\allowbreak{}incidents/\allowbreak{}\{id\}/\allowbreak{}injured-count & Update injured count & owner\\
+POST /\allowbreak{}api/\allowbreak{}incidents/\allowbreak{}\{id\}/\allowbreak{}cancel & Cancel with reason & owner\\
+GET /\allowbreak{}api/\allowbreak{}incidents/\allowbreak{}queue; GET /\allowbreak{}api/\allowbreak{}incidents/\allowbreak{}active & Open queue; active list & D, A, SA\\
+GET /\allowbreak{}api/\allowbreak{}incidents/\allowbreak{}all & All incidents & A, SA\\
+POST /\allowbreak{}api/\allowbreak{}incidents/\allowbreak{}\{id\}/\allowbreak{}complete & Complete by override & D, A, SA\\
+POST /\allowbreak{}api/\allowbreak{}incidents/\allowbreak{}\{id\}/\allowbreak{}mark-duplicate; .../\allowbreak{}dismiss-duplicate-suggestion & Resolve duplicate suggestion & D, A, SA\\
+POST /\allowbreak{}api/\allowbreak{}incidents/\allowbreak{}\{id\}/\allowbreak{}false-report; DELETE .../\allowbreak{}false-report & Mark; clear & D, A, SA; A, SA\\
+POST /\allowbreak{}api/\allowbreak{}incidents/\allowbreak{}\{id\}/\allowbreak{}retry-ai-priority & Re-run classification & D, A, SA\\
+DELETE /\allowbreak{}api/\allowbreak{}incidents/\allowbreak{}\{id\} & Delete incident & SA\\
+GET /\allowbreak{}api/\allowbreak{}incidents/\allowbreak{}\{id\}/\allowbreak{}caller-history; GET /\allowbreak{}api/\allowbreak{}admin/\allowbreak{}caller-flags & Caller history; flagged callers & D, A, SA; A, SA\\
+GET/\allowbreak{}PUT/\allowbreak{}DELETE /\allowbreak{}api/\allowbreak{}incidents/\allowbreak{}\{id\}/\allowbreak{}presence & Dispatcher presence & D, A, SA\\
+GET /\allowbreak{}api/\allowbreak{}incidents/\allowbreak{}\{id\}/\allowbreak{}medical-profile & Patient profile for treating roles & treating roles\\
+GET/\allowbreak{}POST /\allowbreak{}api/\allowbreak{}incidents/\allowbreak{}\{id\}/\allowbreak{}chat & Read and send chat & members\\
+POST /\allowbreak{}api/\allowbreak{}incident-media/\allowbreak{}upload-url; POST /\allowbreak{}api/\allowbreak{}incident-media & Signed upload; register media & owner\\
+GET /\allowbreak{}api/\allowbreak{}incident-media/\allowbreak{}\{id\}/\allowbreak{}download-url; PATCH .../\allowbreak{}\{id\}/\allowbreak{}text; DELETE .../\allowbreak{}\{id\} & Signed download; edit text; delete & scoped\\
+\end{longtable}}

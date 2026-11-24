@@ -1,0 +1,39 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*89/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*380/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*367/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*165/1000\relax}@{}}
+\caption{Verification scenarios}\label{tab:tests-scenarios}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Scenario} & \textcolor{white}{\sffamily\bfseries\small Expected result} & \textcolor{white}{\sffamily\bfseries\small Covers}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Scenario} & \textcolor{white}{\sffamily\bfseries\small Expected result} & \textcolor{white}{\sffamily\bfseries\small Covers}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{TC-01} & Register with e-mail: request code, enter correct code, complete the form. & Account created, signed in, profile complete, terms recorded. & FR-IAM-01--04, UC-1\\
+\textbf{TC-02} & Enter a wrong code five times, then request another within 60 s. & Attempts exhausted message; resend refused until cool-down ends. & FR-IAM-01, BR-2\\
+\textbf{TC-03} & Force a database failure after the Firebase account is created. & The Firebase account is deleted; a retry succeeds. & FR-IAM-03\\
+\textbf{TC-04} & Provision a dispatcher as Admin; open the one-time link; sign in. & Dispatcher workspace opens; no password was shown. & FR-IAM-12, UC-12\\
+\textbf{TC-05} & Plain Admin tries to change a Super Admin’s role, or to disable the last Super Admin. & Refused with an explanation. & FR-IAM-14, FR-IAM-16\\
+\textbf{TC-06} & Complete Didit verification; replay the same webhook; send a webhook with a bad signature. & Status VERIFIED once; replay ignored; bad signature rejected. & FR-ID-01--03\\
+\textbf{TC-07} & Publish a Terms version that requires acceptance; call a protected endpoint. & 403 LEGAL\_\allowbreak{}CONSENT\_\allowbreak{}REQUIRED until accepted; users notified. & FR-LEG-01--02, UC-57\\
+\textbf{TC-08} & Submit a report with GPS; repeat the same request id. & One incident; dispatchers notified once; the repeat returns the same incident. & FR-REP-01, FR-REP-03\\
+\textbf{TC-09} & Submit with coordinates outside Egypt, and a manual pin 1 km from the device. & Both refused with the reason. & FR-REP-02, BR-16\\
+\textbf{TC-10} & Submit a second report while one is active. & 409 conflict. & FR-REP-04\\
+\textbf{TC-11} & Submit offline; restore connectivity. & Report arrives automatically exactly once. & FR-REP-13, UC-28\\
+\textbf{TC-12} & Report for someone else with sharing on; read the incident’s medical profile as a dispatcher. & Profile not shared. & FR-MED-04\\
+\textbf{TC-13} & Withdraw sharing consent while an incident is open; open the profile as the crew. & Not shared immediately; no audit entry for a read. & FR-MED-03, FR-MED-05\\
+\textbf{TC-14} & Open a patient profile as an Admin, then as a crew member not on the mission. & Both refused. & FR-MED-05, UC-47\\
+\textbf{TC-15} & Two dispatchers assign the same unit at the same moment. & One mission is created; the other gets a conflict. & FR-DSP-06\\
+\textbf{TC-16} & Assign a unit with no LEAD on shift. & Refused. & FR-DSP-06\\
+\textbf{TC-17} & LEAD accepts, goes en route, arrives, completes (fire truck). & Citizen sees each step; unit AVAILABLE; incident RESOLVED. & FR-FLD-05--07\\
+\textbf{TC-18} & Cancel the last active mission while the incident is ASSIGNED. & Incident returns to DISPATCHER\_\allowbreak{}REVIEW. & FR-DSP-08\\
+\textbf{TC-19} & Citizen cancels after a unit arrived. & 409; response continues. & FR-REP-08\\
+\textbf{TC-20} & Mark a false report before and after a unit has arrived. & Closed in the first case; verdict-only in the second; audit entry both times. & FR-DSP-10\\
+\textbf{TC-21} & Accumulate false reports for one caller; submit again. & 429 with Retry-After and the emergency numbers; reporting works after the wait. & FR-DSP-12\\
+\textbf{TC-22} & Ambulance: select hospital, en route, send vitals, arrive. & Hospital alerted; vitals streamed live; mission completed; incident resolved. & FR-HOS-01--05\\
+\textbf{TC-23} & Send vitals for a free-text destination. & Refused. & FR-HOS-04, FR-HOS-06\\
+\textbf{TC-24} & Facility manager creates a unit and a staff member at a fire station. & Fire truck and firefighter only; other roles refused. & FR-ADM-08\\
+\textbf{TC-25} & Delete a unit with history; one on a live mission. & Archived; refused. & FR-ADM-05\\
+\textbf{TC-26} & Roll back a transaction that would have notified (for example a failing assignment). & No notification is created. & FR-NOT-03\\
+\textbf{TC-27} & Send an urgent notification to a device with an unregistered token. & Push fails once, token deleted, inbox row remains. & FR-NOT-05\\
+\textbf{TC-28} & Switch to Arabic on web and mobile. & Right-to-left layout and Arabic notification text. & FR-PLT-01, FR-NOT-02\\
+\textbf{TC-29} & Stop the language-model provider and submit a report. & Report created; no priority; dispatcher can retry later. & FR-DSP-02\\
+\textbf{TC-30} & Open the status endpoint with the database stopped. & 503 with database DOWN. & FR-PLT-02\\
+\end{longtable}}

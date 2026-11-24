@@ -1,0 +1,15 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*146/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*629/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*107/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*118/1000\relax}@{}}
+\caption{Functional requirements: hospital coordination}\label{tab:fr-hos}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Requirement} & \textcolor{white}{\sffamily\bfseries\small Priority} & \textcolor{white}{\sffamily\bfseries\small Platform}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Requirement} & \textcolor{white}{\sffamily\bfseries\small Priority} & \textcolor{white}{\sffamily\bfseries\small Platform}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{FR-HOS-01} & Once an ambulance mission has arrived on scene, its LEAD can see registered hospitals within 30 km, nearest first, and select one as the destination. & Must & Web, Mobile\\
+\textbf{FR-HOS-02} & Selecting a hospital notifies that hospital’s staff (urgent push and live update) that a patient is incoming. & Must & Backend\\
+\textbf{FR-HOS-03} & The LEAD marks the transfer en route and arrived. Arrival completes the mission, frees the unit and resolves the incident when it is the last active mission. & Must & Web, Mobile\\
+\textbf{FR-HOS-04} & While transporting, the LEAD can record vital signs (heart rate, SpO\textsubscript{2}, blood pressure, respiratory rate, temperature, consciousness level, notes); notes are encrypted at rest. Vitals are accepted only for a registered hospital destination. & Must & Web, Mobile\\
+\textbf{FR-HOS-05} & Hospital staff see their hospital’s incoming transfers with a map, ETA and the live vitals stream and history. & Must & Web\\
+\textbf{FR-HOS-06} & A destination that is not a registered facility can be recorded as free text, without vitals streaming. & Could & Web, Mobile\\
+\end{longtable}}

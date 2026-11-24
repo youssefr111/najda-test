@@ -1,0 +1,23 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*325/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*84/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*301/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*289/1000\relax}@{}}
+\caption{Notification types, recipients and triggers}\label{tab:notifications}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Urgent} & \textcolor{white}{\sffamily\bfseries\small Recipients} & \textcolor{white}{\sffamily\bfseries\small Trigger}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Urgent} & \textcolor{white}{\sffamily\bfseries\small Recipients} & \textcolor{white}{\sffamily\bfseries\small Trigger}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{INCIDENT\_\allowbreak{}NEW} & Yes & All dispatchers & A report is submitted.\\
+\textbf{INCIDENT\_\allowbreak{}CANCELLED\_\allowbreak{}BY\_\allowbreak{}CITIZEN} & No & Dispatchers and live crews & The citizen cancels.\\
+\textbf{MISSION\_\allowbreak{}OFFERED} & Yes & The unit’s crew & A dispatcher assigns the unit.\\
+\textbf{MISSION\_\allowbreak{}CANCELLED} & No & The unit’s crew & Dispatch, false report or the citizen stands the mission down.\\
+\textbf{MISSION\_\allowbreak{}REJECTED} & Yes & Dispatchers & The LEAD rejects.\\
+\textbf{MISSION\_\allowbreak{}WITHDRAWN} & No & Dispatchers & The LEAD withdraws.\\
+\textbf{INCIDENT\_\allowbreak{}ACCEPTED /\allowbreak{} EN\_\allowbreak{}ROUTE /\allowbreak{} ARRIVED} & No & The citizen & The matching mission step.\\
+\textbf{INCIDENT\_\allowbreak{}RESOLVED} & No & The citizen & The incident is resolved.\\
+\textbf{INCIDENT\_\allowbreak{}CLOSED\_\allowbreak{}FALSE\_\allowbreak{}REPORT /\allowbreak{} DUPLICATE} & No & The citizen & Dispatch closes the incident.\\
+\textbf{PATIENT\_\allowbreak{}INCOMING} & Yes & Staff of the destination hospital & A hospital is selected.\\
+\textbf{CHAT\_\allowbreak{}MESSAGE} & No & The other side of the conversation (no message text) & A chat message is sent.\\
+\textbf{APPLICATION\_\allowbreak{}SUBMITTED} & No & Admins & A responder application arrives.\\
+\textbf{APPLICATION\_\allowbreak{}APPROVED /\allowbreak{} REJECTED} & No & The applicant & An Admin reviews.\\
+\textbf{LEGAL\_\allowbreak{}UPDATED} & No & All users & A version requiring acceptance is published.\\
+\end{longtable}}

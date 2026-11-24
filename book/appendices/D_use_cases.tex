@@ -1,0 +1,1423 @@
+\chapter{Use Case Specifications}\label{app:use-cases}
+This appendix specifies every use case of \ProjectName{}. The use-case diagrams are in \cref{chap:requirements};
+each specification gives the actor, platform, pre- and postconditions, the main flow and the alternate or
+exceptional flows. Identifiers are stable and are used by the traceability matrix (\cref{tab:rtm}).
+
+\Needspace{16\baselineskip}
+\section{Account, Access and Identity}
+\ucheading{UC-1}{Register with E-mail and Code}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Visitor (becomes Citizen); Brevo; Firebase Authentication \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The visitor has no NAJDA account for the e-mail address. \\ \midrule
+Postconditions (success) & A verified Firebase account and a NAJDA citizen profile exist, the latest Terms and Privacy Policy are accepted, and the user can sign in. \\ \midrule
+Postconditions (failure) & Nothing exists in Firebase or in the database. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The visitor chooses Register and enters an e-mail address.
+\item The system rate-limits the request, checks the address is free, and e-mails a six-digit code valid for 10 minutes (only a keyed hash is stored).
+\item The visitor enters the code.
+\item The system verifies it, and returns a one-time registration token valid for 15 minutes.
+\item The visitor enters first and last name, phone number, address, gender and a password, and accepts the Terms and Privacy Policy.
+\item The system validates the token, the e-mail and the phone number, creates the Firebase account (e-mail already verified), and in one database transaction saves the citizen, records the acceptance and consumes the verification; then it writes the role claim.
+\item The client signs the user in and opens the home screen; the profile is already complete.
+\end{enumerate}
+\ucflow{Alternate flow --- e-mail already registered}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item At step 2 the system answers with a conflict and the client offers to sign in instead.
+\end{enumerate}
+\ucflow{Alternate flow --- wrong, expired or exhausted code}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The system counts the failed attempt (kept even though the request fails). After five wrong attempts the visitor must request a new code; a new code can be requested only after the 60-second cool-down.
+\end{enumerate}
+\ucflow{Exception flow --- phone or password rejected}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item A phone number already verified on another account, or a password that fails the Firebase password policy, is rejected before or without creating anything, with a message the visitor can act on.
+\end{enumerate}
+\ucflow{Exception flow --- database failure}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The newly created Firebase account is deleted again, so a retry starts clean.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-2}{Sign In with Google}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Visitor; Firebase Authentication \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The visitor has a Google account. \\ \midrule
+Postconditions (success) & The user is signed in; for a first sign-in a citizen profile exists with the latest legal documents accepted. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The visitor chooses Continue with Google and authenticates with Google.
+\item The client asks the API for the current profile with the Firebase ID token.
+\item If no profile exists, the client collects phone, address and gender and shows the Terms and Privacy Policy.
+\item The client calls the registration endpoint; the server creates the citizen, records acceptance and sets the role claim.
+\item The client routes the user according to the server’s profile-completeness flag.
+\end{enumerate}
+\ucflow{Alternate flow --- profile exists}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item At step 2 the profile is returned and the user goes straight to the home screen.
+\end{enumerate}
+\ucflow{Alternate flow --- sign-in cancelled}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The client stays on the sign-in screen; nothing is created.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-3}{Complete Profile}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Citizen \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The user is signed in and the server reports the profile as incomplete. \\ \midrule
+Postconditions (success) & Phone, address and gender are stored and the profile is flagged complete. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The client routes the user to the profile-completion screen.
+\item The user enters phone number, governorate, city, street, optional landmark and gender.
+\item The client submits; the server stores the data and re-evaluates completeness (phone, governorate, city, street and gender present).
+\item The client continues to phone verification (UC-7) or the home screen.
+\end{enumerate}
+\ucflow{Exception flow --- invalid data}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The server rejects missing or malformed fields and the screen shows which.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-4}{Sign In and Recover Password}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & User; Firebase Authentication \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The user has an account. \\ \midrule
+Postconditions (success) & The user holds a valid session and sees the workspace for their role. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The user enters e-mail and password (or uses Google).
+\item Firebase authenticates and returns an ID token.
+\item The client loads the profile; the server verifies the token, loads the user and applies the role.
+\item The client opens the role’s home: citizens and responders the mobile home, desk roles their console workspace.
+\end{enumerate}
+\ucflow{Alternate flow --- forgotten password}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The user chooses Forgot password and enters their e-mail.
+\item Firebase sends a reset link; the user chooses a new password and signs in.
+\end{enumerate}
+\ucflow{Exception flow --- disabled account}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The server refuses the token with a clear message and the client signs the user out.
+\end{enumerate}
+\ucflow{Exception flow --- wrong credentials}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item Firebase rejects the sign-in and the client shows the reason.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-5}{Manage Own Profile}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Citizen, First Responder \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The user is signed in. \\ \midrule
+Postconditions (success) & The changed profile fields are stored. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The user opens Account.
+\item The user edits first name, last name, gender and address.
+\item The server validates, saves and re-evaluates profile completeness.
+\item The screen shows the updated profile.
+\end{enumerate}
+\ucflow{Exception flow --- address removed}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item An address is required; the server rejects an empty one.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-6}{Change E-mail}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & User; Firebase Authentication \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The user is signed in and recently authenticated. \\ \midrule
+Postconditions (success) & The new address is verified in Firebase and synchronised into the NAJDA profile. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The user enters a new e-mail address.
+\item Firebase sends a verification message to it; the user confirms.
+\item The client calls the synchronisation endpoint.
+\item The server reads the verified address from Firebase and updates the profile.
+\end{enumerate}
+\ucflow{Exception flow --- address in use}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item Firebase or the database rejects it and nothing changes.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-7}{Verify or Change Phone Number}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & User; Firebase Authentication \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The user is signed in. \\ \midrule
+Postconditions (success) & The phone number is marked verified on exactly one account. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The user enters a phone number; the server stores it as unverified.
+\item Firebase sends an SMS code; the user enters it.
+\item The client calls the synchronisation endpoint.
+\item The server reads the verified phone from Firebase and marks the profile verified.
+\end{enumerate}
+\ucflow{Exception flow --- number already verified elsewhere}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The server refuses; a number can be verified on one account only.
+\end{enumerate}
+\ucflow{Alternate flow --- administrator assistance}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item An Admin can mark the phone verified (audited); a Super Admin can override the number without re-verification (UC-13, UC-19).
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-8}{Change Password}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & User; Firebase Authentication \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The user signed in with a password. \\ \midrule
+Postconditions (success) & The password is changed in Firebase. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The user opens security settings and re-enters the current password.
+\item The user enters a new password that meets the policy.
+\item Firebase updates the credential.
+\end{enumerate}
+\ucflow{Exception flow --- policy not met}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item Firebase rejects the password and the client explains the policy.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-9}{Accept Terms and Privacy Policy}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & User \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & A version that requires acceptance has been published and the user has not accepted it. \\ \midrule
+Postconditions (success) & An acceptance row records the user, the version, the source (web or mobile) and the time. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The user calls a protected feature; the server answers 403 LEGAL\_\allowbreak{}CONSENT\_\allowbreak{}REQUIRED.
+\item The client shows the current Terms and Privacy Policy in the user’s language.
+\item The user accepts; the client posts the consent.
+\item The server records the acceptance of the latest versions and the client retries the original action.
+\end{enumerate}
+\ucflow{Alternate flow --- new version published}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item Publishing (UC-57) sends every user a LEGAL\_\allowbreak{}UPDATED notification; the next protected call triggers this flow.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-10}{Verify Identity}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Citizen, First Responder; Didit \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The user is signed in and not yet verified. \\ \midrule
+Postconditions (success) & The user’s verification status is VERIFIED (or DECLINED, EXPIRED, ABANDONED with the reason). \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The user chooses Verify identity.
+\item The server creates a Didit session tied to the user and returns its hosted URL.
+\item The user completes the document and selfie check in Didit.
+\item Didit calls the signed webhook; the server verifies signature and freshness, ignores duplicates, confirms the decision with Didit and updates the status.
+\item The app reads the status when it resumes and shows the outcome.
+\end{enumerate}
+\ucflow{Alternate flow --- webhook delayed}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The status request reconciles an unsettled status directly with the provider (self-healing).
+\end{enumerate}
+\ucflow{Alternate flow --- declined, expired or abandoned}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The user sees the reason and can start a new session.
+\end{enumerate}
+\ucflow{Alternate flow --- in review}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item A person at the provider is reviewing; the status moves to VERIFIED or DECLINED later.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-11}{Manage Medical Profile}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Citizen, First Responder \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The user is signed in. \\ \midrule
+Postconditions (success) & The profile, its consent flag and up to three emergency contacts are stored; free-text fields are encrypted. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The user opens Medical profile.
+\item The user enters date of birth, weight, blood type, allergies and conditions (or confirms none), medication, notes and emergency contacts.
+\item The user chooses whether responders may see the profile (off by default).
+\item The server validates and stores it.
+\end{enumerate}
+\ucflow{Alternate flow --- withdraw consent}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The user turns sharing off; from that moment no responder can read the profile, including on open incidents.
+\end{enumerate}
+\ucflow{Alternate flow --- delete profile}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The user deletes the profile and all its parts.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-12}{Provision Employee Account}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Admin, Super Admin; Firebase Authentication \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The actor is signed in as Admin or Super Admin. \\ \midrule
+Postconditions (success) & The employee has a Firebase account and a NAJDA profile with the role (and facility) set; a one-time password-reset link was returned. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Admin opens user administration and chooses Create employee.
+\item The Admin enters name, e-mail, role and, where the role needs one, the facility.
+\item The server checks the role--facility rules (for example a firefighter needs a fire station; an ambulance crew member an ambulance station or hospital).
+\item The server creates the Firebase account with a temporary password, saves the profile (creating the personal unit for a first responder), sets the role claim and generates a reset link.
+\item The console shows the link once; the Admin hands it to the employee, who sets a password and signs in.
+\end{enumerate}
+\ucflow{Exception flow --- Super Admin role requested by a plain Admin}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The server refuses; only a Super Admin can create a Super Admin.
+\end{enumerate}
+\ucflow{Exception flow --- facility missing or wrong type}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The server refuses and names the expected facility type.
+\end{enumerate}
+\ucflow{Alternate flow --- Facility Manager}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item A Facility Manager creates staff for their own facility through UC-54; the facility type decides the roles allowed.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-13}{Administer User Accounts}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Admin, Super Admin \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The actor is signed in as Admin or Super Admin. \\ \midrule
+Postconditions (success) & The chosen administrative change is applied and, where sensitive, audited. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Admin searches users by name or e-mail and filters by role and enabled state; results are paged.
+\item The Admin opens a user and edits name, gender or address.
+\item The server saves the change; a plain Admin cannot edit a Super Admin.
+\end{enumerate}
+\ucflow{Alternate flow --- password-reset link}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Admin generates a reset link for the user and passes it on.
+\end{enumerate}
+\ucflow{Alternate flow --- e-mail override}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Admin sets a verified e-mail for the user.
+\end{enumerate}
+\ucflow{Alternate flow --- phone verification}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Admin marks the phone verified (audited as ADMIN\_\allowbreak{}PHONE\_\allowbreak{}VERIFICATION\_\allowbreak{}OVERRIDE); a Super Admin may replace the number without re-verification (audited as ADMIN\_\allowbreak{}OVERRIDE\_\allowbreak{}PHONE).
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-14}{Enable or Disable an Account}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Admin, Super Admin \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The target account exists. \\ \midrule
+Postconditions (success) & The account is disabled (cannot use the API) or re-enabled; a facility’s registered flag is refreshed. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Admin selects Disable on a user.
+\item The server checks the guards and sets enabled to false.
+\item The user’s next request is refused; a live update tells other consoles the user list changed.
+\item To restore access the Admin selects Enable.
+\end{enumerate}
+\ucflow{Exception flow --- protected accounts}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item A plain Admin cannot disable a Super Admin, and the only remaining Super Admin cannot be disabled.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-15}{Change Role and Facility}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Admin, Super Admin \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The target account exists. \\ \midrule
+Postconditions (success) & The role and the Firebase claim are updated; an invalid facility link is released; facility registration is refreshed. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Admin selects a new role for the user.
+\item The server applies the guards, saves the role and releases a facility link that no longer fits.
+\item The server writes the new role to the Firebase custom claim.
+\item For a facility role, the Admin assigns a facility of the expected type.
+\end{enumerate}
+\ucflow{Exception flow --- guards}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item A plain Admin cannot modify a Super Admin or grant Super Admin; a Super Admin cannot remove their own Super Admin role; a facility role cannot be left without a facility.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-16}{Apply to Become First Responder}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Citizen \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The user is a citizen with verified e-mail, verified phone and VERIFIED identity, and has no pending application. \\ \midrule
+Postconditions (success) & A PENDING application with its documents exists and Admins are notified. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The citizen opens Become a responder and writes a motivation.
+\item The citizen attaches supporting documents (PDF or image).
+\item The system validates and stores the documents privately and creates the application.
+\item The citizen sees the application as pending.
+\end{enumerate}
+\ucflow{Exception flow --- requirements not met}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The system explains what is missing: verify e-mail and phone, verify identity, or wait for the pending application.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-17}{Review First Responder Application}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Admin, Super Admin \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & At least one application is pending. \\ \midrule
+Postconditions (success) & The application is APPROVED or REJECTED and the applicant is notified. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Admin opens the applications list and selects a pending one.
+\item The Admin opens each document through a short-lived signed link.
+\item The Admin approves.
+\item The server requires at least one document, changes the role to First Responder, updates the Firebase claim and creates the applicant’s personal unit.
+\item The applicant receives a notification.
+\end{enumerate}
+\ucflow{Alternate flow --- reject}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Admin rejects with review notes; the applicant is notified and may apply again.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-18}{Reconcile Firebase and Database}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Super Admin; Firebase Authentication \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The actor is a Super Admin. \\ \midrule
+Postconditions (success) & Accounts that existed in only one store are repaired or removed. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Super Admin opens the Firebase reconciliation report.
+\item The report lists Firebase accounts without a profile and database users without a Firebase account.
+\item For a Firebase-only account the Super Admin imports it as a profile or deletes the orphan.
+\item For a database-only user the Super Admin repairs the link.
+\end{enumerate}
+\ucflow{Exception flow --- provider unreachable}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The console shows that Firebase could not be reached; nothing changes.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-19}{Override Identity Verification}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Super Admin \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The target user exists. \\ \midrule
+Postconditions (success) & The user’s verification status is VERIFIED, or reset to NOT\_\allowbreak{}STARTED with provider sessions deleted; the action is audited. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Super Admin opens the user and chooses Mark verified or Reset verification.
+\item The server applies the status (a reset deletes the provider sessions first).
+\item The user sees the new status on next load.
+\end{enumerate}
+\ucflow{Exception flow --- provider error on reset}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The reset is refused with the provider error so the state is not left half-changed.
+\end{enumerate}
+
+\Needspace{16\baselineskip}
+\section{Emergency Reporting}
+\ucheading{UC-20}{Report an Emergency (SOS)}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Citizen, First Responder; AI triage; Nominatim \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The user is signed in, has accepted the current legal documents, has no other active incident, is not cooling down, and (when required) is identity-verified. \\ \midrule
+Postconditions (success) & An incident in status NEW exists; dispatchers are notified; AI priority, duplicate check and address resolution have started. \\ \midrule
+Postconditions (failure) & No incident is created and the user is told why. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The citizen chooses a category (medical, police, fire).
+\item The app captures GPS (or, where enabled, lets the citizen place a pin close to their position), and optionally takes a text message, the number of injured people and whether the report is for someone else.
+\item The app submits with a client-generated request id.
+\item The server replays an existing incident for the same request id, otherwise validates that the location is inside Egypt, that the citizen has no active incident and is not cooling down.
+\item The server decides medical-profile sharing: only for self-reports, only when the citizen allows sharing now and in the profile.
+\item The server saves the incident (NEW) and any text message, and starts AI priority, duplicate detection and reverse geocoding asynchronously.
+\item After commit, dispatchers receive a live update and an urgent notification; the citizen sees the incident screen.
+\end{enumerate}
+\ucflow{Alternate flow --- retried request}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item A repeated request with the same id returns the original incident with no new side effects.
+\end{enumerate}
+\ucflow{Exception flow --- legal consent or identity missing}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The server answers 403 LEGAL\_\allowbreak{}CONSENT\_\allowbreak{}REQUIRED or KYC\_\allowbreak{}REQUIRED and the app routes to UC-9 or UC-10.
+\end{enumerate}
+\ucflow{Exception flow --- active incident}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item 409: the citizen already has an active emergency.
+\end{enumerate}
+\ucflow{Exception flow --- cool-down}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item 429 with a Retry-After header and a message naming the emergency numbers 122, 123 and 180; the app shows them prominently.
+\end{enumerate}
+\ucflow{Exception flow --- invalid location}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item 400: the coordinates are outside Egypt, the source is missing, manual pins are switched off, or the pin is farther from the device than the allowed radius.
+\end{enumerate}
+\ucflow{Alternate flow --- no connection}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item See UC-28; the report waits in the outbox.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-21}{Attach and Manage Evidence}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Citizen; Supabase Storage \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The citizen owns a live incident. \\ \midrule
+Postconditions (success) & The media is stored in the private bucket and registered on the incident. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The citizen picks a photo, video or audio recording, or types a text message.
+\item The app asks the server for a signed upload URL (the server checks ownership, that the incident is live, and the file type against an allow-list).
+\item The app uploads the file straight to storage.
+\item The app registers the media; the server confirms the object exists and saves it.
+\item Dispatch and crews open the evidence through short-lived signed download links.
+\end{enumerate}
+\ucflow{Exception flow --- closed incident or bad file type}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The server refuses the upload URL.
+\end{enumerate}
+\ucflow{Alternate flow --- delete or edit}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item Until a unit is assigned the citizen can delete a media item or edit the original text message; afterwards evidence can still be added but not removed.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-22}{Edit an Active Report}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Citizen \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The incident is active (not resolved or cancelled). \\ \midrule
+Postconditions (success) & The injured count is updated and dispatch sees it live. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The citizen opens the incident and changes the number of injured people.
+\item The server checks ownership and that the incident is active, saves the value and broadcasts the update.
+\end{enumerate}
+\ucflow{Exception flow --- closed incident}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item 409: the incident is closed and can no longer be edited.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-23}{Cancel a Report}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Citizen \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The citizen owns an active incident and no unit has arrived. \\ \midrule
+Postconditions (success) & The incident is CANCELLED with a reason; open missions are stood down and their units freed; the crews and dispatchers are notified. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The citizen chooses Cancel and selects a reason: submitted by mistake, situation resolved, got help elsewhere, duplicate report, or other.
+\item For other, the citizen explains in writing (length-limited).
+\item The server cancels every offered, accepted or en-route mission and frees its units.
+\item The server closes the incident and notifies dispatchers.
+\end{enumerate}
+\ucflow{Exception flow --- unit already on scene}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item 409: cancelling is no longer possible; the response continues.
+\end{enumerate}
+\ucflow{Note --- caller trust}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item Cancelling before any unit accepted costs nothing; later cancellations are weak evidence in the caller-trust score (see \cref{sec:caller-trust}).
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-24}{Track the Response Live}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Citizen \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The citizen owns an incident. \\ \midrule
+Postconditions (success) & The citizen sees current status and responder positions. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The citizen opens the incident.
+\item The app loads the incident and its missions and subscribes to live updates.
+\item The screen shows status, each assigned unit with its position on the map and the ETA.
+\item Each mission step (accepted, en route, arrived) updates the screen without refresh and produces a notification.
+\end{enumerate}
+\ucflow{Alternate flow --- connection lost}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The app reconnects and reloads; nothing is lost because state lives on the server.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-25}{Chat on an Incident}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Citizen, Dispatcher, Admin, crew of an active mission \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The user is the citizen, dispatch staff, or a participant of an active mission. \\ \midrule
+Postconditions (success) & The message is stored encrypted and delivered live; other members are notified. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item A member opens the incident chat; the history loads.
+\item The member sends a message.
+\item The server checks membership, stores the message encrypted, publishes it on the incident’s chat channel and notifies the other members.
+\end{enumerate}
+\ucflow{Exception flow --- not a member}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The server refuses. A person who once took part can still read the history but cannot send.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-26}{View Incident History}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Citizen \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The citizen is signed in. \\ \midrule
+Postconditions (success) & --- \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The citizen opens My incidents.
+\item The server returns the citizen’s incidents, newest first.
+\item The citizen opens one to see its outcome, timeline and chat.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-27}{View First-Aid Guidance}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Any user \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & --- \\ \midrule
+Postconditions (success) & --- \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The user opens Guidance from the home screen or while waiting on an incident.
+\item The app shows categories of cards (medical, police, fire) in the user’s language.
+\item The user opens a card to read the steps.
+\end{enumerate}
+\ucflow{Alternate flow --- offline}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The last downloaded guidance remains readable.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-28}{Queue a Report Offline}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Citizen \\ \midrule
+Platform & Mobile \\ \midrule
+Preconditions & The device has no usable connection. \\ \midrule
+Postconditions (success) & The report and its media are stored on the device with the request id and are delivered automatically later. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The citizen submits a report with no connection.
+\item The app stores it in the outbox and tells the citizen it will be sent automatically.
+\item When connectivity returns, the app resumes or a retry timer fires, the outbox sends the report with its original request id; after failed attempts it backs off from 30 seconds up to 5 minutes. A report saved long ago asks the citizen to confirm before it is sent.
+\item The server creates the incident, or replays it if an earlier attempt had in fact arrived; remaining attachments are then uploaded.
+\end{enumerate}
+\ucflow{Exception flow --- server refuses}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item A rule refusal (for example a cool-down or a missing consent) is surfaced to the user instead of retried silently.
+\end{enumerate}
+
+\Needspace{16\baselineskip}
+\section{Dispatch Operations}
+\ucheading{UC-29}{Monitor the Live Incident Queue}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Dispatcher, Admin, Super Admin \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The actor is signed in with a dispatch role. \\ \midrule
+Postconditions (success) & --- \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The dispatcher opens the dispatch workspace.
+\item The console loads the open queue (NEW, AI\_\allowbreak{}PROCESSED, DISPATCHER\_\allowbreak{}REVIEW), the active incidents and the unit positions, and subscribes to live updates.
+\item New incidents and changes appear immediately, with an urgent notification for each new incident.
+\item Opening an incident registers the dispatcher’s presence so colleagues see who is handling it.
+\end{enumerate}
+\ucflow{Alternate flow --- colleague present}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The console shows who else is viewing the incident.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-30}{Review AI Priority and Retry}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Dispatcher; AI triage \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & An incident is open. \\ \midrule
+Postconditions (success) & The incident shows a priority (critical, high, medium, low) with a confidence value. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The dispatcher opens the incident and reads the AI priority and confidence next to the category, message and evidence.
+\item The dispatcher uses it to order their work.
+\end{enumerate}
+\ucflow{Alternate flow --- no priority}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item If the language model failed or timed out, the incident simply has no priority; the dispatcher can retry and continue regardless.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-31}{Resolve Duplicate Incident}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Dispatcher \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The system suggested a possible duplicate (same category, within 2 km and 120 minutes of an open incident). \\ \midrule
+Postconditions (success) & The incident is marked a duplicate and closed, or the suggestion is dismissed. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The console shows the suggestion with its confidence and the candidate incident.
+\item The dispatcher compares both and confirms the duplicate.
+\item The server closes the duplicate as CANCELLED, linked to the original, and notifies its reporter.
+\end{enumerate}
+\ucflow{Alternate flow --- dismiss}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The dispatcher dismisses the suggestion; the incident stays open.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-32}{Assign a Unit}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Dispatcher; OSRM \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The incident is not closed and at least one unit is available with an active LEAD. \\ \midrule
+Postconditions (success) & A mission in status OFFERED exists; the unit is BUSY; the incident is ASSIGNED; the LEAD is alerted. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The dispatcher opens the unit panel; the console ranks units by distance and estimated travel time using live positions.
+\item The dispatcher selects a unit and confirms.
+\item The server locks the unit, checks it is available with an active LEAD and that the incident is open, and creates the mission.
+\item The server marks the unit busy and, for the first unit, the incident ASSIGNED.
+\item The unit’s crew receive an urgent push; the citizen sees the assignment.
+\end{enumerate}
+\ucflow{Alternate flow --- more units}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The dispatcher repeats the use case; each unit gets its own mission.
+\end{enumerate}
+\ucflow{Exception flow --- unit no longer available}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item 409: another dispatcher or event took the unit first (the lock serialises the race).
+\end{enumerate}
+\ucflow{Exception flow --- reporter on the crew}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item 409: a responder can report an emergency too, and the unit they crew is never sent to their own report; the dispatcher chooses another unit.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-33}{Cancel a Unit Assignment}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Dispatcher \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & A mission exists in a non-terminal state. \\ \midrule
+Postconditions (success) & The mission is CANCELLED, the unit AVAILABLE; if it was the last active mission the incident returns to DISPATCHER\_\allowbreak{}REVIEW. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The dispatcher selects the mission and chooses Cancel.
+\item The server cancels it, frees the unit and notifies the crew.
+\item The incident returns to review if no mission remains active.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-34}{Complete an Incident (Override)}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Dispatcher, Admin \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The incident is not already closed. \\ \midrule
+Postconditions (success) & Remaining missions are COMPLETED, their units AVAILABLE, the incident RESOLVED and the citizen notified. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The dispatcher chooses Complete incident.
+\item The server completes every non-terminal mission and frees its unit.
+\item The server resolves the incident and notifies the citizen.
+\end{enumerate}
+\ucflow{Exception flow --- already closed}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item 409: the incident is already resolved or cancelled.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-35}{Mark a False Report}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Dispatcher, Admin; Admin to clear \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The incident exists and is not already marked. \\ \midrule
+Postconditions (success) & The verdict is recorded against the incident and its caller; where it is still pointless to continue, units are stood down and the incident closed; an audit entry is written. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The dispatcher chooses False report and selects the type: prank or hoax, spam or test, malicious.
+\item The server records type, time and author.
+\item If no unit has arrived and the incident is open, the server stands down open missions, closes the incident and notifies the reporter.
+\item The verdict feeds the caller-trust score.
+\end{enumerate}
+\ucflow{Alternate flow --- unit already on scene or incident closed}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The verdict is recorded but the incident status is not changed.
+\end{enumerate}
+\ucflow{Alternate flow --- clear the mark}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item An Admin can clear a mistaken verdict, which is audited.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-36}{Review Caller History}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Dispatcher, Admin \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The incident has a caller. \\ \midrule
+Postconditions (success) & --- \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The dispatcher opens Caller history on an incident.
+\item The console shows the caller’s recent reports, cancellations and false-report verdicts and the current trust tier.
+\item Admins can also open the review list of flagged callers.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-37}{Delete an Incident}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Super Admin \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The incident exists. \\ \midrule
+Postconditions (success) & The incident, its missions and chat are deleted; busy units are freed; evidence files are removed from storage after the transaction commits. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Super Admin chooses Delete on an incident and confirms.
+\item The server frees busy units, deletes missions and chat messages and the incident.
+\item After commit the server removes the incident’s storage folder; a storage failure is logged, not shown.
+\end{enumerate}
+
+\Needspace{16\baselineskip}
+\section{Field Response and Shift Management}
+\ucheading{UC-38}{Start, Join, Leave or End a Shift}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Ambulance Crew, Police, Firefighter, First Responder \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The employee is not on another shift; the unit belongs to the employee’s facility and matches their role (a first responder uses their personal unit). \\ \midrule
+Postconditions (success) & The shift exists; starting as LEAD makes the unit AVAILABLE. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The employee opens the shift screen and sees the units of their facility.
+\item To start, the employee chooses a unit with no active LEAD and starts as LEAD; the unit becomes AVAILABLE.
+\item Colleagues join the running shift as CREW.
+\item When done, the LEAD ends the shift and the unit goes OFFLINE; a crew member simply leaves.
+\end{enumerate}
+\ucflow{Exception flow --- unit busy or LEAD present}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The server refuses to start a second LEAD on the same unit.
+\end{enumerate}
+\ucflow{Exception flow --- active mission}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item Ending or leaving is refused while the unit is on an active mission.
+\end{enumerate}
+\ucflow{Exception flow --- already on a shift}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item An employee can be on one shift at a time.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-39}{Work a Mission}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Unit LEAD \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The LEAD’s unit has been offered a mission (UC-32). \\ \midrule
+Postconditions (success) & The mission is COMPLETED (or REJECTED, CANCELLED) and the unit is AVAILABLE again. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The unit’s crew receive an urgent push notification; the LEAD sees the offered mission.
+\item The LEAD accepts the mission.
+\item The LEAD marks En route and the app shows the route map and teammates’ positions.
+\item On arrival the LEAD marks Arrived.
+\item For a non-ambulance unit the LEAD completes the mission; for an ambulance the mission is completed through the hospital handoff (UC-44).
+\item The unit becomes AVAILABLE; if it was the last active mission the incident is RESOLVED and the citizen is notified.
+\end{enumerate}
+\ucflow{Alternate flow --- reject}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The LEAD rejects with a reason; the unit is freed and dispatchers are notified urgently to reassign.
+\end{enumerate}
+\ucflow{Alternate flow --- withdraw}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item From accepted or en route the LEAD can withdraw; dispatchers are notified and the incident returns to review if no other mission is active.
+\end{enumerate}
+\ucflow{Exception flow --- not the LEAD}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item Only the unit’s LEAD may change the mission’s state.
+\end{enumerate}
+\ucflow{Exception flow --- cancelled while working}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item If dispatch or the citizen cancels, the crew is notified and the unit is freed.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-40}{Share Live Unit Location}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Unit LEAD \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The LEAD is on shift. \\ \midrule
+Postconditions (success) & The unit’s position is current for staff and for the citizen it is assigned to. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The LEAD’s device sends the unit’s coordinates while on shift.
+\item The server stores them and broadcasts a unit update.
+\item Dispatch sees the position in the unit list and on the map; the citizen sees the assigned unit.
+\end{enumerate}
+\ucflow{Alternate flow --- reset to station}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The LEAD resets the position to the home facility.
+\end{enumerate}
+\ucflow{Exception flow --- not the LEAD}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item Only the LEAD updates the position; positions are visible to staff only.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-41}{Review Mission History}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Field responder \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The responder is signed in. \\ \midrule
+Postconditions (success) & --- \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The responder opens My missions.
+\item The server returns the missions the responder took part in.
+\item The responder opens one to see its timeline.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-42}{Force-End a Unit Shift}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Admin, Super Admin \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The unit has a running shift. \\ \midrule
+Postconditions (success) & The shift is ended and the unit is OFFLINE. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Admin opens the unit and chooses Force-end shift.
+\item The server ends the shift for every employee on that unit.
+\item The unit is free to be started again.
+\end{enumerate}
+
+\Needspace{16\baselineskip}
+\section{Hospital Coordination}
+\ucheading{UC-43}{Choose Destination Hospital}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Ambulance LEAD \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The mission is ARRIVED, the unit is an ambulance, and no hospital has been selected. \\ \midrule
+Postconditions (success) & A hospital transfer in status SELECTED exists and the hospital’s staff are alerted. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The LEAD opens the handoff panel; the server lists registered hospitals within 30 km, nearest first.
+\item The LEAD selects a hospital.
+\item The server records the transfer and notifies the hospital’s staff with an urgent push and a live update.
+\end{enumerate}
+\ucflow{Alternate flow --- unregistered destination}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The LEAD can instead enter the destination as free text (exactly one of hospital or free text is required). No hospital dashboard or vitals stream applies.
+\end{enumerate}
+\ucflow{Exception flow --- already selected}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item 409: one transfer per mission.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-44}{Hand Off Patient at Hospital}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Ambulance LEAD \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & A transfer exists in status SELECTED. \\ \midrule
+Postconditions (success) & The transfer is ARRIVED, the mission COMPLETED, the unit AVAILABLE and, if it was the last active mission, the incident RESOLVED. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The LEAD marks the transfer En route when leaving the scene.
+\item The LEAD records vitals while travelling (UC-45).
+\item On reaching the hospital the LEAD marks Arrived.
+\item The server closes the mission, frees the unit and resolves the incident when appropriate.
+\end{enumerate}
+\ucflow{Exception flow --- wrong state}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item Marking arrived before en route is refused with the expected status.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-45}{Record Patient Vitals}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Ambulance LEAD \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & A transfer to a registered hospital exists. \\ \midrule
+Postconditions (success) & A vitals record (encrypted notes) is stored and pushed to the hospital live. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The LEAD enters heart rate, SpO\textsubscript{2}, blood pressure, respiratory rate, temperature, consciousness level (alert, verbal, pain, unresponsive) and notes.
+\item The server validates the ranges, stores the record and publishes it on the transfer’s vitals channel.
+\item The hospital’s dashboard updates immediately.
+\end{enumerate}
+\ucflow{Exception flow --- destination not registered}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item Vitals are refused for a free-text destination.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-46}{Monitor Incoming Transfers and Vitals}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Hospital Staff, Hospital Manager \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The user is staff of a hospital. \\ \midrule
+Postconditions (success) & --- \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The staff member opens the hospital workspace and sees the hospital’s incoming transfers.
+\item Each transfer shows status, ETA on a map and the latest vitals.
+\item The vitals history and live stream are available per transfer.
+\end{enumerate}
+\ucflow{Alternate flow --- alert while away from the screen}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The urgent PATIENT\_\allowbreak{}INCOMING notification reaches the staff member’s devices.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-47}{View Patient Medical Profile}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Dispatcher, Ambulance Crew, First Responder, Hospital Staff \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The incident is open; the viewer is attached to it in a medical capacity; the patient consented now and for this report. \\ \midrule
+Postconditions (success) & The profile is shown and the access is audited (MEDICAL\_\allowbreak{}PROFILE\_\allowbreak{}VIEWED). \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The viewer opens the incident’s medical profile.
+\item The server checks the incident is open and the viewer’s attachment: any dispatcher; crew of an ambulance or first-responder unit on an active mission; staff of a hospital that a crew has selected as the destination for this incident (from selection until the mission closes).
+\item The server checks the report shares the profile and the patient still allows sharing.
+\item The server writes the audit entry and returns the profile.
+\end{enumerate}
+\ucflow{Alternate flow --- no consent}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The response states the profile is not shared; no data is returned.
+\end{enumerate}
+\ucflow{Exception flow --- not attached or closed incident}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item 403: you cannot view this patient’s medical profile. Administrators are deliberately excluded.
+\end{enumerate}
+\ucflow{Exception flow --- audit failure}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item If the audit entry cannot be written, the read fails.
+\end{enumerate}
+
+\Needspace{16\baselineskip}
+\section{Facility, Unit and Content Administration}
+\ucheading{UC-48}{Manage Facilities}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Admin, Super Admin \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The actor is an Admin. \\ \midrule
+Postconditions (success) & The facility is created or updated; the facilities list is refreshed live. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Admin opens Facilities (paged list) and chooses Create or Edit.
+\item The Admin enters name, type (hospital, ambulance station, fire station, police station), address and coordinates.
+\item The server validates and saves.
+\end{enumerate}
+\ucflow{Alternate flow --- change type}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item Before saving a type change the console shows the impact: units and staff that would no longer fit the new type.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-49}{Seed Facilities from OpenStreetMap}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Admin; Overpass; Nominatim \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The actor is an Admin and chooses a facility type (hospital, fire station or police station). \\ \midrule
+Postconditions (success) & Missing facilities of that type exist; existing ones are untouched. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Admin triggers seeding.
+\item The server queries the Overpass API (with mirror fall-back) for named facilities of that type inside Egypt.
+\item The server skips unnamed entries and any facility whose coordinates already exist, builds an address from the tags or by reverse geocoding, inserts the rest as unregistered and reports created, duplicate and unnamed counts.
+\end{enumerate}
+\ucflow{Exception flow --- Nominatim rate limit}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The batch stops early and keeps what was created; running it again continues.
+\end{enumerate}
+\ucflow{Exception flow --- ambulance stations}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item Not offered: they are not reliably tagged in OpenStreetMap and are added manually (UC-48).
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-50}{Backfill Missing Addresses}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Admin; Nominatim \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & Some facilities have no address. \\ \midrule
+Postconditions (success) & Addresses are filled by reverse geocoding. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Admin triggers the backfill.
+\item The server reverse-geocodes each address-less facility at a polite rate and stores the result.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-51}{Manage Response Units}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Admin, Super Admin \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The actor is an Admin. \\ \midrule
+Postconditions (success) & The unit is created, edited, or retired. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Admin creates a unit with type, plate number and home facility, or edits one.
+\item To remove one, the Admin opens the delete-impact check (mission history, live missions, people on shift).
+\item The server blocks removal while the unit is on a live mission or someone is on shift with it; a unit with history is archived (kept, offline, hidden from new work); a unit with none is deleted. Either outcome is audited.
+\end{enumerate}
+\ucflow{Exception flow --- duplicate plate number}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item Plate numbers are unique; the server refuses a duplicate.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-52}{Reconcile Unit Status}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Admin, Super Admin \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & --- \\ \midrule
+Postconditions (success) & Units whose status contradicts reality are corrected. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Admin triggers Reconcile statuses.
+\item The server finds units marked BUSY that have no mission still in progress and sets them AVAILABLE.
+\item The server broadcasts a unit update so every console refreshes.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-53}{Manage Facility Units}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Facility Manager \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The manager is linked to one facility. \\ \midrule
+Postconditions (success) & The unit exists or is changed within the facility; its type was derived from the facility type. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The manager opens Units for their facility.
+\item The manager creates a unit giving only identity details (for example the plate number).
+\item The server fills in the unit type from the facility (hospital or ambulance station $\rightarrow$ ambulance, fire station $\rightarrow$ fire truck, police station $\rightarrow$ police car) and the facility itself.
+\end{enumerate}
+\ucflow{Alternate flow --- retire a unit}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The manager checks the delete impact. A unit with no history is deleted; a unit with history is archived. Removal is blocked while the unit is on a live mission or someone is on shift with it.
+\end{enumerate}
+\ucflow{Exception flow --- another facility}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item Units of other facilities are neither listed nor editable.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-54}{Manage Facility Staff}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Facility Manager \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The manager is linked to one facility. \\ \midrule
+Postconditions (success) & A staff account exists, or is enabled or disabled; the facility’s registered flag is refreshed. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The manager opens Staff and creates an employee, choosing a permitted role (hospital: hospital staff or ambulance crew; ambulance station: ambulance crew; fire station: firefighter; police station: police).
+\item The server creates the account linked to the facility and returns a one-time reset link.
+\item The manager can disable or re-enable members of their own staff.
+\end{enumerate}
+\ucflow{Exception flow --- role not permitted}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The server refuses a role the facility type does not allow.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-55}{Review All Incidents and Flagged Callers}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Admin, Super Admin \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & --- \\ \midrule
+Postconditions (success) & --- \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Admin opens the incident overview and sees every incident with status, priority and outcome.
+\item The Admin opens the flagged-callers list: callers whose caller-trust tier is WATCH or higher.
+\item From a caller the Admin can disable the account (UC-14) if a human decision is warranted.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-56}{Edit First-Aid Guidance}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Admin, Super Admin \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & --- \\ \midrule
+Postconditions (success) & The guidance content is replaced and served to all clients. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Admin opens the guidance editor with the current bilingual categories and cards.
+\item The Admin edits cards and saves; the server validates the structure.
+\item Clients load the new content on next use.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-57}{Publish Legal Document Version}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Super Admin \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & The actor is a Super Admin. \\ \midrule
+Postconditions (success) & A new immutable version exists; if it requires acceptance every user is notified and must re-accept. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The Super Admin opens Legal documents and chooses Terms or Privacy.
+\item The Super Admin edits the bilingual content, writes a change summary and chooses whether acceptance is required.
+\item The server validates the content structure and stores it as the next version number.
+\item If acceptance is required, the server notifies all users (LEGAL\_\allowbreak{}UPDATED).
+\end{enumerate}
+\ucflow{Exception flow --- invalid content}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The server rejects content that fails structural validation.
+\end{enumerate}
+
+\Needspace{16\baselineskip}
+\section{Notifications and General Services}
+\ucheading{UC-58}{Receive and Manage Notifications}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Any signed-in user; FCM \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The user is signed in. \\ \midrule
+Postconditions (success) & Notifications are stored in the inbox; pushes were sent to registered devices. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item An event occurs (for example a mission is offered).
+\item After the triggering transaction commits, the server creates an inbox row for each recipient in English and Arabic and nudges connected clients over WebSocket.
+\item The server sends a push to each registered device in that device’s language; urgent types use high priority and a dedicated channel.
+\item The user opens the notification centre, sees the unread count, opens items, and marks one or all as read.
+\end{enumerate}
+\ucflow{Alternate flow --- chat privacy}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item A chat notification names the sender but never carries the message text, so nothing sensitive appears on a lock screen.
+\end{enumerate}
+\ucflow{Alternate flow --- stale token}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item If FCM reports the token as unregistered, the server deletes it.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-59}{Register or Unregister Push Device}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Any signed-in user \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & The user granted notification permission. \\ \midrule
+Postconditions (success) & The device token is stored for the user (or removed on sign-out). \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item After sign-in the app obtains an FCM token.
+\item The app registers it with platform and locale.
+\item On sign-out the app unregisters it.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-60}{Switch Language and Theme}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Any user \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & --- \\ \midrule
+Postconditions (success) & The interface language (English or Arabic, with right-to-left layout) and theme (light or dark) change and persist. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The user opens Settings (or the language toggle on the public pages).
+\item The user selects language and theme.
+\item The interface updates immediately and the choice is remembered.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-61}{Submit Support Message}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Visitor; EmailJS \\ \midrule
+Platform & Web \\ \midrule
+Preconditions & --- \\ \midrule
+Postconditions (success) & The message is delivered to the support team. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The visitor opens Support and fills in name, e-mail and message.
+\item The console sends it through EmailJS.
+\item The visitor sees a confirmation.
+\end{enumerate}
+\ucflow{Exception flow --- delivery failure}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The form shows an error and keeps the text.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-62}{Check System Status}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Any user \\ \midrule
+Platform & Web, Mobile \\ \midrule
+Preconditions & --- \\ \midrule
+Postconditions (success) & --- \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The user opens the Status page.
+\item The page requests the public status endpoint.
+\item The endpoint reports the API, the database and authentication as UP or DOWN (HTTP 200, or 503 when any component is down); the answer is briefly cached.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-63}{Check for App Update}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Mobile user; GitHub Releases \\ \midrule
+Platform & Mobile \\ \midrule
+Preconditions & The app is running. \\ \midrule
+Postconditions (success) & The user is offered the latest release when newer. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The app asks the API for the latest version.
+\item The API reads the latest GitHub release (cached).
+\item If newer than the installed version, the app offers to download it.
+\end{enumerate}
+
+\Needspace{14\baselineskip}
+\ucheading{UC-64}{Lock the App with Biometrics}
+\begin{tabularx}{\linewidth}{@{}>{\columncolor{najdapale}\bfseries\small}p{3.3cm}X@{}}
+\toprule
+Actor & Mobile user \\ \midrule
+Platform & Mobile \\ \midrule
+Preconditions & The device has a biometric or credential enrolled. \\ \midrule
+Postconditions (success) & The app requires authentication after being backgrounded. \\ \bottomrule
+\end{tabularx}
+\ucflow{Main flow}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The user enables App lock in Settings and authenticates once.
+\item When the app returns from the background the lock screen appears.
+\item The user authenticates with biometrics or the device credential to continue.
+\end{enumerate}
+\ucflow{Exception flow --- authentication fails}
+\begin{enumerate}[nosep,leftmargin=*,label=\textcolor{najdablue}{\bfseries\arabic*.}]
+\item The app stays locked.
+\end{enumerate}

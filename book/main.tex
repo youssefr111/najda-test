@@ -1,0 +1,82 @@
+% !TeX root = main.tex
+% !TeX program = xelatex
+% !BIB program = bibtex
+% ======================================================================
+%  NAJDA -- Graduation Project Book
+%  Build:  latexmk            (see README.md; engine = XeLaTeX, bibliography = BibTeX)
+%  Overleaf: set the compiler to XeLaTeX and the main document to main.tex.
+% ======================================================================
+
+% Set to \printeditiontrue for the double-sided print edition
+% (binding margin, chapters start on right-hand pages, blank versos).
+\newif\ifprintedition
+\printeditionfalse
+
+\ifprintedition
+  \documentclass[a4paper,fontsize=12pt,twoside=true,open=right,DIV=calc,
+    headings=big,numbers=noenddot,parskip=half-,toc=chapterentrywithdots,
+    listof=totoc,bibliography=totoc]{scrbook}
+  \usepackage[a4paper,inner=3.2cm,outer=2.4cm,top=2.8cm,bottom=2.8cm,headheight=15pt]{geometry}
+\else
+  \documentclass[a4paper,fontsize=12pt,twoside=false,open=any,DIV=calc,
+    headings=big,numbers=noenddot,parskip=half-,toc=chapterentrywithdots,
+    listof=totoc,bibliography=totoc]{scrbook}
+  \usepackage[a4paper,left=3cm,right=2.5cm,top=2.8cm,bottom=2.8cm,headheight=15pt]{geometry}
+\fi
+
+\input{config/metadata}
+\input{config/packages}
+\input{config/fonts}
+\input{config/style}
+\input{config/macros}
+
+\hypersetup{
+  pdftitle={\ProjectName: \ProjectFullName},
+  pdfauthor={\ProjectName Team},
+  pdfsubject={\Degree --- Graduation Project},
+  pdfkeywords={Emergency dispatch, AI, decision support, real-time systems, Spring Boot, Flutter, Next.js}
+}
+\addto\captionsenglish{\renewcommand*{\bibname}{References}\renewcommand*{\contentsname}{Contents}}
+
+\begin{document}
+
+% ------------------------------ FRONT MATTER ------------------------------
+\frontmatter
+\pagestyle{empty}
+\input{frontmatter/cover}
+\pagestyle{scrheadings}
+\input{frontmatter/approval}
+\input{frontmatter/declaration}
+\input{frontmatter/acknowledgments}
+\input{frontmatter/abstract}
+
+\tableofcontents
+\listoffigures
+\listoftables
+\input{frontmatter/abbreviations}
+
+% ------------------------------- MAIN MATTER ------------------------------
+\mainmatter
+\input{chapters/01_introduction}
+\input{chapters/02_requirements}
+\input{chapters/03_literature_review}
+\input{chapters/04_system_design}
+\input{chapters/05_implementation}
+\input{chapters/06_testing_evaluation}
+\input{chapters/07_conclusion}
+
+% ------------------------------- REFERENCES -------------------------------
+\bibliographystyle{unsrtnat}
+\bibliography{bibliography/references}
+
+% ------------------------------- APPENDICES -------------------------------
+\appendix
+\input{appendices/A_database}
+\input{appendices/B_api}
+\input{appendices/C_user_interface}
+\input{appendices/D_use_cases}
+\input{appendices/E_design_decisions}
+\input{appendices/F_configuration}
+\input{appendices/G_glossary}
+
+\end{document}

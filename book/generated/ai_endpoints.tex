@@ -1,0 +1,13 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*289/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*118/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*592/1000\relax}@{}}
+\caption{Endpoints of the AI model service}\label{tab:ai-endpoints}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Endpoint} & \textcolor{white}{\sffamily\bfseries\small Auth} & \textcolor{white}{\sffamily\bfseries\small Purpose}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Endpoint} & \textcolor{white}{\sffamily\bfseries\small Auth} & \textcolor{white}{\sffamily\bfseries\small Purpose}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{GET /\allowbreak{}health} & None & Loaded models and load failures.\\
+\textbf{GET /\allowbreak{}v1/\allowbreak{}models} & API key & List models and active versions.\\
+\textbf{GET /\allowbreak{}v1/\allowbreak{}models/\allowbreak{}\{name\}} & API key & The manifest: exactly which features the model expects.\\
+\textbf{POST /\allowbreak{}v1/\allowbreak{}models/\allowbreak{}\{name\}/\allowbreak{}predict} & API key & Validate the features (unknown names, out-of-range values and unknown categories return 422) and return label, confidence, probabilities, missing features and warnings; an optional version parameter supports shadow testing.\\
+\end{longtable}}

@@ -1,0 +1,21 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-4\tabcolsep)*216/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-4\tabcolsep)*784/1000\relax}@{}}
+\caption{External systems}\label{tab:system-actors}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small System actor} & \textcolor{white}{\sffamily\bfseries\small Role in the platform}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small System actor} & \textcolor{white}{\sffamily\bfseries\small Role in the platform}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{Firebase Authentication} & Identity provider: e-mail/\allowbreak{}password, Google and phone verification; issues the ID tokens the API verifies; carries the role as a custom claim.\\
+\textbf{Firebase Cloud Messaging} & Delivers push notifications to Android and web clients.\\
+\textbf{Supabase Storage} & Private object store for evidence media and responder-application documents, accessed only through short-lived signed URLs.\\
+\textbf{OpenRouter (LLM)} & Language-model API used for report priority classification and duplicate-report detection.\\
+\textbf{AI Model Service} & Internal FastAPI service that hosts versioned prediction models behind an API key (see \cref{sec:ai-components}).\\
+\textbf{Didit} & Identity-verification provider; hosts the document-and-selfie check and reports the decision by signed webhook.\\
+\textbf{Brevo} & Sends the registration verification codes by e-mail.\\
+\textbf{Nominatim} & Reverse geocoding of report coordinates and backfilling of facility addresses.\\
+\textbf{Overpass API} & Source of real facilities (hospitals, ambulance, police and fire stations) for seeding.\\
+\textbf{OSRM and OpenFreeMap} & Driving routes and ETAs, and map tiles, used by the clients.\\
+\textbf{EmailJS} & Delivers the public support form from the web console.\\
+\textbf{GitHub Releases} & Hosts signed Android APKs; the API reports the latest release to the app.\\
+\end{longtable}}

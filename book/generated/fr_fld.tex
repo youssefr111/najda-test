@@ -1,0 +1,19 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*146/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*629/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*107/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*118/1000\relax}@{}}
+\caption{Functional requirements: field response and shift management}\label{tab:fr-fld}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Requirement} & \textcolor{white}{\sffamily\bfseries\small Priority} & \textcolor{white}{\sffamily\bfseries\small Platform}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Requirement} & \textcolor{white}{\sffamily\bfseries\small Priority} & \textcolor{white}{\sffamily\bfseries\small Platform}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{FR-FLD-01} & An employee can start a shift on an available unit of their type and facility as LEAD, or join an already running shift as CREW; a first responder starts a shift on their personal unit. & Must & Web, Mobile\\
+\textbf{FR-FLD-02} & A unit has at most one active LEAD. Starting a shift makes the unit available; when the LEAD ends the shift the unit goes offline, and a crew member leaving does not. & Must & Backend\\
+\textbf{FR-FLD-03} & An employee can be on one shift at a time, and cannot end or leave a shift while the unit is on an active mission. & Must & Backend\\
+\textbf{FR-FLD-04} & An Admin can force-end a unit’s shift. & Should & Web\\
+\textbf{FR-FLD-05} & The unit’s crew receive an urgent push notification for each offered mission; the LEAD can accept it, or reject it with a reason. & Must & Web, Mobile\\
+\textbf{FR-FLD-06} & The LEAD advances an accepted mission to en route and arrived; the citizen and dispatch see each step live. The LEAD can withdraw from an accepted or en-route mission. & Must & Web, Mobile\\
+\textbf{FR-FLD-07} & The LEAD of a non-ambulance unit completes the mission on scene. Completing the last active mission resolves the incident. & Must & Web, Mobile\\
+\textbf{FR-FLD-08} & A responder sees a route map to the incident and their teammates’ positions. & Should & Web, Mobile\\
+\textbf{FR-FLD-09} & The LEAD’s device shares the unit’s live location; the LEAD can reset it to the home facility. Positions are visible to staff only. & Must & Web, Mobile\\
+\textbf{FR-FLD-10} & A responder can review their mission history. & Should & Web, Mobile\\
+\end{longtable}}

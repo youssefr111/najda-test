@@ -1,0 +1,21 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*92/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*736/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*172/1000\relax}@{}}
+\caption{Business rules: accounts, roles and verification}\label{tab:br-accounts}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Rule} & \textcolor{white}{\sffamily\bfseries\small Enforced in}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Rule} & \textcolor{white}{\sffamily\bfseries\small Enforced in}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{BR-1} & A user has exactly one role. E-mail addresses are unique; a phone number can be verified on at most one account. & Database, user service\\
+\textbf{BR-2} & E-mail registration: six-digit code valid 10 minutes; 60 seconds between codes; five wrong attempts per code; five codes per e-mail per hour; ten code requests, ten registrations and thirty verifications (per 10 minutes) per client address. A verified e-mail stays usable for 15 minutes through a one-time token. & Auth controller, OTP service\\
+\textbf{BR-3} & Registration is atomic across Firebase and the database; on database failure the Firebase account is deleted. & Auth service\\
+\textbf{BR-4} & A profile is complete when phone, governorate, city, street and gender are present. Only the server computes this. & Profile evaluator\\
+\textbf{BR-5} & Roles that must be linked to a facility: hospital staff (hospital), ambulance crew (ambulance station or hospital), police (police station), firefighter (fire station), facility manager (any type). Other roles cannot be linked to a facility. & Role--facility policy\\
+\textbf{BR-6} & Only a Super Admin may create, grant or modify a Super Admin; a Super Admin cannot remove their own role; the only remaining Super Admin cannot be disabled; a plain Admin cannot disable a Super Admin. & Role and user services\\
+\textbf{BR-7} & A disabled account is refused on every request. Re-enabling clears the deletion mark. & Token filter, user service\\
+\textbf{BR-8} & Employees get a temporary password they never see; they set their own through a one-time reset link. & Auth service\\
+\textbf{BR-9} & A citizen may apply to become a First Responder only with verified e-mail and phone, a VERIFIED identity and no pending application, with a motivation and files. Approval needs at least one document; it changes the role, updates the claim and creates the personal unit (one per responder). & Application service\\
+\textbf{BR-10} & Identity-verification status is written only by the backend (signed webhook confirmed with the provider, provider reconciliation, or an audited Super Admin action). A settled status is not undone by a late “in progress” message. & KYC service\\
+\textbf{BR-11} & When required by configuration, a citizen must be VERIFIED to report. Admin roles are exempt by default and accounts created before a configured date are grandfathered. & KYC policy, incident controller\\
+\textbf{BR-12} & Legal versions are immutable and numbered per document type. A new version that requires acceptance makes every protected call return 403 LEGAL\_\allowbreak{}CONSENT\_\allowbreak{}REQUIRED until accepted. & Legal services, interceptor\\
+\end{longtable}}

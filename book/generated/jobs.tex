@@ -1,0 +1,15 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*263/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*184/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*553/1000\relax}@{}}
+\caption{Scheduled maintenance jobs}\label{tab:jobs}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Job} & \textcolor{white}{\sffamily\bfseries\small Schedule} & \textcolor{white}{\sffamily\bfseries\small Purpose}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Job} & \textcolor{white}{\sffamily\bfseries\small Schedule} & \textcolor{white}{\sffamily\bfseries\small Purpose}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{Email-verification cleanup} & Every 15 minutes & Deletes expired or consumed verification rows.\\
+\textbf{Notification maintenance} & Daily 03:30 & Purges notifications and stale device tokens older than 90 days.\\
+\textbf{KYC webhook purge} & Daily 03:30 & Deletes old webhook-event ids used for de-duplication.\\
+\textbf{Facility registration reconciler} & Daily 03:45 & Recomputes the registered flag of every facility from its active staff and units.\\
+\textbf{Presence pruning} & Every 15 seconds & Drops dispatcher presence entries that stopped heart-beating.\\
+\textbf{Rate-limiter cleanup} & Every 5 minutes & Evicts expired in-memory rate-limit counters.\\
+\end{longtable}}

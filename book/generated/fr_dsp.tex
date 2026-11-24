@@ -1,0 +1,23 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*146/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*629/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*107/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*118/1000\relax}@{}}
+\caption{Functional requirements: dispatch operations}\label{tab:fr-dsp}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Requirement} & \textcolor{white}{\sffamily\bfseries\small Priority} & \textcolor{white}{\sffamily\bfseries\small Platform}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Requirement} & \textcolor{white}{\sffamily\bfseries\small Priority} & \textcolor{white}{\sffamily\bfseries\small Platform}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{FR-DSP-01} & Dispatchers see a live queue of open incidents and a list of active incidents, updated in real time without refreshing. & Must & Web\\
+\textbf{FR-DSP-02} & After submission the system classifies each report’s priority (critical, high, medium, low) with a confidence value using a language model; a failure never affects the incident, and a dispatcher can retry. & Must & Backend\\
+\textbf{FR-DSP-03} & The system suggests a possible duplicate (same category, within 2 km and 120 minutes of an open incident). A dispatcher can confirm the duplicate or dismiss the suggestion. & Should & Web\\
+\textbf{FR-DSP-04} & A dispatcher can see which colleagues are viewing an incident, to avoid double handling. & Could & Web\\
+\textbf{FR-DSP-05} & A dispatcher can see live unit positions and statuses, ranked by distance and estimated travel time to the incident, and can offer a mission to an available unit. & Must & Web\\
+\textbf{FR-DSP-06} & A unit can be offered a mission only if it is available, has an active LEAD on shift, and the incident is not closed. Concurrent assignments of one unit are serialised so a unit is never double-booked, and a unit is never sent to a report made by one of its own crew. & Must & Backend\\
+\textbf{FR-DSP-07} & More than one unit can be assigned to the same incident. & Must & Backend\\
+\textbf{FR-DSP-08} & A dispatcher can cancel a unit’s mission at any non-terminal stage; the unit becomes available. If it was the last active mission, the incident returns to dispatcher review. & Must & Web\\
+\textbf{FR-DSP-09} & A dispatcher can complete an incident by override, which closes its remaining missions. & Should & Web\\
+\textbf{FR-DSP-10} & A dispatcher can mark an incident as a false report (prank or hoax, spam or test, malicious). This closes the incident, stands units down and records the verdict against the caller; an Admin can clear the verdict. & Must & Web\\
+\textbf{FR-DSP-11} & A dispatcher can review a caller’s history: previous reports, cancellations and false-report verdicts, and the resulting trust tier. & Should & Web\\
+\textbf{FR-DSP-12} & A caller’s trust is assessed from recent history with decay (30-day half-life, 120-day window). The harshest automatic effect is a 10-minute wait between reports with the emergency numbers shown; reports are never refused outright. & Must & Backend\\
+\textbf{FR-DSP-13} & An Admin sees a review list of callers whose trust tier warrants attention. & Should & Web\\
+\textbf{FR-DSP-14} & A Super Admin can delete an incident. & Could & Web\\
+\end{longtable}}

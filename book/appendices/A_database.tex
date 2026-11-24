@@ -1,0 +1,16 @@
+\chapter{Database Reference}\label{app:database}
+
+The \ProjectName{} database is a single PostgreSQL schema of 26 tables, created and evolved by
+Flyway migrations and validated against the JPA entities when the backend starts
+(\cref{sec:persistence}). \Cref{fig:erd-identity-app,fig:erd-ops-app} summarise the conceptual model, and the
+data dictionary below lists every table and column with its type, keys and constraints. Enumerations are
+stored as strings and constrained with \code{CHECK} constraints; fields marked ``encrypted'' hold
+ciphertext produced by the application layer (\cref{sec:privacy}).
+
+\section{Conceptual model}
+\diagramwide{erd_identity.png}{Identity, medical profile, legal consent and notification tables.}{fig:erd-identity-app}
+\diagram{erd_ops.png}{Facilities, units, incidents, missions and hospital transfers.}{fig:erd-ops-app}
+
+\Needspace{16\baselineskip}
+\section{Data dictionary}
+\input{generated/data_dictionary}

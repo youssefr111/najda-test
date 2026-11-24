@@ -1,0 +1,15 @@
+target/
+.gradle/
+build/
+*.log
+.idea/
+.vscode/
+.git
+
+# Never bake secrets into an image layer: they are mounted at run time.
+.env
+.env.*
+!.env.example
+secrets/
+*service-account*.json
+*private-key*.json

@@ -1,0 +1,22 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-4\tabcolsep)*211/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-4\tabcolsep)*789/1000\relax}@{}}
+\caption{Backend feature modules and their responsibilities}\label{tab:modules}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Module} & \textcolor{white}{\sffamily\bfseries\small Responsibility}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Module} & \textcolor{white}{\sffamily\bfseries\small Responsibility}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{auth} & E-mail OTP registration, Google/\allowbreak{}phone citizen registration, employee provisioning, e-mail availability, rate limiting.\\
+\textbf{user} & Profiles, roles, address and phone rules, medical profile, responder applications, Firebase claims and reconciliation.\\
+\textbf{kyc} & Didit sessions, signed webhook verification, status reconciliation, verification policy.\\
+\textbf{legal} & Versioned Terms and Privacy documents, structural content validation, consent recording and the consent interceptor.\\
+\textbf{security} & Firebase token filter, URL rules, bootstrap roles and super admin.\\
+\textbf{incident} & Incidents, evidence, chat, missions, hospital transfers, caller trust, presence, AI triage clients, storage service, live-event publishers.\\
+\textbf{unit} & Response units, shifts, facility-manager service and policies, status reconciliation.\\
+\textbf{facility} & Facilities, OpenStreetMap seeding, address backfill, type-change impact, registration reconciler.\\
+\textbf{hospital} & Incoming-transfer dashboard queries.\\
+\textbf{notification} & Inbox, push sender, device registry, recipient resolution, bilingual messages, maintenance.\\
+\textbf{ai} & HTTP client for the AI model service.\\
+\textbf{guidance, content} & First-aid guidance and JSON content documents.\\
+\textbf{audit, mail, status, appversion, geo, config, exceptions} & Audit log, Brevo sender, public status, release lookup, Egypt boundary and reverse geocoding, async/\allowbreak{}after-commit helpers, central exception handling.\\
+\end{longtable}}

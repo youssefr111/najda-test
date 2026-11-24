@@ -1,0 +1,30 @@
+\chapter{Design Decisions and Assumptions}\label{app:decisions}
+
+\section{Design decisions}
+The decisions below shaped the architecture. Each states what was chosen and why; the reasoning is
+developed in \cref{chap:design}.
+\input{generated/decisions}
+
+\section{Assumptions}
+\begin{itemize}
+  \item Users have a smartphone with a location sensor and, for reporting, a data connection; the
+        offline outbox covers short outages.
+  \item The operating authority provides staff, vehicles and facilities, and maintains their records through
+        the administration tools.
+  \item Dispatch desks have continuous access to the web console.
+  \item Firebase, Supabase and the other managed services are available and are operated under their own
+        service terms.
+  \item Identity verification can be switched on per deployment according to legal and policy requirements.
+\end{itemize}
+
+\section{Constraints}
+\begin{itemize}
+  \item Reports are accepted only for locations inside Egypt.
+  \item Authentication goes through Firebase; passwords are never handled by the API.
+  \item The mobile app is built and distributed for Android only.
+  \item The in-memory rate limiter is per application instance; running several API instances multiplies the
+        effective limits (\cref{sec:future-work}).
+  \item OpenStreetMap public services have fair-use limits; address look-ups are throttled and batch imports stop
+        early when rate-limited.
+  \item Push delivery uses the free tier of Firebase Cloud Messaging; the in-app inbox works with or without push.
+\end{itemize}

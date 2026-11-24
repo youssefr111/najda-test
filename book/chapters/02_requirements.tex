@@ -1,0 +1,247 @@
+\chapter{Requirements Analysis}\label{chap:requirements}
+
+\section{Introduction}
+
+Requirements analysis establishes what a system must do and under which constraints before design begins
+\cite{pressman2020se,sommerville2016software}. For \ProjectName{} it has a particular weight: the users are people
+in distress and the staff who help them, so a missing requirement is not an inconvenience but a risk. This chapter
+identifies the stakeholders, states the functional and non-functional requirements, expresses them as user
+stories and use cases, records the business rules that keep the service safe and fair, and describes the overall
+workflow. The requirements are stated once, here, and traced through the design and the tests by the matrix in
+\cref{sec:traceability}.
+
+\section{Stakeholders and System Actors}
+
+Ten human roles exist in the system, plus the unauthenticated \role{Visitor} who can only read public pages
+(\cref{tab:actors}). A user holds exactly one role at a time. Authentication is delegated to an identity provider,
+but the role that decides what a person may do is stored in \ProjectName{}'s own database.
+
+\input{generated/actors}
+
+\subsection{How accounts are created}
+
+Accounts arrive in four ways (\cref{tab:accounts}). Citizens register themselves; first responders are vetted
+citizens whose application an administrator approves; and all other roles are provisioned by an administrator, or
+by a facility manager for the staff of one facility. For provisioned accounts the server returns a one-time
+password-reset link, so no password is ever shown, e-mailed or shared.
+
+\input{generated/accounts}
+
+\subsection{External systems}
+
+\ProjectName{} depends on a small number of external systems (\cref{tab:system-actors}). Each is used for one
+purpose and is wrapped so that its failure degrades only its own feature (\cref{sec:failure}).
+
+\input{generated/system_actors}
+
+\subsection{Role capability matrix}
+
+\Cref{tab:role-matrix} summarises what each role may do. Enforcement is on the server, by role and by ownership
+(\cref{sec:authorisation}).
+
+\begin{table}[!htbp]
+\caption{Role capability matrix.}\label{tab:role-matrix}
+\centering\tabfont\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.25}
+\rowcolors{2}{najdapale}{white}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.7cm}*{8}{>{\centering\arraybackslash}p{1.12cm}}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\scriptsize Capability} &
+ \textcolor{white}{\sffamily\bfseries\scriptsize Citizen} & \textcolor{white}{\sffamily\bfseries\scriptsize First resp.} &
+ \textcolor{white}{\sffamily\bfseries\scriptsize Crew, police, fire} & \textcolor{white}{\sffamily\bfseries\scriptsize Dispatcher} &
+ \textcolor{white}{\sffamily\bfseries\scriptsize Hospital staff} & \textcolor{white}{\sffamily\bfseries\scriptsize Facility mgr} &
+ \textcolor{white}{\sffamily\bfseries\scriptsize Admin} & \textcolor{white}{\sffamily\bfseries\scriptsize Super admin} \\
+Report an emergency, track it, chat & \yes & \yes & \scriptsize chat & \scriptsize chat & & & \scriptsize chat & \scriptsize chat \\
+Own medical profile; apply to become a responder & \yes & \scriptsize profile & & & & & & \\
+Run shifts, accept and work missions & & \yes & \yes & & & & & \\
+Hospital handoff and vitals (lead of an ambulance) & & & \yes & & & & & \\
+Incoming transfers and live vitals & & & & & \yes & & & \\
+Live queue, assign, cancel, false report & & & & \yes & & & \yes & \yes \\
+View a patient's medical profile (with consent) & & \scriptsize on mission & \scriptsize ambulance & \yes & \scriptsize inbound & & & \\
+Manage own facility's units and staff & & & & & & \yes & & \\
+Users, roles, facilities, units, applications, guidance & & & & & & & \yes & \yes \\
+Super-admin functions & & & & & & & & \yes \\
+\end{tabular}
+\end{table}
+
+\section{Functional Requirements}\label{sec:fr}
+
+The functional requirements are grouped by capability. Each requirement has an identifier, a priority
+(\emph{Must}, \emph{Should} or \emph{Could}) and the platform it applies to. All requirements listed are
+implemented.
+
+\subsection{Identity and access management}
+\input{generated/fr_iam}
+\subsection{Identity verification, legal consent and medical profile}
+\input{generated/fr_id}
+\subsection{Emergency reporting}
+\input{generated/fr_rep}
+\subsection{Dispatch operations}
+\input{generated/fr_dsp}
+\subsection{Field response and shift management}
+\input{generated/fr_fld}
+\subsection{Hospital coordination}
+\input{generated/fr_hos}
+\subsection{Facility, unit and content administration}
+\input{generated/fr_adm}
+\subsection{Notifications}
+\input{generated/fr_not}
+\subsection{Platform services}
+\input{generated/fr_plt}
+
+\section{Non-Functional Requirements}\label{sec:nfr}
+
+The non-functional requirements (\cref{tab:nfr}) describe the qualities the system must have. Security,
+privacy and reliability dominate, reflecting the nature of the domain.
+
+\input{generated/nfr}
+
+\section{User Stories}
+
+User stories express the requirements from the actor's point of view and map to the use cases of the next
+section. They are listed by capability area.
+
+\subsection{Identity and access management}\input{generated/us_iam}
+\subsection{Emergency reporting}\input{generated/us_rep}
+\subsection{Dispatch operations}\input{generated/us_dsp}
+\subsection{Field response}\input{generated/us_fld}
+\subsection{Hospital coordination}\input{generated/us_hos}
+\subsection{Administration and platform}\input{generated/us_adm}
+
+\section{Use Case Analysis}\label{sec:usecases}
+
+The system's behaviour is specified by 64 use cases in seven groups. This section presents the use-case diagram of
+each group; the complete specification of every use case --- actor, platform, preconditions, postconditions, main
+flow and alternate flows --- is in Appendix~\ref{app:use-cases}. Three of the most important use cases are summarised
+afterwards. In the diagrams, blue-shaded use cases are restricted to administrators, and actors marked
+\guillemotleft system\guillemotright{} are external systems.
+
+\subsection{Account, access and identity}
+\Cref{fig:uc-iam-a} covers self-service: registration by e-mail code or Google, profile completion, sign-in,
+account changes, legal consent, identity verification and the medical profile. \Cref{fig:uc-iam-b} covers the
+administrative side: provisioning staff, administering users, reviewing responder applications, and the
+Super Admin's reconciliation and override tools.
+\diagram{uc_iam_a.png}{Use cases for registration, sign-in, profile, identity verification and medical profile.}{fig:uc-iam-a}
+\diagram{uc_iam_b.png}{Use cases for account administration and responder applications.}{fig:uc-iam-b}
+
+\subsection{Emergency reporting}
+Reporting is the heart of the citizen's experience (\cref{fig:uc-report}). Submitting a report always includes a
+location check and a consent-and-identity gate; sending on behalf of someone else, sharing the medical profile,
+attaching evidence and queueing offline are optional extensions.
+\diagram{uc_report.png}{Use cases for emergency reporting.}{fig:uc-report}
+
+\subsection{Dispatch operations}
+Dispatchers (and the administrators, who inherit their capabilities) monitor the live queue, review the AI
+priority, resolve duplicates, assign and cancel units, and handle false reports (\cref{fig:uc-dispatch}).
+\diagram{uc_dispatch.png}{Use cases for dispatch operations.}{fig:uc-dispatch}
+
+\subsection{Field response and shift management}
+Field staff work on response units: a shift ties employees to a unit with one \emph{lead}, who is accountable
+for the mission, and any number of \emph{crew} (\cref{fig:uc-field}).
+\diagram{uc_field.png}{Use cases for field response and shift management.}{fig:uc-field}
+
+\subsection{Hospital coordination}
+An ambulance lead chooses a receiving hospital, records vital signs during transport and completes the mission by
+handing the patient over; the hospital monitors incoming transfers and, where the patient has consented, sees the
+medical profile (\cref{fig:uc-hospital}).
+\diagram{uc_hospital.png}{Use cases for hospital coordination.}{fig:uc-hospital}
+
+\subsection{Facility, unit and content administration}
+Administrators manage facilities and units and the content shown to users; facility managers run the units and staff
+of their own facility; the Super Admin publishes the legal documents (\cref{fig:uc-admin}).
+\diagram{uc_admin.png}{Use cases for facility, unit and content administration.}{fig:uc-admin}
+
+\subsection{Notifications and general services}
+\Cref{fig:uc-general} covers notifications, push-device registration, language and theme, support, system status,
+the app-update check and the biometric lock.
+\diagram{uc_general.png}{Use cases for notifications and general services.}{fig:uc-general}
+
+\subsection{Key use cases in brief}
+
+\paragraph{UC-20: Report an emergency.} The citizen chooses a category; the app captures the location and
+submits the report with a client-generated request id. The server replays an existing incident for the same id,
+otherwise validates the location, checks that the citizen has no other active incident and is not cooling down,
+decides medical-profile sharing, saves the incident and starts AI priority, duplicate detection and reverse
+geocoding asynchronously. After commit, dispatchers receive a live update and an urgent notification.
+
+\paragraph{UC-32 and UC-39: Assign a unit and work the mission.} The dispatcher selects an available unit. The
+server locks the unit, checks that it is available with an active lead and that the incident is open, and creates
+a mission in the \emph{offered} state. The unit's crew receive an urgent notification; the lead accepts, marks the
+unit en route and arrived, and completes the mission. Completing the last active mission resolves the incident.
+
+\paragraph{UC-43 to UC-45: Hospital handoff.} When an ambulance has arrived on scene, its lead selects a registered
+hospital within 30\,km. The hospital's staff are alerted; the lead marks the transfer en route, records vital signs
+during transport, and marks it arrived, which completes the mission, frees the unit and resolves the incident if
+it was the last active mission.
+
+\section{Overall System Workflow}
+
+\Cref{fig:workflow} shows the whole life of an emergency across the five parties as an activity diagram with
+swim lanes. \Cref{fig:validation} zooms in on the ordered checks that every report passes before it is accepted;
+the order matters --- consent and identity first, then idempotent replay, then location, then the active-incident
+rule and finally the caller-trust cool-down.
+
+\diagram{act_lifecycle.png}{End-to-end handling of an emergency, from report to resolution.}{fig:workflow}
+\diagramwide{act_validate.png}{The checks a report passes, in order, before it is accepted.}{fig:validation}
+
+\section{Business Rules}\label{sec:business-rules}
+
+Business rules are the constraints that keep the service safe and fair. They are enforced on the server, in the
+layer named in the last column of each table.
+
+\subsection{Accounts, roles and verification}\input{generated/br_accounts}
+\subsection{Reporting}\input{generated/br_reporting}
+\subsection{Dispatch and field response}\input{generated/br_dispatch}
+
+\subsection{Caller trust}\label{sec:caller-trust}
+
+The caller-trust policy exists to slow repeated abuse without ever refusing a genuine emergency. It is a pure,
+deterministic function of a caller's recent history. Each false-report verdict and each late cancellation adds a
+weight to a score; the weight fades with a half-life of 30 days and the event stops counting after 120 days:
+\begin{equation}
+  s \;=\; \sum_{e} w_e \cdot 2^{-\Delta t_e/30}, \qquad \Delta t_e \le 120\ \text{days},
+\end{equation}
+where $\Delta t_e$ is the age of event $e$ in days. The score determines a tier, and the tier a minimum gap between
+reports.
+
+\begin{table}[!htbp]
+\caption{Parameters of the caller-trust policy.}\label{tab:trust-params}
+\centering\tabfont\rowband
+\begin{tabular}{@{}>{\bfseries}p{3.4cm}p{10.6cm}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Item} & \textcolor{white}{\sffamily\bfseries\small Value} \\
+False-report weights & Malicious 10; prank or hoax 6; spam or test 3. \\
+Cancellation weights & Zero unless a unit had already accepted; then submitted by mistake or other 2; situation resolved, got help elsewhere or duplicate 0.5. \\
+Decay & Each event halves every 30 days and stops counting after 120 days. \\
+Tiers & \code{NONE} below 3; \code{WATCH} from 3 (appears on the admin review list); \code{COOLDOWN} from 6; \code{REVIEW} from 10. \\
+Effect & \code{COOLDOWN} and \code{REVIEW} require 10 minutes between new reports. A report inside the wait receives HTTP 429 with a \code{Retry-After} header and a message naming 122, 123 and 180. Nothing else is ever refused automatically; suspension is a manual administrator decision. \\
+\end{tabular}
+\end{table}
+
+\begin{keyidea}[An emergency line must fail open]
+No automatic rule in \ProjectName{} ever refuses a report. The harshest effect is a ten-minute gap between reports,
+together with the emergency numbers, and a human decides whether to suspend an account. Abuse is handled by delay
+and by human verdicts, not by denial.
+\end{keyidea}
+
+\subsection{Hospital coordination}\input{generated/br_hospital}
+\subsection{Facilities, units and content}\input{generated/br_facilities}
+\subsection{Data protection and retention}\input{generated/br_data}
+
+\section{Assumptions and Constraints}
+
+The system is built on assumptions about its environment (for example, that users have a smartphone with a
+location sensor, and that dispatch desks have continuous access to the console) and operates within constraints
+(for example, that reports are accepted only for locations inside Egypt and that the mobile app is built only for
+Android). Both are listed in Appendix~\ref{app:decisions}.
+
+\section{Requirements Traceability}\label{sec:traceability}
+
+\Cref{tab:rtm} links each group of requirements to the use cases that realise them, the modules that implement
+them, and the automated tests and scenarios that verify them (\cref{chap:testing}).
+
+\input{generated/rtm}
+
+\section{Chapter Summary}
+
+This chapter defined \ProjectName{} through its ten roles, 97 functional requirements in nine capability groups,
+25 non-functional requirements, 56 user stories, 64 use cases and the business rules that keep the service safe.
+The qualities that distinguish it --- fail-open abuse control, consent-based medical data, idempotent reporting and
+graceful degradation --- are stated as requirements here and realised in \cref{chap:design,chap:implementation}.

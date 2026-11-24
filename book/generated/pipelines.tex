@@ -1,0 +1,13 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*211/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*237/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*553/1000\relax}@{}}
+\caption{Continuous-integration pipelines}\label{tab:pipelines}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Pipeline} & \textcolor{white}{\sffamily\bfseries\small Trigger} & \textcolor{white}{\sffamily\bfseries\small What it does}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Pipeline} & \textcolor{white}{\sffamily\bfseries\small Trigger} & \textcolor{white}{\sffamily\bfseries\small What it does}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{AI service CI} & Every push and pull request & Installs dependencies, runs the registry and export tests, builds the Docker image.\\
+\textbf{Mobile CI} & Pull request & Gets dependencies, generates localisation, runs static analysis.\\
+\textbf{Build test APK} & Manual & Builds a private test APK with a test keystore after analysis.\\
+\textbf{Release mobile} & Pushed version tag & Builds the production APK with the release keystore after analysis and publishes it to GitHub Releases.\\
+\end{longtable}}

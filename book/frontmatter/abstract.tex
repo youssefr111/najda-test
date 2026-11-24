@@ -1,0 +1,37 @@
+\addchap{Abstract}
+
+Emergency response depends on decisions made quickly with incomplete information. In Egypt, a
+person in distress must choose between separate numbers for the police, the ambulance service
+and the fire brigade; dispatchers work from spoken descriptions that are hard to prioritise; and
+crews have little way to prepare the hospital that will receive a patient. These gaps cost
+minutes that matter.
+
+This book presents \textbf{\ProjectName} (\ProjectFullName), a complete emergency-response
+platform that addresses them. A citizen files a report with one tap; the platform captures
+the location, classifies the report's priority and flags possible duplicates with a
+language model, and places it in a live queue for dispatchers. A dispatcher offers the
+work to the nearest suitable response unit; the crew accepts, travels, arrives and completes
+the mission from a mobile app, while the reporter follows every step live and can talk to the
+responders. Ambulance crews choose a receiving hospital and stream the patient's vital signs
+to it during transport. The platform serves ten user roles through a Flutter mobile app and a
+Next.js web console, backed by a Spring Boot API with a PostgreSQL database, a separate AI
+model service and managed cloud services.
+
+The design concentrates on the qualities an emergency service cannot do without. Report
+submission is idempotent and the mobile app queues reports taken offline; notifications are
+emitted only after a transaction commits; a graduated caller-trust policy slows repeat abusers
+but never refuses a genuine emergency; and a patient's medical profile is shared only with
+consent, only with people treating the patient, only while the incident is open, and with every
+read audited. Sensitive content is encrypted at rest, and the system works in English and
+Arabic with right-to-left layout.
+
+Verification combines automated unit tests of the safety-critical rule classes, continuous
+integration, and a catalogue of end-to-end scenarios traced to the requirements. The work shows
+that a small team can build, with modern engineering practice and managed cloud services, a
+coherent platform that connects citizens, dispatchers, field crews and hospitals in a single,
+auditable workflow.
+
+\vspace{0.3cm}
+\noindent\textbf{Keywords:} emergency dispatch; decision support; real-time systems;
+large language models; mobile computing; privacy by design; software engineering.
+\clearpage

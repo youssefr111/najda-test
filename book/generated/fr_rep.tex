@@ -1,0 +1,23 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*146/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*629/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*107/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-8\tabcolsep)*118/1000\relax}@{}}
+\caption{Functional requirements: emergency reporting}\label{tab:fr-rep}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Requirement} & \textcolor{white}{\sffamily\bfseries\small Priority} & \textcolor{white}{\sffamily\bfseries\small Platform}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Requirement} & \textcolor{white}{\sffamily\bfseries\small Priority} & \textcolor{white}{\sffamily\bfseries\small Platform}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{FR-REP-01} & A signed-in citizen can submit an emergency report with a category (medical, police or fire), a location, and an optional text message, in one action. & Must & Web, Mobile\\
+\textbf{FR-REP-02} & The location comes from GPS or, where enabled by configuration, a manually placed pin that must lie within a configured radius (default 300 m) of the device’s own position; the location must be inside Egypt and is recorded with its source. & Must & Web, Mobile\\
+\textbf{FR-REP-03} & Submission is idempotent: a client-generated request id guarantees that a retried request returns the original incident without creating a second one or repeating side effects. & Must & Backend\\
+\textbf{FR-REP-04} & A citizen may have only one active incident at a time. & Must & Backend\\
+\textbf{FR-REP-05} & A citizen can state that the emergency is for someone else; such a report never shares the reporter’s medical profile. & Should & Web, Mobile\\
+\textbf{FR-REP-06} & A citizen can attach photos, video, audio and text as evidence, uploaded directly to private storage through signed URLs, and can add evidence while the incident is live. & Must & Web, Mobile\\
+\textbf{FR-REP-07} & Until a unit is assigned, the citizen can edit the original text message and delete evidence. While the incident is active the citizen can update the number of injured people. & Should & Web, Mobile\\
+\textbf{FR-REP-08} & A citizen can cancel their report until a unit has arrived, choosing a reason category. Open missions are stood down and the crews notified. & Must & Web, Mobile\\
+\textbf{FR-REP-09} & A citizen can follow the incident live: status, assigned units with positions on a map, and an ETA. & Must & Web, Mobile\\
+\textbf{FR-REP-10} & The citizen, dispatch staff and the crew of an active mission can exchange chat messages on the incident; chat content is encrypted at rest. & Must & Web, Mobile\\
+\textbf{FR-REP-11} & A citizen can list and open their past incidents. & Must & Web, Mobile\\
+\textbf{FR-REP-12} & The app presents bilingual first-aid and safety guidance cards for medical, police and fire situations, editable by administrators. & Should & Web, Mobile\\
+\textbf{FR-REP-13} & The mobile app queues a report that cannot be sent (no connection) in a local outbox with its request id, and sends it automatically when connectivity returns. & Should & Mobile\\
+\textbf{FR-REP-14} & The report address is resolved asynchronously by reverse geocoding and never delays the submission. & Should & Backend\\
+\end{longtable}}

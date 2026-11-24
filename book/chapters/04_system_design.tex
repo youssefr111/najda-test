@@ -1,0 +1,301 @@
+\chapter{System Design}\label{chap:design}
+
+\section{Design Goals and Principles}
+
+The design of \ProjectName{} follows from the requirements of \cref{chap:requirements} and the principles reviewed in
+\cref{chap:literature}. Seven principles guided every decision:
+
+\begin{itemize}
+  \item \textbf{Identity is delegated; authority is local.} A managed provider proves who someone is. \ProjectName{}
+        decides what they may do, from the role stored in its own database; the role claim in the identity token is a
+        convenience, never the source of truth.
+  \item \textbf{The backend is the security boundary.} Every rule that protects people is enforced in the service
+        layer; hiding a button in a client is only a courtesy.
+  \item \textbf{Safety-critical rules are pure and testable.} Caller trust, identity-verification policy, webhook
+        verification, role--facility policy and one-time-code handling are small classes with no database or clock
+        dependency.
+  \item \textbf{Side effects happen after commit.} Live updates, notifications and asynchronous work run only once the
+        transaction has committed.
+  \item \textbf{Fail open for emergencies, fail closed for data.} Abuse controls never refuse a report and a failing AI,
+        geocoder or push provider never blocks one; conversely, a failed audit write blocks a medical-profile read.
+  \item \textbf{Files never pass through the API.} Clients upload and download evidence directly to private storage with
+        short-lived signed URLs.
+  \item \textbf{Real time first, push second.} Open screens update over a WebSocket; push notifications reach people who
+        are away from the app.
+\end{itemize}
+
+\section{Architecture}
+
+\subsection{System context}
+\ProjectName{} is a client--server system (\cref{fig:intro-context}). Two clients --- a Flutter mobile app and a Next.js web
+console --- talk to one Spring Boot API over REST and a STOMP WebSocket. The API persists to PostgreSQL and integrates
+with external providers for identity and push messaging (Firebase), object storage (Supabase), language-model
+triage (OpenRouter), e-mail (Brevo), identity verification (Didit), and maps, routing and geocoding
+(OpenStreetMap services). A separate AI model service is reached only by the backend, over an authenticated
+internal interface.
+
+\subsection{Backend structure}
+The backend is a single deployable Spring Boot application organised by feature module (\cref{fig:modules}). Every
+module follows the same layering: controller (HTTP and authorisation annotations), service (rules and
+transactions) and repository (Spring Data JPA). Cross-cutting concerns --- token authentication, exception mapping,
+scheduling and WebSocket configuration --- live beside the modules. \Cref{tab:modules} lists the responsibility of each
+module and \cref{tab:jobs} the scheduled jobs that keep the system tidy.
+
+\diagram{arch_packages.png}{Backend feature modules.}{fig:modules}
+\input{generated/modules}
+\input{generated/jobs}
+
+\subsection{Client structure}
+Both clients are layered so that screens contain no business logic (\cref{fig:clients}). On mobile, feature folders sit on
+Riverpod providers and go\_router with role-aware routing, over core services for the HTTP client, the STOMP
+connection, push, storage and the offline outbox. On the web, App Router routes host role workspaces built from
+components, with server state cached by TanStack Query, UI state in Zustand stores and live updates arriving through
+STOMP subscriptions that invalidate the relevant queries.
+
+\diagramwide{arch_clients.png}{Layering of the Flutter mobile app and the Next.js web console.}{fig:clients}
+
+\section{AI Components}\label{sec:ai-components}
+
+\subsection{Report triage with a language model}
+After a report is committed, two asynchronous jobs call a language model through the OpenRouter gateway with
+temperature zero, so the same input gives the same output. \emph{Priority classification} turns the category, the
+optional text message and the context into one of \code{CRITICAL}, \code{HIGH}, \code{MEDIUM} or \code{LOW} with a
+confidence value, stored on the incident. \emph{Duplicate detection} compares the new report with open incidents of the
+same category within 2\,km and 120 minutes and stores a suggested duplicate with a confidence value. Both jobs are
+guarded: a time-out, a missing key or a provider error is logged and the incident is unaffected, and a dispatcher can
+retry. A configuration switch disables AI entirely, and it disables itself when no key is configured.
+
+\begin{designnote}[AI recommends, humans decide]
+The model's output is displayed next to the report; it never changes what a dispatcher may do, and it never blocks
+or reorders access to a report. Confirming a duplicate, in particular, is always a dispatcher's action.
+\end{designnote}
+
+\subsection{The AI model service}
+A separate Python (FastAPI) service hosts versioned machine-learning pipelines behind an API key, on the internal
+network only. A \emph{model} is a folder containing the fitted pipeline, a manifest that is the contract (features,
+types, units, ranges, labels, metrics and hashes) and golden test cases. A registry file selects the active version and
+optional shadow versions, so a model can be rolled forward or back by editing one value. At start-up each package is
+verified --- the file hash against the manifest and the library versions against the training environment --- and a
+faulty package is reported as degraded on the health endpoint without taking other models down.
+\Cref{tab:ai-endpoints} lists its endpoints. The backend contains the matching typed client, so a trained model can be
+attached to the patient-vitals stream; the first clinical model is planned work (\cref{sec:future-work}).
+
+\input{generated/ai_endpoints}
+
+\section{Data Model}\label{sec:persistence}
+
+The database has 26 tables managed by Flyway migrations. Entities use \code{bigint} identity keys, most timestamps are
+\code{timestamptz}, enumerations are stored as strings with check constraints, and rows that are updated
+concurrently (incidents and missions) carry a \code{version} column for optimistic locking. The model is shown in two
+parts that share the \code{users} entity: identity, medical and notification data (\cref{fig:erd-identity}) and the
+operational model of facilities, units, incidents and missions (\cref{fig:erd-ops}). Appendix~\ref{app:database} contains the
+full data dictionary.
+
+\diagramwide{erd_identity.png}{Conceptual model of identity, medical profile, legal consent and notifications.}{fig:erd-identity}
+\diagram{erd_ops.png}{Conceptual model of facilities, units, incidents, missions and hospital transfers.}{fig:erd-ops}
+
+\subsection{Integrity rules in the schema}
+Several of the system's guarantees are enforced by the database itself rather than only by application code:
+\begin{itemize}
+  \item a unique index on (citizen, client request id) is the database-level guarantee behind idempotent submission;
+  \item a unique constraint on the personal-unit owner gives each first responder exactly one personal unit, and plate
+        numbers are unique;
+  \item one hospital transfer per mission, one legal acceptance per user and version, and unique version numbers per
+        legal document type;
+  \item indexes for the hot paths: notifications by user (newest first and unread), active units by facility, a citizen's
+        incident history and audit lookups by actor and target.
+\end{itemize}
+
+\section{Class Design}
+
+The class diagrams show the persistent domain model and the principal services. Only members that explain the design
+are listed. \Cref{fig:cls-ops} presents the operational domain: users, facilities, units, shifts, incidents, evidence,
+chat, missions, transfers and vitals. \Cref{fig:cls-identity} presents the identity and support domain, including the
+medical profile with its embedded emergency contacts, responder applications, legal consent, notifications and audit.
+
+\diagram{cls_ops.png}{Operational domain classes.}{fig:cls-ops}
+\diagram{cls_identity.png}{Identity and support domain classes.}{fig:cls-identity}
+
+\subsection{Dispatch services}
+\code{IncidentServiceImpl} orchestrates a report's life and delegates to small collaborators: a location policy
+(where a report may come from), the caller-trust service over the pure trust policy, the asynchronous AI and
+geocoding services, and the mission service for cascading cancellations (\cref{fig:cls-dispatch-a}).
+\code{MissionServiceImpl} takes a pessimistic lock on the unit row to serialise assignments, while optimistic version
+checks protect incidents and missions; event publishers wrap every broadcast so that it runs after commit
+(\cref{fig:cls-dispatch-b}).
+
+\diagramwide{cls_dispatch_a.png}{The incident service and its collaborators.}{fig:cls-dispatch-a}
+\diagram{cls_dispatch_b.png}{Mission, shift and hospital-transfer services.}{fig:cls-dispatch-b}
+
+\subsection{Notification subsystem}
+Business services call a publisher inside their transaction. The publisher resolves the recipients, builds the
+bilingual text and publishes a \code{NotificationRequested} event; a dispatcher component listens \emph{after commit},
+asynchronously writes the inbox rows, nudges connected clients over the WebSocket and hands push messages to a
+\code{PushSender} abstraction, whose Firebase implementation prunes tokens that the provider reports as invalid
+(\cref{fig:cls-notify}).
+
+\diagram{cls_notify.png}{The notification subsystem.}{fig:cls-notify}
+
+\subsection{Identity, verification and consent services}
+Registration, one-time codes, identity verification and legal consent are separate collaborators with narrow
+responsibilities (\cref{fig:cls-idsvc-a,fig:cls-idsvc-b}). The pure \code{KycPolicy} decides who must be verified;
+the webhook verifier authenticates provider callbacks; and a consent interceptor protects annotated endpoints.
+
+\diagram{cls_idsvc_a.png}{Authentication, registration and e-mail one-time-code services.}{fig:cls-idsvc-a}
+\diagramwide{cls_idsvc_b.png}{Identity-verification and legal-consent services.}{fig:cls-idsvc-b}
+
+\section{State Model}
+
+Six entities have non-trivial life cycles. The diagrams show every transition the code allows.
+
+\subsection{Incident}
+An incident starts as \code{NEW}, may gain an AI priority (\code{AI\_PROCESSED}), becomes \code{ASSIGNED} when the first
+unit is offered the work, returns to \code{DISPATCHER\_REVIEW} if its last active mission is cancelled, and ends as
+\code{RESOLVED} or \code{CANCELLED} (\cref{fig:st-incident}, \cref{tab:incident-states}).
+
+\diagramwide{st_incident.png}{Incident life cycle.}{fig:st-incident}
+\input{generated/incident_states}
+
+\begin{caution}[A declared status that no workflow uses]
+\code{IN\_PROGRESS} exists in the incident status enumeration and in the active-status sets, but no workflow enters it:
+field progress is carried by the mission statuses. It is reserved for future use.
+\end{caution}
+
+\subsection{Mission and hospital transfer}
+A mission is \emph{offered} to a unit and then accepted, en route and arrived, ending as completed, rejected or
+cancelled. Only the unit's lead moves it forward; dispatch can cancel it at any stage. For an ambulance, the hospital
+transfer runs in parallel from selection to arrival, and arrival completes the mission.
+
+\diagramwide{st_mission.png}{Mission life cycle.}{fig:st-mission}
+\diagram{st_transfer.png}{Hospital-transfer life cycle.}{fig:st-transfer}
+
+\subsection{Response unit, identity verification and caller trust}
+\diagram{st_unit.png}{Response-unit status.}{fig:st-unit}
+\diagramwide{st_kyc.png}{Identity-verification status.}{fig:st-kyc}
+Caller trust is derived rather than stored: each assessment recomputes a score from recent history
+(\cref{sec:caller-trust}) and maps it to a tier.
+\diagram{st_trust.png}{Caller-trust tiers.}{fig:st-trust}
+
+\section{Behavioural Design}
+
+The sequence diagrams below show the order of interactions in the most important flows.
+
+\subsection{Account creation}
+E-mail registration is deliberately a three-step process (\cref{fig:sq-register}): nothing is created in the identity
+provider or the database until the address is proven, so there are no half-registered accounts to clean up. Registration
+is atomic across the two stores --- if the database step fails, the new identity account is deleted again.
+\diagram{sq_register.png}{E-mail registration with a one-time code.}{fig:sq-register}
+\diagram{sq_google.png}{Google sign-in, profile creation and phone verification.}{fig:sq-google}
+\diagram{sq_employee.png}{Administrator-provisioned employee account.}{fig:sq-employee}
+
+\subsection{Reporting and evidence}
+Submitting a report (\cref{fig:sq-submit}) does only database work before responding; AI classification, duplicate
+detection and geocoding start asynchronously. Evidence travels directly between the client and storage through
+signed URLs (\cref{fig:sq-evidence}), and a report taken offline is delivered later by the outbox
+(\cref{fig:sq-outbox}).
+\diagram{sq_submit.png}{Submitting an emergency report.}{fig:sq-submit}
+\diagram{sq_evidence.png}{Uploading and viewing evidence through signed URLs.}{fig:sq-evidence}
+\diagram{sq_outbox.png}{The offline outbox and idempotent delivery.}{fig:sq-outbox}
+
+\subsection{Dispatch and field response}
+Assigning a unit locks the unit, checks it, creates the mission and alerts the crew; the lead then works the mission step
+by step (\cref{fig:sq-assign}). For an ambulance, the handoff to a hospital includes selecting the hospital, streaming
+vitals and arriving, which closes the mission (\cref{fig:sq-hospital}).
+\diagram{sq_assign.png}{Assigning a unit and working the mission.}{fig:sq-assign}
+\diagram{sq_hospital.png}{Ambulance hospital handoff with live vitals.}{fig:sq-hospital}
+
+\subsection{Notifications, identity verification and responder applications}\label{sec:after-commit}
+Notifications are created and pushed only after the triggering transaction commits (\cref{fig:sq-notify}), so a
+rolled-back action never produces a notification. Identity verification relies on a signed webhook that is confirmed
+against the provider's own decision (\cref{fig:sq-kyc}), and responder applications end in an administrator's
+approval that changes the role and creates the personal unit (\cref{fig:sq-application}).
+\diagram{sq_notify.png}{Notification creation and push delivery after commit.}{fig:sq-notify}
+\diagram{sq_kyc.png}{Identity verification with a signed webhook.}{fig:sq-kyc}
+\diagram{sq_application.png}{First-responder application and approval.}{fig:sq-application}
+
+\section{Authentication and Authorisation}\label{sec:authorisation}
+
+Every request passes through the same chain: token verification, user loading, URL rules, method rules, an optional
+consent check and finally ownership or scope checks inside the service (\cref{fig:sq-authz}). \Cref{tab:public-endpoints}
+lists the few endpoints that do not need a token, and \cref{tab:authz-layers} summarises the authorisation layers.
+
+\diagram{sq_authz.png}{How a request is authenticated and authorised.}{fig:sq-authz}
+\input{generated/public_endpoints}
+\input{generated/authz_layers}
+
+\section{Real-Time Channels and Notifications}
+
+The API exposes one STOMP endpoint with a simple in-memory broker and 10-second heartbeats in both directions, so an idle
+connection dropped by a proxy is noticed. Most channels carry a small refresh signal and the client re-queries; a few
+carry the changed object itself (\cref{tab:realtime}). Notifications (\cref{tab:notifications}) are created for each
+concerned user in English and Arabic; four types are urgent and use high-priority, short-lived push on a dedicated channel.
+
+\input{generated/realtime}
+\input{generated/notifications}
+
+\section{Security and Privacy Design}\label{sec:privacy}
+
+\Cref{tab:security-design} summarises the design. Two aspects deserve elaboration.
+
+\subsection{Privacy of the medical profile}
+A patient's profile is shared only if \emph{all} of the following hold: the report shares it (never when the report is for
+someone else), the patient still allows sharing, the incident is open, and the viewer is attached to the patient in a
+medical capacity --- a dispatcher, the crew of an ambulance or first-responder unit on an active mission, or staff of
+the hospital selected as the destination. Administrators are deliberately excluded. Every read writes an audit entry,
+and the read fails if the audit entry cannot be written. Withdrawing consent takes effect immediately, even for open
+incidents.
+
+\subsection{Protecting secrets and data at rest}
+Verification codes are stored only as HMAC-SHA-256 hashes and registration tokens as hashes of 256-bit random values;
+comparisons are constant-time. Chat messages, text evidence, free-text medical fields, emergency-contact names and
+phones, and vital-sign notes are encrypted at rest by the application, and evidence and documents live in a private
+bucket reachable only by short-lived signed URLs.
+
+\input{generated/security_design}
+
+\section{Behaviour When a Dependency Fails}\label{sec:failure}
+
+Each external service is wrapped so that its failure disables only its own feature (\cref{tab:failure}). Reporting and
+dispatch continue even when the language model, the geocoder, push delivery, the mail provider, the verification provider
+or the object store is unavailable.
+
+\input{generated/failure}
+
+\section{Deployment}
+
+\Cref{fig:deployment} shows the deployment view. The backend runs as a container, the web console as a Next.js
+application, and the AI service as an internal-only container; PostgreSQL holds the data, and the mobile app is
+distributed as a signed APK. A Docker Compose file runs the whole stack locally with one command
+(\cref{tab:deploy-units}); GitHub Actions builds, tests and releases (\cref{tab:pipelines}).
+
+\diagram{deploy.png}{Deployment view.}{fig:deployment}
+\input{generated/deploy_units}
+\input{generated/pipelines}
+
+\section{Key Design Decisions}
+
+The most consequential decisions are collected, with their rationale, in Appendix~\ref{app:decisions}. Four are worth stating here.
+
+\begin{designnote}[Modular monolith, one separate AI service]
+A single backend with strong internal module boundaries gives simple transactions and a simple deployment for a small
+team; the AI service differs in language, lifecycle and scaling needs and is therefore deployed separately.
+\end{designnote}
+\begin{designnote}[Idempotent submission]
+A report may be sent twice by a flaky network; the second must never create a second emergency. The client's request id
+is checked first and backed by a unique index.
+\end{designnote}
+\begin{designnote}[Pessimistic locking for unit assignment]
+Double-booking a unit is the costliest race in dispatch. A row lock serialises assignment; contention elsewhere is rare,
+so optimistic version checks suffice.
+\end{designnote}
+\begin{designnote}[Caller trust slows but never blocks]
+An emergency line that can refuse a caller can cost a life. Abuse is handled by delay, human verdicts and manual
+suspension.
+\end{designnote}
+
+\section{Chapter Summary}
+
+This chapter described the architecture, the AI components, the data model, the classes, the state models, the
+behaviour of the main flows, the authentication and authorisation model, real-time messaging and notifications, the
+security and privacy design, failure behaviour and deployment. \Cref{chap:implementation} explains how these designs were
+realised in code.

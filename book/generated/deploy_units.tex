@@ -1,0 +1,15 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*184/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*342/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*474/1000\relax}@{}}
+\caption{Deployable units and their technology}\label{tab:deploy-units}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Unit} & \textcolor{white}{\sffamily\bfseries\small Technology} & \textcolor{white}{\sffamily\bfseries\small Notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Unit} & \textcolor{white}{\sffamily\bfseries\small Technology} & \textcolor{white}{\sffamily\bfseries\small Notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{Backend API} & Spring Boot 4, Java 21; container image (JRE, non-root user) & Runs migrations at start-up, then validates entities against the schema. Hosted as a container service (the production CORS and WebSocket origin list names the Render host and the Vercel web host).\\
+\textbf{Web console} & Next.js 16, React 19; container image or Vercel & Public Firebase and API settings are provided at build time; a server route manages the session cookie.\\
+\textbf{AI model service} & Python 3.12, FastAPI; container image & No published port; reachable only from the backend on the internal network.\\
+\textbf{Database} & PostgreSQL 17 & Single database; Flyway baseline migration; data volume in Compose.\\
+\textbf{Mobile app} & Flutter, Android; signed APK & Distributed from GitHub Releases; the API reports the newest release.\\
+\textbf{Local stack} & Docker Compose & PostgreSQL, AI service, backend and web console with one command; health-checked start order (database before backend).\\
+\end{longtable}}

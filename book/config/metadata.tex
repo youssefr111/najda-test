@@ -1,0 +1,50 @@
+% ======================================================================
+%  Project metadata -- the single source of truth for the cover,
+%  approval page, declaration and PDF properties.
+%  Edit names, dates and institution details here only.
+% ======================================================================
+\newcommand{\ProjectName}{NAJDA}
+\newcommand{\ProjectFullName}{Network for Aid, Joint Dispatch and Assistance}
+\newcommand{\ProjectTagline}{An intelligent emergency-response platform for Egypt}
+
+\newcommand{\University}{Modern Academy}
+\newcommand{\Faculty}{Faculty of Engineering}
+\newcommand{\Department}{Department of Computer Engineering}
+\newcommand{\Degree}{Bachelor of Engineering in Computer Engineering}
+
+\newcommand{\Supervisor}{Dr.\ Sherin Omran}
+\newcommand{\SubmissionDate}{January 2027}
+
+% Team members, in the order they appear on the cover (comma-separated).
+\newcommand{\TeamMembers}{%
+  Abdelrahman Zaher,
+  Abdelrahman Waleed,
+  Ibrahim Hashem,
+  Razan Ihab,
+  Saif-Allah Mohammed,
+  Shahd Ahmed,
+  Yara Emad,
+  Youssef Mohammed,
+  Youssef Ramadan}
+
+% Builds \TeamTabRows: the team as rows of a two-column table. Each name is
+% wrapped in \teamcell{...}; with an odd number of names the last one is wrapped
+% in \teamlast{...} (centred under both columns on the cover). Callers redefine
+% these two macros (cover, declaration).
+\newcommand{\TeamTabRows}{}
+\newcommand{\TeamCount}{0}
+\newcommand{\teamcell}[1]{#1}
+\newcommand{\teamlast}[1]{\multicolumn{2}{c}{\teamcell{#1}}}
+\newcommand{\buildteamrows}{%
+  \gdef\TeamTabRows{}%
+  \foreach \n [count=\i] in \TeamMembers {\xdef\TeamCount{\i}}%
+  \foreach \n [count=\i] in \TeamMembers {%
+    \ifodd\i
+      \ifnum\i=\TeamCount
+        \expandafter\gappto\expandafter\TeamTabRows\expandafter{\expandafter\teamlast\expandafter{\n}}%
+      \else
+        \expandafter\gappto\expandafter\TeamTabRows\expandafter{\expandafter\teamcell\expandafter{\n}&}%
+      \fi
+    \else
+      \expandafter\gappto\expandafter\TeamTabRows\expandafter{\expandafter\teamcell\expandafter{\n}\\}%
+    \fi}}

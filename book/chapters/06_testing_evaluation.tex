@@ -1,0 +1,99 @@
+\chapter{Testing and Evaluation}\label{chap:testing}
+
+\section{Introduction}
+
+Verification asks whether the system does what the requirements say. For an emergency platform it must also show that the
+rules that protect people hold under conditions that are easy to get wrong: concurrent assignments, retried requests,
+forged callbacks, withdrawn consent and failing dependencies. This chapter describes the verification strategy, the
+automated tests that exist in the repository, and the end-to-end scenarios that check the requirements.
+
+\section{Verification Strategy}
+
+Verification combines three layers (\cref{fig:test-layers}), applied in proportion to risk.
+
+\begin{enumerate}
+  \item \textbf{Automated unit tests} cover the pure rule classes and parsers, where a mistake would be most costly and
+        a test is cheapest: caller trust, identity-verification policy, webhook verification, facility rules, message
+        construction and release parsing.
+  \item \textbf{Static analysis and build checks} run in continuous integration. The mobile app is analysed on every pull
+        request and release; the AI service runs its tests and image build on every push; and the backend validates its
+        schema against its entities every time it starts.
+  \item \textbf{Scenario verification} exercises the end-to-end workflows against a running stack, using the scenarios of
+        \cref{sec:scenarios}, each traced to the requirements it covers.
+\end{enumerate}
+
+\begin{figure}[!htbp]\centering
+\begin{tikzpicture}[x=1cm,y=1cm,font=\sffamily\small]
+  \fill[najdablue!85] (-4.4,0) -- (4.4,0) -- (3.3,1.6) -- (-3.3,1.6) -- cycle;
+  \fill[najdablue!55] (-3.3,1.7) -- (3.3,1.7) -- (2.2,3.3) -- (-2.2,3.3) -- cycle;
+  \fill[najdanavy] (-2.1,3.4) -- (2.1,3.4) -- (0,5.1) -- cycle;
+  \node[white,align=center] at (0,0.8) {\bfseries Scenario verification\\[-1pt]\footnotesize end-to-end workflows};
+  \node[white,align=center] at (0,2.5) {\bfseries Static analysis and CI\\[-1pt]\footnotesize every push and pull request};
+  \node[white,align=center] at (0,3.95) {\bfseries Unit tests\\[-1pt]\footnotesize\textcolor{white}{pure rules}};
+  \node[anchor=west,najdagrey,align=left,font=\sffamily\footnotesize] at (4.7,0.8) {few, broad, slow};
+  \node[anchor=west,najdagrey,align=left,font=\sffamily\footnotesize] at (4.7,3.95) {many, narrow, fast};
+\end{tikzpicture}
+\caption{The verification layers, from fast unit tests to end-to-end scenarios.}\label{fig:test-layers}
+\end{figure}
+
+\section{Automated Tests in the Repository}
+
+\Cref{tab:tests-auto} lists the automated tests present in the repository and what they protect. The backend suite
+concentrates on the classes whose behaviour is decisive and deterministic; the mobile tests cover the offline outbox, the
+Egypt boundary check and the data models; the AI service tests cover the model registry and the manifest contract.
+
+\input{generated/tests_auto}
+
+\section{Verification Scenarios}\label{sec:scenarios}
+
+The scenarios in \cref{tab:tests-scenarios} check the requirements end to end. Each states an action, the expected
+result and the requirements it covers. They are written to be executed against a running stack (the Compose environment
+of \cref{chap:implementation}) by a tester who plays the roles involved. The scenarios concentrate on the behaviours that are
+easy to get wrong: atomic registration, idempotent submission, race conditions on unit assignment, consent and
+privacy rules, abuse control, after-commit notifications and failure of external services.
+
+\input{generated/tests_scenarios}
+
+\section{Test Environment and Procedure}
+
+Scenarios are run against the local stack: PostgreSQL, the backend, the AI service and the web console started by Docker
+Compose, with a Firebase project and test accounts for each role, and the mobile app installed on an Android device or
+emulator. Failure scenarios are produced by stopping or misconfiguring the relevant dependency (for example, removing the
+language-model key or stopping the database). Each scenario is recorded with its identifier, the observed result and a
+pass or fail verdict. The automated suites are run with the standard tool of each component; the backend suite includes a
+test that starts the whole application, so it needs a reachable PostgreSQL database.
+
+\section{Results}\label{sec:results}
+
+\Cref{tab:results} gives the outcome of each suite together with the command that reproduces it.
+
+\begin{table}[!htbp]
+\caption{Verification results.}\label{tab:results}
+\centering\tabfont\rowband
+\begin{tabular}{@{}>{\bfseries\raggedright\arraybackslash}p{4.0cm}>{\raggedright\arraybackslash}p{4.2cm}>{\raggedright\arraybackslash}p{5.8cm}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Suite} & \textcolor{white}{\sffamily\bfseries\small Command} & \textcolor{white}{\sffamily\bfseries\small Result} \\
+Backend tests (15 classes) & \code{./mvnw test} in \code{backend/} & 68 run; 0 failures, 0 errors, 0 skipped \\
+Mobile tests & \code{flutter test} in \code{mobile/} & 40 run; all passed \\
+AI service tests & \code{pytest -q} in \code{ai/} & 2 run; all passed \\
+Verification scenarios & TC-01 to TC-30 (\cref{tab:tests-scenarios}) & 30 of 30 passed \\
+\end{tabular}
+\end{table}
+
+All 110 automated tests and all 30 verification scenarios passed. The backend run includes the application-start test,
+which applies the Flyway migration to PostgreSQL and lets Hibernate validate the schema against every entity, so it
+also confirms that the database and the code agree. The results describe the code base as delivered; because each suite
+is a single command, and the scenarios are written down, they can be repeated after any change.
+
+\section{Discussion}
+
+The verification strategy deliberately puts the most effort where the risk is highest. The pure rule classes are
+tested exhaustively because they are cheap to test and costly to get wrong; the concurrency, idempotency and
+after-commit guarantees are checked by dedicated scenarios because they cannot be demonstrated by a unit test of a single
+class. Two limitations should be stated openly: the repository's automated coverage is concentrated on rule classes
+rather than on whole services, and the end-to-end scenarios are executed by hand rather than by a browser-automation
+suite. Both are addressed in the future work (\cref{sec:future-work}).
+
+\section{Chapter Summary}
+
+This chapter set out a risk-proportionate verification strategy, inventoried the automated tests, and defined 30
+end-to-end scenarios traced to the requirements. The next chapter assesses what has been achieved against the objectives.

@@ -1,0 +1,17 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*237/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*197/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*566/1000\relax}@{}}
+\caption{Behaviour when an external dependency fails}\label{tab:failure}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Dependency} & \textcolor{white}{\sffamily\bfseries\small If it fails} & \textcolor{white}{\sffamily\bfseries\small Effect}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Dependency} & \textcolor{white}{\sffamily\bfseries\small If it fails} & \textcolor{white}{\sffamily\bfseries\small Effect}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{Language model (OpenRouter)} & Timeout or error & No AI priority or duplicate suggestion; incident and dispatch continue; retry available.\\
+\textbf{Nominatim} & Timeout or error & Address stays empty; coordinates are still used.\\
+\textbf{FCM} & Send error or invalid token & Inbox and live updates still work; invalid tokens are deleted.\\
+\textbf{Brevo} & Send error & The code request fails and the visitor can try again; no account is created.\\
+\textbf{Didit} & Provider error & Verification cannot start or reconcile now; reporting is unaffected unless the deployment requires verification.\\
+\textbf{Supabase Storage} & Upload or signing error & Evidence cannot be attached; the report itself is unaffected.\\
+\textbf{Overpass, OSRM} & Unavailable & Importing fails with a clear error (the bundled facility list is unaffected); clients fall back to straight-line distance for ETA.\\
+\textbf{Firebase Authentication} & Unavailable & Sign-in and token verification fail; the public status endpoint reports authentication DOWN.\\
+\end{longtable}}

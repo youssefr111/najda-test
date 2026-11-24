@@ -1,0 +1,15 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*195/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*390/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*416/1000\relax}@{}}
+\caption{Incident statuses}\label{tab:incident-states}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Status} & \textcolor{white}{\sffamily\bfseries\small Meaning} & \textcolor{white}{\sffamily\bfseries\small Entered when}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Status} & \textcolor{white}{\sffamily\bfseries\small Meaning} & \textcolor{white}{\sffamily\bfseries\small Entered when}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{NEW} & Saved, awaiting triage. & A citizen submits.\\
+\textbf{AI\_\allowbreak{}PROCESSED} & Priority has been stored. & The AI classification completes.\\
+\textbf{DISPATCHER\_\allowbreak{}REVIEW} & Needs a dispatcher’s decision again. & The last active mission is cancelled or withdrawn while ASSIGNED.\\
+\textbf{ASSIGNED} & At least one unit has been offered work. & A dispatcher assigns the first unit.\\
+\textbf{RESOLVED} & Finished. & All missions complete, or a dispatcher completes by override.\\
+\textbf{CANCELLED} & Closed without a response. & Citizen cancel, confirmed duplicate, or false report before a unit arrived.\\
+\end{longtable}}

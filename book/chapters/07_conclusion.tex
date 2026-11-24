@@ -1,0 +1,71 @@
+\chapter{Conclusion and Future Work}\label{chap:conclusion}
+
+\section{Summary of the Work}
+
+This project set out to build a platform that shortens the path from an emergency to a properly equipped response while
+remaining safe, private and trustworthy. \ProjectName{} delivers that platform: a Flutter mobile app and a Next.js web console,
+backed by a Spring Boot API with a PostgreSQL database, a separate AI model service, and managed services for identity,
+storage, messaging, identity verification and maps. It serves ten roles through 97 functional requirements and 64 use cases,
+and its design is documented by 41 diagrams, a 26-table data dictionary and a traceability matrix.
+
+A citizen can report an emergency in one action, even offline; the platform classifies the report and flags duplicates; a
+dispatcher assigns the nearest suitable unit from a live queue; the crew works the mission from a phone; an ambulance crew
+sends the patient's vital signs to the receiving hospital in advance; and the reporter follows every step. Underneath, a
+small set of well-chosen patterns keeps this reliable and private.
+
+\section{Achievement of the Objectives}
+
+\Cref{tab:objectives} relates each objective of \cref{chap:introduction} to what was delivered and where the evidence is.
+
+\begin{table}[!htbp]
+\caption{Objectives and the evidence that they were met.}\label{tab:objectives}
+\centering\tabfont\rowband
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.3cm}>{\raggedright\arraybackslash}p{6.4cm}>{\raggedright\arraybackslash}p{3.5cm}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Objective} & \textcolor{white}{\sffamily\bfseries\small Delivered} & \textcolor{white}{\sffamily\bfseries\small Evidence} \\
+Shorten the time to assignment with a prioritised, de-duplicated live queue & Live queue with AI priority and duplicate suggestion; unit ranking by distance and ETA; urgent notifications & \cref{sec:fr}; UC-29 to UC-32; TC-29 \\
+Safe, fast reporting under stress & One-tap SOS, automatic location, idempotent submission, durable offline outbox & UC-20, UC-28; TC-08 to TC-11 \\
+Role-appropriate visibility, including audited medical data & Role and ownership checks; consent- and role-gated medical profile with audit & \cref{sec:privacy}; TC-12 to TC-14 \\
+Trust without blocking genuine emergencies & Identity verification; fail-open caller trust; audit trail & \cref{sec:caller-trust}; TC-06, TC-20, TC-21 \\
+Hospital coordination with live vitals & Hospital selection, pre-notification, vitals stream, handoff & UC-43 to UC-46; TC-22, TC-23 \\
+Arabic and English, both directions, phones and desktops & Localisation and right-to-left layout in both clients; bilingual notifications & FR-PLT-01, FR-NOT-02; TC-28 \\
+\end{tabular}
+\end{table}
+
+\section{Limitations}
+
+An honest assessment must also record what the system does not yet do.
+
+\begin{itemize}
+  \item \ProjectName{} does not connect to national emergency telephone numbers or to existing dispatch systems; it is
+        designed to operate alongside them.
+  \item Only an Android build of the mobile app exists, although the code base is cross-platform.
+  \item The WebSocket channel is restricted by origin but individual subscriptions are not yet authorised by role.
+  \item The rate limiter is held in memory in each instance, so running several backend instances would multiply the limits.
+  \item Automated test coverage is concentrated on the rule classes; the end-to-end scenarios are run manually.
+  \item The AI model service and its backend client are in place, but no clinical model has yet been trained and attached
+        to the vitals stream.
+\end{itemize}
+
+\section{Future Work}\label{sec:future-work}
+
+The improvements below follow directly from the limitations and from the extension points already built into the platform
+(\cref{tab:future-work}).
+
+\input{generated/future_work}
+
+\section{Lessons Learned}
+
+Several lessons stand out. First, \emph{decide the rules before the screens}: most of the difficult bugs of emergency
+software are rule bugs --- races, retries, consent --- and writing the rules as small pure classes made them testable and
+discussable. Second, \emph{an architecture proportionate to the team} matters more than fashionable architecture: a modular
+monolith with one separate service gave strong boundaries without the cost of distribution. Third, \emph{degrade, do not
+fail}: wrapping every external dependency so that it disables only its own feature kept the core workflow available.
+Finally, \emph{documentation is part of the product}: keeping requirements, diagrams, data dictionary and traceability in step
+with the code made the system far easier to reason about, to review and to hand over.
+
+\section{Final Remarks}
+
+\ProjectName{} demonstrates that a small team, using modern engineering practice and managed cloud services, can build a coherent
+emergency-response platform that connects citizens, dispatchers, field crews and hospitals in a single, auditable workflow.
+It is a foundation that can be extended with clinical models, additional channels and deeper integration with existing
+emergency services.

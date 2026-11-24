@@ -1,0 +1,16 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*408/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*447/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*145/1000\relax}@{}}
+\caption{REST API: facilities, managers and applications}\label{tab:api-5}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Method and path} & \textcolor{white}{\sffamily\bfseries\small Purpose} & \textcolor{white}{\sffamily\bfseries\small Access}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Method and path} & \textcolor{white}{\sffamily\bfseries\small Purpose} & \textcolor{white}{\sffamily\bfseries\small Access}\\
+\endhead
+\bottomrule\endlastfoot
+GET /\allowbreak{}api/\allowbreak{}facilities; GET /\allowbreak{}api/\allowbreak{}facilities/\allowbreak{}page & List; paged search & any\\
+POST /\allowbreak{}api/\allowbreak{}facilities; PATCH /\allowbreak{}api/\allowbreak{}facilities/\allowbreak{}\{id\}; GET .../\allowbreak{}type-change-impact & Manage facilities & A, SA\\
+POST /\allowbreak{}api/\allowbreak{}facilities/\allowbreak{}backfill-addresses; POST /\allowbreak{}api/\allowbreak{}admin/\allowbreak{}facilities/\allowbreak{}seed-once & Address backfill; OSM import & A, SA\\
+GET /\allowbreak{}api/\allowbreak{}manager/\allowbreak{}me; GET/\allowbreak{}POST /\allowbreak{}api/\allowbreak{}manager/\allowbreak{}units; PATCH/\allowbreak{}DELETE .../\allowbreak{}units/\allowbreak{}\{id\}; GET .../\allowbreak{}units/\allowbreak{}\{id\}/\allowbreak{}delete-impact & Facility manager: units & FM\\
+GET/\allowbreak{}POST /\allowbreak{}api/\allowbreak{}manager/\allowbreak{}staff; POST .../\allowbreak{}staff/\allowbreak{}\{id\}/\allowbreak{}disable, /\allowbreak{}enable & Facility manager: staff & FM\\
+POST /\allowbreak{}api/\allowbreak{}first-responder-applications; POST .../\allowbreak{}upload-url; POST .../\allowbreak{}documents; GET .../\allowbreak{}mine & Apply; add documents; own applications & citizen\\
+GET /\allowbreak{}api/\allowbreak{}first-responder-applications; POST .../\allowbreak{}\{id\}/\allowbreak{}approve, /\allowbreak{}reject; document download and delete & Review & A, SA\\
+\end{longtable}}

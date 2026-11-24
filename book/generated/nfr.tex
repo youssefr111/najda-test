@@ -1,0 +1,34 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*190/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*144/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*667/1000\relax}@{}}
+\caption{Non-functional requirements}\label{tab:nfr}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Category} & \textcolor{white}{\sffamily\bfseries\small Requirement}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small ID} & \textcolor{white}{\sffamily\bfseries\small Category} & \textcolor{white}{\sffamily\bfseries\small Requirement}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{NFR-SEC-01} & Security & Every API call except a short list of public endpoints is authenticated with a verified Firebase ID token; authorisation is enforced on the server by role (URL rules, method annotations) and by ownership checks, never by client-side hiding.\\
+\textbf{NFR-SEC-02} & Security & Secrets (database credentials, Firebase service account, API keys, webhook secrets, field-encryption key, OTP pepper) are supplied by environment configuration and never committed.\\
+\textbf{NFR-SEC-03} & Security & Verification codes are stored only as keyed hashes (HMAC-SHA-256); the registration token is one-time and stored hashed; comparisons are constant-time.\\
+\textbf{NFR-SEC-04} & Security & Sensitive fields (chat, text evidence, medical free text, emergency contacts, vitals notes) are encrypted at rest at the application layer.\\
+\textbf{NFR-SEC-05} & Security & Evidence and documents live in a private bucket; clients receive only short-lived signed upload and download URLs, and file types are restricted by an allow-list.\\
+\textbf{NFR-SEC-06} & Security & Abuse-prone public endpoints are rate-limited; the caller-trust policy slows repeat abusers without ever blocking a genuine report.\\
+\textbf{NFR-SEC-07} & Security & Third-party webhooks are accepted only with a valid signature inside a freshness window and are processed at most once.\\
+\textbf{NFR-PRV-01} & Privacy & A patient’s medical profile is shared only with consent, only with people treating the patient, only while the incident is open, and every access is audited.\\
+\textbf{NFR-PRV-02} & Privacy & Users must accept the current Terms and Privacy Policy; versions are immutable and acceptance is recorded with source and time.\\
+\textbf{NFR-PRV-03} & Privacy & Live unit positions are visible to staff only; a citizen sees only the units assigned to their incident.\\
+\textbf{NFR-PRF-01} & Performance & The submission path does only database work before responding; AI classification, duplicate detection and geocoding run asynchronously after commit.\\
+\textbf{NFR-PRF-02} & Performance & Lists that can grow (users, facilities, notifications) are paged and indexed; hot lookups (notifications by user, citizen incidents, active units by facility) have dedicated indexes.\\
+\textbf{NFR-PRF-03} & Performance & Live updates travel over a single WebSocket per client rather than repeated polling.\\
+\textbf{NFR-REL-01} & Reliability & Retried submissions are safe (idempotent request id, unique index per citizen); the mobile outbox preserves a report across connectivity loss.\\
+\textbf{NFR-REL-02} & Reliability & Concurrent actions on the same unit or mission are safe: pessimistic locking on unit assignment, optimistic version checks on incidents and missions.\\
+\textbf{NFR-REL-03} & Reliability & Failure of an external service (language model, push, geocoder, mail) degrades only its own feature; core reporting and dispatch continue.\\
+\textbf{NFR-REL-04} & Reliability & Cross-system changes that cannot be one transaction (identity provider and database) use compensation so no half-created state remains.\\
+\textbf{NFR-USA-01} & Usability & Reporting takes one deliberate action from the home screen; the interface supports English and Arabic with correct right-to-left layout, and light and dark themes.\\
+\textbf{NFR-USA-02} & Usability & The system explains refusals in plain language, including the emergency numbers (122 police, 123 ambulance, 180 fire) whenever a report is slowed.\\
+\textbf{NFR-MNT-01} & Maintainability & The schema is changed only through versioned Flyway migrations and validated against the entities at start-up.\\
+\textbf{NFR-MNT-02} & Maintainability & Business rules that decide safety-critical outcomes are isolated in pure classes with unit tests (caller trust, KYC policy, webhook verification, OTP, facility and role policies).\\
+\textbf{NFR-MNT-03} & Maintainability & The backend is organised by feature module with a consistent controller--service--repository layering.\\
+\textbf{NFR-OBS-01} & Observability & Health and status endpoints are public; significant events are logged; the audit log records privacy-relevant actions with actor, target and detail.\\
+\textbf{NFR-PRT-01} & Portability & Every service ships as a container image or a single archive; configuration is entirely environment-driven, so the stack runs locally with one Compose file.\\
+\textbf{NFR-CMP-01} & Compatibility & The web console supports current evergreen browsers; the mobile app supports Android, with the code base cross-platform.\\
+\end{longtable}}

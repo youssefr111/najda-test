@@ -1,0 +1,488 @@
+\subsection*{\code{users}}
+Every person with an account: profile, address, role, facility link, identity-verification state. One row per Firebase identity.\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{id} & bigint & PK\\
+\textbf{address\_\allowbreak{}governorate} & varchar(30) & \\
+\textbf{address\_\allowbreak{}city} & varchar(100) & \\
+\textbf{address\_\allowbreak{}street} & varchar(200) & \\
+\textbf{address\_\allowbreak{}landmark} & varchar(200) & \\
+\textbf{created\_\allowbreak{}at} & timestamptz & required\\
+\textbf{deleted\_\allowbreak{}at} & timestamptz & \\
+\textbf{email} & varchar(255) & unique\\
+\textbf{enabled} & bool & required\\
+\textbf{firebase\_\allowbreak{}uid} & varchar(255) & unique; required\\
+\textbf{first\_\allowbreak{}name} & varchar(255) & required\\
+\textbf{gender} & varchar(30) & one of MALE, FEMALE\\
+\textbf{kyc\_\allowbreak{}status} & varchar(20) & required; one of NOT\_\allowbreak{}STARTED, IN\_\allowbreak{}PROGRESS, IN\_\allowbreak{}REVIEW, VERIFIED, DECLINED, EXPIRED, ABANDONED; default NOT\_\allowbreak{}STARTED\\
+\textbf{kyc\_\allowbreak{}session\_\allowbreak{}id} & varchar(64) & \\
+\textbf{kyc\_\allowbreak{}verified\_\allowbreak{}at} & timestamptz & \\
+\textbf{kyc\_\allowbreak{}updated\_\allowbreak{}at} & timestamptz & \\
+\textbf{kyc\_\allowbreak{}decline\_\allowbreak{}reason} & varchar(200) & \\
+\textbf{last\_\allowbreak{}name} & varchar(255) & required\\
+\textbf{phone} & varchar(255) & \\
+\textbf{phone\_\allowbreak{}verified} & bool & required\\
+\textbf{profile\_\allowbreak{}completed} & bool & required\\
+\textbf{updated\_\allowbreak{}at} & timestamptz & required\\
+\textbf{facility\_\allowbreak{}id} & bigint & FK $\rightarrow$ facilities.id\\
+\textbf{role\_\allowbreak{}id} & integer & FK $\rightarrow$ roles.role\_\allowbreak{}id; required\\
+\end{longtable}}
+
+\subsection*{\code{roles}}
+The ten system roles.\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{role\_\allowbreak{}id} & integer & PK\\
+\textbf{role\_\allowbreak{}name} & varchar(255) & unique; required\\
+\end{longtable}}
+
+\subsection*{\code{email\_\allowbreak{}verifications}}
+Pending e-mail verifications: hashed code, attempts, expiry and hashed registration token.\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{id} & bigint & default AS IDENTITY PRIMARY KEY\\
+\textbf{email} & varchar(254) & required\\
+\textbf{code\_\allowbreak{}hash} & varchar(64) & required\\
+\textbf{expires\_\allowbreak{}at} & timestamptz & required\\
+\textbf{resend\_\allowbreak{}available\_\allowbreak{}at} & timestamptz & required\\
+\textbf{attempts} & integer not null & required; default 0\\
+\textbf{verified\_\allowbreak{}until} & timestamptz & \\
+\textbf{registration\_\allowbreak{}token\_\allowbreak{}hash} & varchar(64) & \\
+\end{longtable}}
+
+\subsection*{\code{legal\_\allowbreak{}document\_\allowbreak{}versions}}
+Immutable versions of the Terms and Privacy Policy (bilingual JSON content).\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{id} & bigint & default AS IDENTITY PRIMARY KEY\\
+\textbf{document\_\allowbreak{}type} & varchar(20) & required\\
+\textbf{version} & integer & required\\
+\textbf{content} & jsonb & required\\
+\textbf{change\_\allowbreak{}summary} & jsonb & \\
+\textbf{requires\_\allowbreak{}acceptance} & boolean not null & required; default TRUE\\
+\textbf{published\_\allowbreak{}at} & timestamptz not null & required; default now()\\
+\textbf{published\_\allowbreak{}by} & bigint & FK $\rightarrow$ users.id\\
+\end{longtable}}
+
+\subsection*{\code{legal\_\allowbreak{}acceptances}}
+Which user accepted which version, from where and when.\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{id} & bigint & default AS IDENTITY PRIMARY KEY\\
+\textbf{user\_\allowbreak{}id} & bigint & FK $\rightarrow$ users.id; required\\
+\textbf{version\_\allowbreak{}id} & bigint & FK $\rightarrow$ legal\_\allowbreak{}document\_\allowbreak{}versions.id; required\\
+\textbf{source} & varchar(10) & required\\
+\textbf{accepted\_\allowbreak{}at} & timestamptz not null & required; default now()\\
+\end{longtable}}
+
+\subsection*{\code{kyc\_\allowbreak{}webhook\_\allowbreak{}events}}
+Ids of processed Didit webhook events, for de-duplication.\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{event\_\allowbreak{}id} & varchar(64) primary key & \\
+\textbf{received\_\allowbreak{}at} & timestamptz not null & required; default now()\\
+\end{longtable}}
+
+\subsection*{\code{audit\_\allowbreak{}logs}}
+Audit trail of privacy-relevant and administrative actions.\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{id} & bigint & PK\\
+\textbf{action} & varchar(255) & required\\
+\textbf{actor\_\allowbreak{}user\_\allowbreak{}id} & bigint & FK $\rightarrow$ users.id; required\\
+\textbf{created\_\allowbreak{}at} & timestamptz & required\\
+\textbf{details} & varchar(1000) & \\
+\textbf{target\_\allowbreak{}user\_\allowbreak{}id} & bigint & FK $\rightarrow$ users.id\\
+\end{longtable}}
+
+\subsection*{\code{content\_\allowbreak{}documents}}
+Editable JSON content documents (first-aid guidance).\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{doc\_\allowbreak{}key} & varchar(64) & PK\\
+\textbf{content} & jsonb & required\\
+\textbf{version} & bigint & required; default 1\\
+\textbf{updated\_\allowbreak{}at} & timestamptz & required; default now()\\
+\textbf{updated\_\allowbreak{}by} & bigint & FK $\rightarrow$ users.id\\
+\end{longtable}}
+
+\subsection*{\code{first\_\allowbreak{}responder\_\allowbreak{}applications}}
+Citizen applications to become a First Responder and their review outcome.\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{id} & bigint & PK\\
+\textbf{motivation} & text & required\\
+\textbf{review\_\allowbreak{}notes} & varchar(255) & \\
+\textbf{reviewed\_\allowbreak{}at} & timestamptz & \\
+\textbf{reviewed\_\allowbreak{}by} & bigint & FK $\rightarrow$ users.id\\
+\textbf{status} & varchar(255) & required; one of PENDING, APPROVED, REJECTED\\
+\textbf{submitted\_\allowbreak{}at} & timestamptz & required\\
+\textbf{citizen\_\allowbreak{}id} & bigint & FK $\rightarrow$ users.id; required\\
+\end{longtable}}
+
+\subsection*{\code{first\_\allowbreak{}responder\_\allowbreak{}application\_\allowbreak{}documents}}
+Supporting documents of an application (private storage paths).\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{id} & bigint & PK\\
+\textbf{original\_\allowbreak{}file\_\allowbreak{}name} & varchar(255) & \\
+\textbf{storage\_\allowbreak{}path} & varchar(255) & required\\
+\textbf{uploaded\_\allowbreak{}at} & timestamptz & required\\
+\textbf{application\_\allowbreak{}id} & bigint & FK $\rightarrow$ first\_\allowbreak{}responder\_\allowbreak{}applications.id; required\\
+\end{longtable}}
+
+\subsection*{\code{medical\_\allowbreak{}profiles}}
+One optional medical profile per user with the sharing consent flag; free text encrypted.\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{user\_\allowbreak{}id} & bigint & PK; FK $\rightarrow$ users.id\\
+\textbf{date\_\allowbreak{}of\_\allowbreak{}birth} & date & \\
+\textbf{weight\_\allowbreak{}kg} & numeric(5,1) & \\
+\textbf{blood\_\allowbreak{}type} & varchar(20) & \\
+\textbf{no\_\allowbreak{}known\_\allowbreak{}allergies} & bool & required; default false\\
+\textbf{allergy\_\allowbreak{}notes} & text & \\
+\textbf{no\_\allowbreak{}known\_\allowbreak{}conditions} & bool & required; default false\\
+\textbf{condition\_\allowbreak{}notes} & text & \\
+\textbf{current\_\allowbreak{}medications} & text & \\
+\textbf{medical\_\allowbreak{}notes} & text & \\
+\textbf{share\_\allowbreak{}with\_\allowbreak{}responders} & bool & required; default false\\
+\textbf{updated\_\allowbreak{}at} & timestamptz & required\\
+\end{longtable}}
+
+\subsection*{\code{medical\_\allowbreak{}profile\_\allowbreak{}allergies}}
+Allergy selections of a profile (fixed list).\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{user\_\allowbreak{}id} & bigint & PK; FK $\rightarrow$ medical\_\allowbreak{}profiles.user\_\allowbreak{}id\\
+\textbf{allergy} & varchar(30) & PK\\
+\end{longtable}}
+
+\subsection*{\code{medical\_\allowbreak{}profile\_\allowbreak{}conditions}}
+Condition selections of a profile (fixed list).\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{user\_\allowbreak{}id} & bigint & PK; FK $\rightarrow$ medical\_\allowbreak{}profiles.user\_\allowbreak{}id\\
+\textbf{medical\_\allowbreak{}condition} & varchar(30) & PK\\
+\end{longtable}}
+
+\subsection*{\code{medical\_\allowbreak{}profile\_\allowbreak{}emergency\_\allowbreak{}contacts}}
+Up to three ordered emergency contacts; name and phone encrypted.\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{user\_\allowbreak{}id} & bigint & PK; FK $\rightarrow$ medical\_\allowbreak{}profiles.user\_\allowbreak{}id\\
+\textbf{sort\_\allowbreak{}order} & integer & PK\\
+\textbf{name} & text & required\\
+\textbf{phone} & text & required\\
+\textbf{relationship} & varchar(20) & required\\
+\end{longtable}}
+
+\subsection*{\code{facilities}}
+Hospitals, ambulance, fire and police stations with coordinates; \code{registered} is true while the facility has active staff or units.\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{id} & bigint & PK\\
+\textbf{address} & varchar(255) & \\
+\textbf{facility\_\allowbreak{}type} & varchar(255) & required; one of HOSPITAL, AMBULANCE\_\allowbreak{}STATION, FIRE\_\allowbreak{}STATION, POLICE\_\allowbreak{}STATION\\
+\textbf{latitude} & double & required\\
+\textbf{longitude} & double & required\\
+\textbf{name} & varchar(255) & required\\
+\textbf{registered} & bool & required\\
+\end{longtable}}
+
+\subsection*{\code{response\_\allowbreak{}units}}
+Ambulances, fire trucks, police cars and personal first-responder units with live position and status; archived instead of deleted when they have history.\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{id} & bigint & PK\\
+\textbf{archived\_\allowbreak{}at} & timestamptz & \\
+\textbf{latitude} & double & \\
+\textbf{longitude} & double & \\
+\textbf{plate\_\allowbreak{}number} & varchar(255) & unique\\
+\textbf{status} & varchar(255) & required; one of AVAILABLE, BUSY, OFFLINE, MAINTENANCE\\
+\textbf{unit\_\allowbreak{}type} & varchar(255) & required; one of AMBULANCE, FIRE\_\allowbreak{}TRUCK, POLICE\_\allowbreak{}CAR, FIRST\_\allowbreak{}RESPONDER\\
+\textbf{facility\_\allowbreak{}id} & bigint & FK $\rightarrow$ facilities.id\\
+\textbf{owner\_\allowbreak{}user\_\allowbreak{}id} & bigint & FK $\rightarrow$ users.id; unique\\
+\end{longtable}}
+
+\subsection*{\code{shift\_\allowbreak{}assignments}}
+Who is on which unit and in which capacity (LEAD or CREW); an open shift has no end time.\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{id} & bigint & PK\\
+\textbf{end\_\allowbreak{}time} & timestamptz & \\
+\textbf{role\_\allowbreak{}in\_\allowbreak{}shift} & varchar(255) & required; one of LEAD, CREW\\
+\textbf{start\_\allowbreak{}time} & timestamptz & required\\
+\textbf{employee\_\allowbreak{}id} & bigint & FK $\rightarrow$ users.id; required\\
+\textbf{unit\_\allowbreak{}id} & bigint & FK $\rightarrow$ response\_\allowbreak{}units.id; required\\
+\end{longtable}}
+
+\subsection*{\code{incidents}}
+An emergency report with its location, status, AI priority, cancellation and false-report data, and duplicate links.\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{id} & bigint & PK\\
+\textbf{address} & varchar(255) & \\
+\textbf{ai\_\allowbreak{}confidence} & double & \\
+\textbf{ai\_\allowbreak{}duplicate\_\allowbreak{}confidence} & double & \\
+\textbf{ai\_\allowbreak{}priority} & varchar(255) & one of CRITICAL, HIGH, MEDIUM, LOW\\
+\textbf{cancellation\_\allowbreak{}category} & varchar(30) & one of SUBMITTED\_\allowbreak{}BY\_\allowbreak{}MISTAKE, SITUATION\_\allowbreak{}RESOLVED, GOT\_\allowbreak{}HELP\_\allowbreak{}ELSEWHERE, DUPLICATE\_\allowbreak{}REPORT, OTHER\\
+\textbf{cancellation\_\allowbreak{}reason} & varchar(255) & \\
+\textbf{cancelled\_\allowbreak{}at} & timestamptz & \\
+\textbf{category} & varchar(255) & required; one of MEDICAL, POLICE, FIRE\\
+\textbf{created\_\allowbreak{}at} & timestamptz & required\\
+\textbf{description} & varchar(2000) & \\
+\textbf{false\_\allowbreak{}report\_\allowbreak{}marked\_\allowbreak{}at} & timestamptz & \\
+\textbf{false\_\allowbreak{}report\_\allowbreak{}type} & varchar(20) & one of PRANK\_\allowbreak{}OR\_\allowbreak{}HOAX, SPAM\_\allowbreak{}OR\_\allowbreak{}TEST, MALICIOUS\\
+\textbf{injured\_\allowbreak{}count} & integer & required\\
+\textbf{share\_\allowbreak{}medical\_\allowbreak{}profile} & bool & required; default false\\
+\textbf{latitude} & double & required\\
+\textbf{location\_\allowbreak{}source} & varchar(255) & required; one of GPS, MANUAL\_\allowbreak{}PIN\\
+\textbf{longitude} & double & required\\
+\textbf{reported\_\allowbreak{}for} & varchar(10) & required; one of SELF, OTHER; default SELF\\
+\textbf{source} & varchar(255) & required; one of CITIZEN\_\allowbreak{}APP, SENSOR\_\allowbreak{}DEVICE\\
+\textbf{status} & varchar(255) & required; one of NEW, AI\_\allowbreak{}PROCESSED, DISPATCHER\_\allowbreak{}REVIEW, ASSIGNED, IN\_\allowbreak{}PROGRESS, RESOLVED, CANCELLED\\
+\textbf{version} & bigint & required\\
+\textbf{ai\_\allowbreak{}suggested\_\allowbreak{}duplicate\_\allowbreak{}of\_\allowbreak{}id} & bigint & FK $\rightarrow$ incidents.id\\
+\textbf{cancelled\_\allowbreak{}by} & bigint & FK $\rightarrow$ users.id\\
+\textbf{citizen\_\allowbreak{}id} & bigint & FK $\rightarrow$ users.id; required\\
+\textbf{client\_\allowbreak{}request\_\allowbreak{}id} & varchar(64) & \\
+\textbf{duplicate\_\allowbreak{}of\_\allowbreak{}incident\_\allowbreak{}id} & bigint & FK $\rightarrow$ incidents.id\\
+\textbf{false\_\allowbreak{}report\_\allowbreak{}marked\_\allowbreak{}by} & bigint & FK $\rightarrow$ users.id\\
+\end{longtable}}
+
+\subsection*{\code{incident\_\allowbreak{}media}}
+Evidence attached to an incident: photo, video, audio (storage path) or text (encrypted).\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{id} & bigint & PK\\
+\textbf{media\_\allowbreak{}type} & varchar(255) & required; one of PHOTO, VIDEO, AUDIO, TEXT\\
+\textbf{storage\_\allowbreak{}path} & varchar(255) & \\
+\textbf{text\_\allowbreak{}content} & text & \\
+\textbf{updated\_\allowbreak{}at} & timestamptz & required\\
+\textbf{uploaded\_\allowbreak{}at} & timestamptz & required\\
+\textbf{url} & varchar(255) & \\
+\textbf{incident\_\allowbreak{}id} & bigint & FK $\rightarrow$ incidents.id; required\\
+\end{longtable}}
+
+\subsection*{\code{chat\_\allowbreak{}messages}}
+Incident chat; content encrypted.\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{id} & bigint & PK\\
+\textbf{content} & text & \\
+\textbf{sent\_\allowbreak{}at} & timestamptz & required\\
+\textbf{incident\_\allowbreak{}id} & bigint & FK $\rightarrow$ incidents.id; required\\
+\textbf{sender\_\allowbreak{}id} & bigint & FK $\rightarrow$ users.id; required\\
+\end{longtable}}
+
+\subsection*{\code{missions}}
+One unit’s assignment to an incident and its lifecycle timestamps.\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{id} & bigint & PK\\
+\textbf{accepted\_\allowbreak{}at} & timestamptz & \\
+\textbf{arrived\_\allowbreak{}at} & timestamptz & \\
+\textbf{completed\_\allowbreak{}at} & timestamptz & \\
+\textbf{offered\_\allowbreak{}at} & timestamptz & \\
+\textbf{rejection\_\allowbreak{}reason} & varchar(255) & \\
+\textbf{status} & varchar(255) & required; one of OFFERED, ACCEPTED, REJECTED, EN\_\allowbreak{}ROUTE, ARRIVED, COMPLETED, CANCELLED\\
+\textbf{version} & bigint & required\\
+\textbf{assigned\_\allowbreak{}by} & bigint & FK $\rightarrow$ users.id\\
+\textbf{incident\_\allowbreak{}id} & bigint & FK $\rightarrow$ incidents.id; required\\
+\textbf{unit\_\allowbreak{}id} & bigint & FK $\rightarrow$ response\_\allowbreak{}units.id; required\\
+\end{longtable}}
+
+\subsection*{\code{mission\_\allowbreak{}participants}}
+The people who take part in a mission: everyone on the unit’s active shift when the mission is offered.\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{id} & bigint & PK\\
+\textbf{mission\_\allowbreak{}id} & bigint & FK $\rightarrow$ missions.id; required\\
+\textbf{user\_\allowbreak{}id} & bigint & FK $\rightarrow$ users.id; required\\
+\end{longtable}}
+
+\subsection*{\code{hospital\_\allowbreak{}transfers}}
+Destination hospital (or free-text destination) of an ambulance mission; one per mission.\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{id} & bigint & PK\\
+\textbf{destination\_\allowbreak{}name\_\allowbreak{}freetext} & varchar(255) & \\
+\textbf{status} & varchar(255) & required; one of SELECTED, EN\_\allowbreak{}ROUTE, ARRIVED\\
+\textbf{hospital\_\allowbreak{}id} & bigint & FK $\rightarrow$ facilities.id\\
+\textbf{mission\_\allowbreak{}id} & bigint & FK $\rightarrow$ missions.id; unique; required\\
+\end{longtable}}
+
+\subsection*{\code{patient\_\allowbreak{}vitals\_\allowbreak{}updates}}
+Vital-sign records recorded during transport; notes encrypted.\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{id} & bigint & PK\\
+\textbf{blood\_\allowbreak{}pressure\_\allowbreak{}diastolic} & integer & \\
+\textbf{blood\_\allowbreak{}pressure\_\allowbreak{}systolic} & integer & \\
+\textbf{consciousness\_\allowbreak{}level} & varchar(255) & one of ALERT, VERBAL, PAIN, UNRESPONSIVE\\
+\textbf{heart\_\allowbreak{}rate} & integer & \\
+\textbf{notes} & text & \\
+\textbf{recorded\_\allowbreak{}at} & timestamptz & required\\
+\textbf{respiratory\_\allowbreak{}rate} & integer & \\
+\textbf{spo2} & integer & \\
+\textbf{temperature\_\allowbreak{}celsius} & double & \\
+\textbf{hospital\_\allowbreak{}transfer\_\allowbreak{}id} & bigint & FK $\rightarrow$ hospital\_\allowbreak{}transfers.id; required\\
+\end{longtable}}
+
+\subsection*{\code{notifications}}
+In-app notification inbox with bilingual text and read state.\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{id} & bigint & default AS IDENTITY PRIMARY KEY\\
+\textbf{user\_\allowbreak{}id} & bigint & FK $\rightarrow$ users.id; required\\
+\textbf{type} & varchar(50) & required\\
+\textbf{title} & text & required\\
+\textbf{body} & text & required\\
+\textbf{data} & text not null & required; default \{\}\\
+\textbf{incident\_\allowbreak{}id} & bigint & FK $\rightarrow$ incidents.id\\
+\textbf{created\_\allowbreak{}at} & timestamptz not null & required; default now()\\
+\textbf{read\_\allowbreak{}at} & timestamptz & \\
+\end{longtable}}
+
+\subsection*{\code{device\_\allowbreak{}tokens}}
+Push tokens per device with platform and locale.\par\vspace{2pt}
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*288/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*188/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*525/1000\relax}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Column} & \textcolor{white}{\sffamily\bfseries\small Type} & \textcolor{white}{\sffamily\bfseries\small Constraints and notes}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{id} & bigint & default AS IDENTITY PRIMARY KEY\\
+\textbf{user\_\allowbreak{}id} & bigint & FK $\rightarrow$ users.id; required\\
+\textbf{token} & varchar(512) & required\\
+\textbf{platform} & varchar(10) & required\\
+\textbf{locale} & varchar(10) not null & required; default en\\
+\textbf{created\_\allowbreak{}at} & timestamptz not null & required; default now()\\
+\textbf{last\_\allowbreak{}seen\_\allowbreak{}at} & timestamptz not null & required; default now()\\
+\end{longtable}}

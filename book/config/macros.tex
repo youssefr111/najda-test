@@ -1,0 +1,66 @@
+% ======================================================================
+%  Project macros
+% ======================================================================
+
+% ---------- Placeholders (visible in red; list them with tools/placeholders.sh)
+\newif\ifshowplaceholders \showplaceholderstrue
+\newcommand{\fillme}[1]{\ifshowplaceholders\textcolor{najdared}{\sffamily\small[#1]}\fi}
+
+% ---------- Text conventions
+\newcommand{\role}[1]{\textsf{\small #1}}          % a user role, e.g. \role{Dispatcher}
+\newcommand{\code}[1]{\texttt{#1}}                  % inline code / identifiers
+\newcommand{\yes}{\textcolor{najdagreen}{\ding{51}}}
+\newcommand{\no}{\textcolor{najdagrey}{--}}
+
+% ---------- Figures
+%   \diagram{file}{caption}{label}        portrait figure, scaled to the text block
+%   \diagramwide{file}{caption}{label}    figure on a landscape page (wide diagrams)
+\newcommand{\diagram}[3]{%
+  \begin{figure}[!htbp]\centering
+    \includegraphics[width=\linewidth,height=0.76\textheight,keepaspectratio]{figures/diagrams/#1}
+    \caption{#2}\label{#3}
+  \end{figure}}
+\newcommand{\diagramwide}[3]{%
+  \begin{landscape}\begin{figure}[!htbp]\centering
+    \includegraphics[width=\linewidth,height=0.78\textheight,keepaspectratio]{figures/diagrams/#1}
+    \caption{#2}\label{#3}
+  \end{figure}\end{landscape}}
+
+% ---------- Screenshots (always shown whole and unmodified)
+%    \screenshot[width]{name}{caption}{label}              one screen
+%    \screenshotrow[height]{name1,name2,...}{caption}{label}  several screens in a row, same height
+%  The optional height is the height of the images (default 62% of the text height). A tall,
+%  full-length phone screenshot is simply scaled to that height, so use 0.78\textheight for long ones.
+%  Each shows the image when the file exists, otherwise a framed placeholder.
+% \shotsetpath{name} sets \shotpath: the safe-size copy in print/ if it exists (see tools/prepare_screenshots.py), else the original
+\newcommand{\shotsetpath}[1]{\IfFileExists{figures/screenshots/print/#1.png}{\edef\shotpath{figures/screenshots/print/#1.png}}{\edef\shotpath{figures/screenshots/#1.png}}}
+\newcommand{\shotframe}[1]{{\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.4pt}\color{najdaline}\fbox{\color{black}#1}}}
+
+\newcommand{\screenshot}[4][0.34\linewidth]{%
+  \begin{figure}[!htbp]\centering
+    \IfFileExists{figures/screenshots/#2.png}{%
+      \shotsetpath{#2}\shotframe{\includegraphics[width=#1,height=0.78\textheight,keepaspectratio]{\shotpath}}}{%
+      \ifshowplaceholders
+      \fbox{\parbox[c][5.2cm][c]{#1}{\centering\sffamily\small\color{najdagrey}%
+        Screenshot to be added\\[2pt]\texttt{figures/screenshots/\detokenize{#2}.png}}}\fi}
+    \caption{#3}\label{#4}
+  \end{figure}}
+
+\newcommand{\screenshotrow}[4][0.62\textheight]{%
+  \begin{figure}[!htbp]\centering
+    \gdef\shotN{0}\foreach \f in {#2}{\xdef\shotN{\the\numexpr\shotN+1\relax}}%
+    \mbox{\foreach \f [count=\k] in {#2}{%
+      \vtop{\hbox{\IfFileExists{figures/screenshots/\f.png}{%
+        \shotsetpath{\f}\shotframe{\includegraphics[height=#1]{\shotpath}}}{%
+        \ifshowplaceholders\fbox{\parbox[c][6cm][c]{0.40\linewidth}{\centering\sffamily\small\color{najdagrey}%
+          Screenshot to be added\\[2pt]\texttt{\expandafter\detokenize\expandafter{\f}.png}}}\fi}}}%
+      \ifnum\k<\shotN\relax\hspace{0.03\linewidth}\fi}}
+    \caption{#3}\label{#4}
+  \end{figure}}
+% two screens side by side (kept for convenience)
+\newcommand{\screenshotpair}[5][0.62\textheight]{\screenshotrow[#1]{#2,#3}{#4}{#5}}
+
+% ---------- Use-case specifications (generated appendix)
+\newcommand{\ucheading}[2]{\par\vspace{1.3em}\noindent{\sffamily\najdasemibold\large\color{najdablue}#1\enspace\textendash\enspace #2}\par\nobreak
+  \vspace{2pt}\noindent{\color{najdaline}\rule{\linewidth}{0.5pt}}\par\nobreak\vspace{5pt}}
+\newcommand{\ucflow}[1]{\par\vspace{0.7em}\noindent{\sffamily\najdasemibold\small\color{najdagrey}#1}\par\nobreak\vspace{2pt}}

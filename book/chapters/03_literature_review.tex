@@ -1,0 +1,185 @@
+\chapter{Literature Review}\label{chap:literature}
+
+\section{Introduction}
+
+\ProjectName{} sits at the intersection of several fields: emergency medical services, decision support and
+triage, software architecture, real-time communication, geospatial computing, and privacy and security
+engineering. This chapter reviews the work in each field that shaped the design, explains the choices that follow
+from it, and closes by identifying the gap that the platform addresses. The review is selective: it concentrates
+on the ideas that the system actually uses.
+
+\section{Emergency Dispatch and Emergency Medical Services}
+
+An emergency response is commonly described as a sequence of stages: detection and reporting, call-taking,
+triage, dispatch, travel, on-scene care, transport and hospital handover. Computer-aided dispatch (CAD) systems
+support the middle stages by recording incidents, tracking resources and recommending assignments. Their
+quality depends on the information that reaches them: the location, the nature of the emergency and its urgency.
+
+A large body of operations-research literature studies how the \emph{resources} of this chain should be
+arranged. Location models decide where to base ambulances so that a target share of the population can be
+reached within a time threshold; relocation models decide how to move vehicles as demand and availability change.
+Gendreau, Laporte and Semet formulated a double-coverage ambulance location model and solved it with tabu search
+\cite{gendreau1997tabu}; Brotcorne, Laporte and Semet reviewed location and relocation models and the dynamic
+dispatching problems built on them \cite{brotcorne2003ambulance}. A more recent review by Aringhieri
+\emph{et al.}\ widens the scope from ambulance location to the wider emergency-care system and the new
+challenges it faces \cite{aringhieri2017ems}.
+
+Two observations from this literature guide \ProjectName{}. First, optimisation models take the demand and the
+state of the fleet as given; they presuppose accurate, timely data about where incidents are and which units are
+free. A platform that captures location automatically and tracks unit status and position in real time produces
+exactly that data. Second, the human dispatcher remains central: the models inform, they do not replace. \ProjectName{}
+follows the same philosophy by ranking units for the dispatcher while leaving the assignment to a person.
+
+\section{Triage and Decision Support}
+
+Triage orders patients, or incidents, by urgency. Emergency departments often use structured five-level
+instruments such as the Emergency Severity Index \cite{gilboy2012esi}, which combines the patient's acuity
+with the resources they are expected to need. Triage at the \emph{report} stage is harder, because the
+information is a short free-text message, a category and a location rather than a clinical assessment.
+
+Language models offer a practical way to classify such messages. Large pre-trained models can perform new
+classification tasks from instructions and a few examples without task-specific training
+\cite{brown2020gpt3}, which suits a domain where labelled emergency data is scarce and sensitive.
+\ProjectName{} therefore uses a language model, called through a hosted gateway, to suggest a priority and a
+possible duplicate for each report. The design treats the model as an \emph{advisor with a safety net}: the output is a
+suggestion shown to a dispatcher; the call is time-limited and deterministic in configuration; and a failure
+leaves the report untouched (\cref{sec:ai-components}).
+
+For structured, tabular signals such as vital signs, conventional supervised learning is more appropriate.
+Gradient-boosted trees \cite{chen2016xgboost} and the scikit-learn ecosystem \cite{pedregosa2011sklearn} are
+well-established tools for such data, and they are the formats the platform's AI model service is built to host
+and serve with a strict input contract.
+
+\Needspace{16\baselineskip}
+\section{Software Architecture for Emergency Platforms}
+
+\subsection{Modularity}
+Parnas's classic argument is that a system should be decomposed into modules according to design decisions
+likely to change, each module hiding one such decision \cite{parnas1972decomposing}. Architectural qualities
+such as modifiability, availability and security are achieved by deliberate structural choices
+\cite{bass2021software}, and enterprise-application patterns such as layered services, repositories and
+domain models give those choices a shared vocabulary \cite{fowler2002peaa,evans2003ddd}.
+
+\subsection{Monolith or microservices?}
+Microservices decompose an application into independently deployable services that communicate over the network
+\cite{lewis2014microservices,newman2021microservices,richardson2018microservices}. They offer independent
+scaling and release, but they also impose a cost in distributed-systems complexity: network failure, data
+consistency across services, operational overhead and the need for substantial infrastructure. A single
+deployable application organised internally into well-separated modules --- a \emph{modular monolith} --- keeps
+most of the benefits of modularity while avoiding that cost, and its modules can be extracted later if a real
+need arises. Newman himself discusses the merits of starting a new system as a monolith and splitting it later
+\cite{newman2021microservices}.
+
+\ProjectName{} follows this reasoning. For a team of this size, a modular Spring Boot backend, organised by feature
+module with consistent controller--service--repository layering, gives strong boundaries, simple transactions and a
+simple deployment. The one component that genuinely differs in nature --- the AI model service, written in Python and
+evolving with machine-learning tooling --- is deployed separately and reached over an authenticated interface
+(\cref{chap:design}).
+
+\subsection{Architecture of the clients}
+The two clients follow current practice for their platforms: a declarative, state-driven interface in Flutter
+\cite{flutter,riverpod} and the React-based App Router of Next.js with server-state caching \cite{nextjs,tanstackquery}.
+
+\section{Real-Time and Event-Driven Communication}
+
+Emergency software must show changes as they happen. Polling wastes bandwidth and adds delay; a persistent
+bidirectional channel is better. The WebSocket protocol provides one over a single TCP connection
+\cite{rfc6455}, and STOMP adds a simple publish--subscribe messaging layer on top of it \cite{stomp12}.
+\ProjectName{} uses STOMP over WebSocket for live updates and Firebase Cloud Messaging for push notifications to
+people who are away from the app \cite{firebase}.
+
+Integration patterns for messaging \cite{hohpe2003eip} and for data-intensive systems \cite{kleppmann2017ddia}
+motivate attention to a subtle hazard: if a message is published from inside a database transaction, a consumer can react
+before the data is committed and read stale state; if the transaction later rolls back, the message announces
+something that never happened. The design therefore publishes live updates and notifications only \emph{after the
+transaction commits} (\cref{sec:after-commit}).
+
+\section{Geospatial Services}
+
+Locating incidents and units requires geographic data and distance computation. The great-circle distance between
+two coordinates is conveniently computed with the haversine formula \cite{sinnott1984haversine}, which is accurate
+enough to rank nearby units. For real travel times, a routing engine is needed. OpenStreetMap is a
+community-maintained global map database \cite{haklay2008osm}, and the Open Source Routing Machine computes fast
+routes on OpenStreetMap data \cite{luxen2011osrm}. Reverse geocoding turns coordinates into a readable address
+\cite{nominatim}, and vector map rendering is provided by MapLibre \cite{maplibre}. \ProjectName{} combines
+these: the console ranks units by distance and estimated travel time, and both clients draw routes and maps.
+
+\section{Security, Privacy and Trust}
+
+\subsection{Design principles}
+Saltzer and Schroeder's design principles for protection remain the baseline: least privilege, fail-safe
+defaults, complete mediation and psychological acceptability \cite{saltzer1975protection}. The OWASP Top 10
+catalogues the most common web-application weaknesses, among them broken access control, cryptographic failures
+and injection \cite{owasp2021top10}. In \ProjectName{} every request is authenticated, authorised by role and by
+ownership inside the service layer, and audited where it touches sensitive data.
+
+\subsection{Authentication and secrets}
+Signed tokens such as JSON Web Tokens \cite{rfc7519} let a server verify a caller without a session store; the
+platform delegates credential handling to a managed identity provider \cite{firebase}, so passwords never reach its
+own code. One-time codes and tokens are stored only as keyed hashes (HMAC) \cite{rfc2104}, so a leaked database does
+not reveal a usable code.
+
+\subsection{Privacy of health data}
+A medical profile is among the most sensitive data a system can hold. Egyptian Law No.\ 151 of 2020 on personal
+data protection \cite{egypt2020pdpl} establishes principles of lawful processing, purpose limitation and data-subject
+rights. The platform applies them as engineering rules: sharing is based on explicit, withdrawable consent; access
+is limited to those who are treating the patient and only while the incident is open; free-text medical fields are
+encrypted at rest; and every access is recorded.
+
+\subsection{Abuse control without denial}
+Rate limiting is commonly implemented with the HTTP status \texttt{429 Too Many Requests} and a
+\texttt{Retry-After} hint \cite{rfc6585}. For an emergency line, outright refusal is unacceptable, so the caller-trust policy
+only \emph{slows} repeat abusers and always tells them which emergency numbers to call (\cref{sec:caller-trust}).
+
+\section{Reliability Patterns}
+
+Production systems fail in partial and unexpected ways. Nygard catalogues stability patterns --- time-outs, circuit
+breakers, bulkheads and graceful degradation --- that keep a failure of one dependency from taking down the
+whole system \cite{nygard2018release}. Idempotent operations make retries safe, which matters on unreliable mobile
+networks \cite{kleppmann2017ddia}. \ProjectName{} applies these ideas directly: each external service is wrapped so its
+failure disables only its own feature, report submission is idempotent through a client-generated request id, and
+the mobile app keeps an offline outbox.
+
+\section{Related Work}
+
+Rather than naming individual products, whose capabilities change and are not always publicly documented, this
+section compares the \emph{categories} of system that a team would encounter when looking for an existing solution
+(\cref{tab:related}). The comparison is qualitative and describes typical characteristics; individual systems vary.
+
+\begin{table}[!htbp]
+\caption{Typical characteristics of categories of emergency-related systems compared with \ProjectName{}.}\label{tab:related}
+\centering\tabfont\setlength{\tabcolsep}{4.5pt}\rowband
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.9cm}*{4}{>{\centering\arraybackslash}p{2.2cm}}@{}}
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Capability} &
+  \textcolor{white}{\sffamily\bfseries\scriptsize Call-taking and CAD} &
+  \textcolor{white}{\sffamily\bfseries\scriptsize Citizen SOS apps} &
+  \textcolor{white}{\sffamily\bfseries\scriptsize Research prototypes} &
+  \textcolor{white}{\sffamily\bfseries\scriptsize \ProjectName} \\
+Citizen self-service reporting with live location & partial & \yes & varies & \yes \\
+Evidence attachments (photo, video, audio) & rare & partial & varies & \yes \\
+Automated priority triage and duplicate hints & rare & \no & varies & \yes \\
+Live dispatcher queue and unit assignment & \yes & \no & partial & \yes \\
+Field-crew mobile mission workflow & partial & \no & partial & \yes \\
+Hospital pre-notification with live vitals & rare & \no & rare & \yes \\
+Consent-based, audited medical-profile sharing & rare & partial & rare & \yes \\
+Graduated abuse control that never refuses a caller & rare & rare & \no & \yes \\
+Arabic and English with right-to-left layout & varies & varies & varies & \yes \\
+\end{tabular}
+\end{table}
+
+\section{Research Gap and Position of This Work}
+
+The literature offers strong models for allocating emergency resources, good tools for classification, and mature
+engineering patterns for reliable, secure systems. What it rarely offers is an \emph{integrated, working platform}
+that closes the loop between the citizen who reports, the dispatcher who decides, the crew who responds and the
+hospital that receives --- and that treats privacy, consent and abuse as part of the design rather than as afterthoughts.
+\ProjectName{} fills that gap for the Egyptian setting: it combines automatic location and AI-assisted triage with a
+live dispatch workflow, a consent-based medical profile, hospital pre-notification and a fail-open abuse policy, in
+Arabic and English, using an architecture proportionate to a small team.
+
+\section{Chapter Summary}
+
+The review established the principles behind the design: human-in-the-loop decision support, a modular
+architecture rather than premature distribution, real-time communication with after-commit event publication,
+standard geospatial tooling, least-privilege security with strong privacy for health data, and reliability
+patterns for partial failure. The next chapter turns these principles into a concrete design.

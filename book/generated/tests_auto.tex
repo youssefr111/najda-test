@@ -1,0 +1,19 @@
+{\tabfont\rowband
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*197/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*421/1000\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-6\tabcolsep)*382/1000\relax}@{}}
+\caption{Automated tests in the repository}\label{tab:tests-auto}\\
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Area} & \textcolor{white}{\sffamily\bfseries\small Test classes /\allowbreak{} files (number of tests)} & \textcolor{white}{\sffamily\bfseries\small What they protect}\\
+\endfirsthead
+\rowcolor{najdanavy}\textcolor{white}{\sffamily\bfseries\small Area} & \textcolor{white}{\sffamily\bfseries\small Test classes /\allowbreak{} files (number of tests)} & \textcolor{white}{\sffamily\bfseries\small What they protect}\\
+\endhead
+\bottomrule\endlastfoot
+\textbf{Backend --- caller trust} & CallerTrustPolicyTest (8) & Weights, decay, window, tier thresholds and cool-down effect.\\
+\textbf{Backend --- identity verification} & KycPolicyTest (5), KycStatusTest (3), KycVendorDataTest (3), DiditWebhookVerifierTest (6), DiditClientListTest (3), DiditClientDeleteTest (3) & Who must verify, status mapping from provider labels, vendor-data format, signature and timestamp verification, provider client behaviour.\\
+\textbf{Backend --- facility management} & FacilityManagerPolicyTest (5), FacilityCsvParserTest (5), FacilityCsvSeederTest (5) & Facility-type rules for units and staff; parsing and idempotent seeding of the bundled facility list.\\
+\textbf{Backend --- incident evidence} & IncidentEvidenceTest (6) & Handling of incident evidence in the AI triage path.\\
+\textbf{Backend --- notifications} & NotificationMessagesTest (5) & Bilingual message construction for every notification type.\\
+\textbf{Backend --- releases} & AppReleaseServiceTest (6), ReleaseVersionsTest (4) & Release lookup, caching and version comparison.\\
+\textbf{Backend --- application} & NajdaApplicationTests (1) & The application context starts and the Flyway-managed schema matches the entities.\\
+\textbf{Mobile (Flutter), 40 tests} & outbox\_\allowbreak{}report\_\allowbreak{}test, geo\_\allowbreak{}boundary\_\allowbreak{}test, medical\_\allowbreak{}profile\_\allowbreak{}test, notifications\_\allowbreak{}test, push\_\allowbreak{}preference\_\allowbreak{}test and further core and feature tests & Offline outbox behaviour, Egypt boundary check, medical-profile model, notification model, push preference.\\
+\textbf{AI service (pytest), 2 tests} & test\_\allowbreak{}registry & Model registry, manifest contract and export validation.\\
+\textbf{Total} & 68 backend + 40 mobile + 2 AI service & 110 automated tests.\\
+\end{longtable}}
